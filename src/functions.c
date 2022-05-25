@@ -171,7 +171,7 @@ PHP_FUNCTION(supportedValuesOf)
 
 	for (i = 0; i < count; i++) {
 		identifier = uenum_next(values, &length, &status);
-		add_next_index_string(return_value, identifier);
+		add_next_index_stringl(return_value, identifier, length);
 	}
 
 	uenum_close(values);
