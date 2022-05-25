@@ -13,6 +13,7 @@ RUN apt-get update \
     && apt-get install -y \
         autoconf \
         automake \
+        bison \
         ca-certificates \
         clang \
         cmake \
@@ -29,6 +30,7 @@ RUN apt-get update \
         locales \
         make \
         pkg-config \
+        re2c \
         shtool \
         tzdata \
     && dpkg-reconfigure --frontend noninteractive tzdata \
