@@ -86,6 +86,7 @@ PHP_FUNCTION(getCanonicalLocales)
 	if (zend_hash_num_elements(localeArray) == 0) {
 		if (localeString) {
 			zend_hash_destroy(localeArray);
+			FREE_HASHTABLE(localeArray);
 		}
 		return;
 	}
@@ -104,6 +105,7 @@ PHP_FUNCTION(getCanonicalLocales)
 
 	if (localeString) {
 		zend_hash_destroy(localeArray);
+		FREE_HASHTABLE(localeArray);
 	}
 
 	if (EG(exception)) {
