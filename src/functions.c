@@ -73,7 +73,7 @@ PHP_FUNCTION(getCanonicalLocales)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if (localeArray == NULL) {
-		localeArray = (HashTable *) malloc(sizeof(HashTable));
+		ALLOC_HASHTABLE(localeArray);
 		zend_hash_init(localeArray, 1, NULL, ZVAL_PTR_DTOR, 0);
 		ZVAL_STR(&localeFromString, localeString);
 		zend_hash_index_update(localeArray, 0, &localeFromString);
