@@ -91,9 +91,10 @@ PHP_MINFO_FUNCTION(ecma_intl)
 
 	php_info_print_table_start();
 	php_info_print_table_header(2, "Internationalization Support, Ecma-style (ECMA-402)", "enabled");
+	php_info_print_table_row(2, "ecma_intl version", PHP_ECMA_INTL_VERSION);
 	php_info_print_table_row(2, "ICU version", U_ICU_VERSION);
 	php_info_print_table_row(2, "ICU Data version", U_ICU_DATA_VERSION);
-	php_info_print_table_row( 2, "ICU TZData version", timeZoneDataVersion);
+	php_info_print_table_row(2, "ICU TZData version", timeZoneDataVersion);
 	php_info_print_table_row(2, "ICU Unicode version", U_UNICODE_VERSION);
 	php_info_print_table_end();
 }

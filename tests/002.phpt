@@ -14,6 +14,7 @@ phpinfo(INFO_MODULES);
 ecma_intl
 
 Internationalization Support, Ecma-style (ECMA-402) => enabled
+ecma_intl version => %d.%d.%d
 ICU version => %f
 ICU Data version => %f
 ICU TZData version => %r(\d{4}[a-z]{1})|n\/a%r
