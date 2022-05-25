@@ -72,7 +72,7 @@ UEnumeration *ecma_intl_getMeasurementUnits(const UErrorCode *errorCode)
 				continue;
 			}
 
-			units[unitsCount++] = type;
+			units[unitsCount++] = identifier;
 		}
 	}
 
