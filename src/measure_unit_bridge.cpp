@@ -76,6 +76,7 @@ UEnumeration *ecma_intl_getMeasurementUnits(const UErrorCode *errorCode)
 		}
 	}
 
+	delete availableTypes;
 	enumeratedUnits = uenum_openCharStringsEnumeration(units, unitsCount, &localStatus);
 
 	if (U_FAILURE(localStatus)) {
