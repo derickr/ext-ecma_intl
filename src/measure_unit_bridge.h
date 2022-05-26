@@ -29,7 +29,7 @@
 extern "C" {
 # endif
 
-UEnumeration *ecma_intl_getMeasurementUnits(const UErrorCode *errorCode);
+UEnumeration *ecma_intl_getMeasurementUnits(const char **units, const UErrorCode *errorCode);
 
 # ifdef __cplusplus
 }

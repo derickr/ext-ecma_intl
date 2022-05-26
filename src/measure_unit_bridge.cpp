@@ -20,7 +20,6 @@
 */
 
 #include <cstring>
-#include <php.h>
 #include <unicode/measunit.h>
 #include <unicode/putil.h>
 #include <unicode/strenum.h>
@@ -33,9 +32,8 @@
 extern "C" {
 #endif
 
-UEnumeration *ecma_intl_getMeasurementUnits(const UErrorCode *errorCode)
+UEnumeration *ecma_intl_getMeasurementUnits(const char **units, const UErrorCode *errorCode)
 {
-	static constexpr int TOTAL_CAPACITY = 200;
 	static constexpr int UNITS_CAPACITY = 40;
 
 	icu::StringEnumeration *availableTypes;
@@ -45,11 +43,9 @@ UEnumeration *ecma_intl_getMeasurementUnits(const UErrorCode *errorCode)
 	UErrorCode localStatus = U_ZERO_ERROR;
 
 	int typesCount, numUnits, unitsCount = 0, resultLength = 40;
-	const char *type, *identifier, **units;
+	const char *type, *identifier;
 
-	units = (const char **) emalloc(sizeof(char *) * TOTAL_CAPACITY);
 	availableTypes = icu::MeasureUnit::getAvailableTypes(localStatus);
-
 	typesCount = availableTypes->count(localStatus);
 	availableTypes->reset(localStatus);
 
