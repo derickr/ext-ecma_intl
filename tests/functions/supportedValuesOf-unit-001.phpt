@@ -1,7 +1,5 @@
 --TEST--
 Ecma\Intl\supportedValuesOf('unit')
---XFAIL--
-Getting a list of supported unit values is not yet implemented.
 --EXTENSIONS--
 ecma_intl
 --FILE--
@@ -13,8 +11,6 @@ if (count($units) > 0) {
 } else {
     echo "Does not support any units.\n";
 }
-
-var_dump($units);
 
 $tests = [
     'acre',
