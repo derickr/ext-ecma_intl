@@ -24,6 +24,12 @@
 namespace Ecma\Intl;
 
 /**
+ * Returns an array of the $locales in their BCP-47 canonical forms
+ *
+ * @link https://tc39.es/ecma402/#sec-intl.getcanonicallocales ECMA-402 definition for Intl.getCanonicalLocales()
+ * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales MDN documentation for Intl.getCanonicalLocales()
+ * @link https://www.rfc-editor.org/info/bcp47 BCP 47
+ *
  * @param string[]|string $locales
  *
  * @return string[]
@@ -33,15 +39,24 @@ namespace Ecma\Intl;
 function getCanonicalLocales(array|string $locales): array {}
 
 /**
+ * Returns an array of all locales supported by this implementation
+ *
+ * Please note this function is not a part of the Ecma Intl standard.
+ *
  * @return string[]
  */
 function getSupportedLocales(): array {}
 
 /**
- * @psalm-param 'calendar'|'collation'|'currency'|'numberingSystem'|'timeZone'|'unit' $key
+ * Returns an array of supported values for a given option
+ *
+ * @link https://tc39.es/proposal-intl-enumeration/#sec-intl.supportedvaluesof Intl.supportedValuesOf as defined in Ecma Intl Enumeration API Specification, Stage 3 Draft
+ * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/supportedValuesOf MDN documentation for Intl.supportedValuesOf()
  *
  * @return string[]
  *
  * @throws \RangeException An unsupported key was passed as a parameter.
+ *
+ * @psalm-param 'calendar'|'collation'|'currency'|'numberingSystem'|'timeZone'|'unit' $key
  */
 function supportedValuesOf(string $key): array {}
