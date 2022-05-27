@@ -21,4 +21,4 @@ foreach ($tests as $test) {
 }
 ?>
 --EXPECT--
-RangeException: Invalid language tag: "en-latn-us-co-foo"
+Ecma\Intl\RangeError: Invalid language tag: "en-latn-us-co-foo"

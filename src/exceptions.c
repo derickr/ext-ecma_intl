@@ -19,14 +19,18 @@
    +----------------------------------------------------------------------+
 */
 
+#include <ext/spl/spl_exceptions.h>
+
 #include "exceptions.h"
 #include "exceptions_arginfo.h"
 
-zend_class_entry *ecma_intl_ce_Exception = NULL;
+zend_class_entry *ecma_intl_ce_IntlException = NULL;
+zend_class_entry *ecma_intl_ce_IcuException = NULL;
+zend_class_entry *ecma_intl_ce_RangeError = NULL;
 
-void exceptions_register_Exception_class()
+void exceptions_register_exception_classes()
 {
-	/* Register Ecma\Intl\Exception PHP class */
-	ecma_intl_ce_Exception = register_class_Ecma_Intl_Exception(zend_ce_exception);
-	ecma_intl_ce_Exception->create_object = zend_ce_exception->create_object;
+	ecma_intl_ce_IntlException = register_class_Ecma_Intl_IntlException();
+	ecma_intl_ce_IcuException = register_class_Ecma_Intl_IcuException(spl_ce_RuntimeException, ecma_intl_ce_IntlException);
+	ecma_intl_ce_RangeError = register_class_Ecma_Intl_RangeError(zend_ce_value_error, ecma_intl_ce_IntlException);
 }

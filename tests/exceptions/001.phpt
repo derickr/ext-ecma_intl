@@ -1,12 +1,14 @@
 --TEST--
-Check Ecma\Intl\Exception is a child of \Exception
+Check Ecma\Intl\IcuException is a child of \RuntimeException
 --EXTENSIONS--
 ecma_intl
 --FILE--
 <?php
-var_dump(\Ecma\Intl\Exception::class);
-var_dump(get_parent_class(\Ecma\Intl\Exception::class));
+echo \Ecma\Intl\IcuException::class . "\n";
+echo get_parent_class(\Ecma\Intl\IcuException::class) . "\n";
+var_dump(is_subclass_of(\Ecma\Intl\IcuException::class, \Ecma\Intl\IntlException::class));
 ?>
 --EXPECT--
-string(19) "Ecma\Intl\Exception"
-string(9) "Exception"
+Ecma\Intl\IcuException
+RuntimeException
+bool(true)

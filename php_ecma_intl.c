@@ -55,7 +55,7 @@ ZEND_GET_MODULE(ecma_intl)
 
 PHP_MINIT_FUNCTION(ecma_intl)
 {
-	exceptions_register_Exception_class();
+	exceptions_register_exception_classes();
 
 	return SUCCESS;
 }

@@ -22,5 +22,5 @@ foreach ($tests as $test) {
 }
 ?>
 --EXPECT--
-RangeException: Unknown key for Ecma\Intl\supportedValuesOf()
-RangeException: Unknown key for Ecma\Intl\supportedValuesOf()
+Ecma\Intl\RangeError: Unknown key for Ecma\Intl\supportedValuesOf()
+Ecma\Intl\RangeError: Unknown key for Ecma\Intl\supportedValuesOf()

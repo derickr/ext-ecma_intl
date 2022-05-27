@@ -20,7 +20,6 @@
 */
 
 #include <php.h>
-#include <ext/spl/spl_exceptions.h>
 #include <unicode/ucal.h>
 #include <unicode/ucol.h>
 #include <unicode/ucurr.h>
@@ -49,7 +48,7 @@ bool ecma_intl_toCanonicalBcp47LanguageTag(const char *localeId, char *languageT
 	uloc_toLanguageTag(localeId, languageTag, languageTagCapacity, true, &status);
 
 	if (U_FAILURE(status)) {
-		zend_throw_error(spl_ce_RangeException,
+		zend_throw_error(ecma_intl_ce_RangeError,
 						 "Invalid language tag: \"%s\"",
 						 localeId);
 
@@ -95,7 +94,7 @@ PHP_FUNCTION(getCanonicalLocales)
 
 	ZEND_HASH_FOREACH_VAL(localeArray, localeFromArray)
 		if (Z_TYPE_P(localeFromArray) != IS_STRING) {
-			zend_throw_error(spl_ce_InvalidArgumentException,
+			zend_throw_error(zend_ce_value_error,
 							 "The $locales argument must be type string or an array of type string");
 			RETURN_THROWS();
 		}
@@ -159,13 +158,13 @@ PHP_FUNCTION(supportedValuesOf)
 		units = (const char **) emalloc(sizeof(char *) * UNIT_TOTAL_CAPACITY);
 		values = ecma_intl_getMeasurementUnits(units, &status);
 	} else {
-		zend_throw_error(spl_ce_RangeException,
+		zend_throw_error(ecma_intl_ce_RangeError,
 						 "Unknown key for Ecma\\Intl\\supportedValuesOf()");
 		RETURN_THROWS();
 	}
 
 	if (U_FAILURE(status)) {
-		zend_throw_error(ecma_intl_ce_Exception,"%s", u_errorName(status));
+		zend_throw_error(ecma_intl_ce_IcuException,"%s", u_errorName(status));
 		RETURN_THROWS();
 	}
 

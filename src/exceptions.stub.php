@@ -23,6 +23,14 @@
 
 namespace Ecma\Intl;
 
-class Exception extends \Exception
-{
-}
+interface IntlException {}
+
+/**
+ * The error this exception indicates originated from the underlying ICU library
+ */
+class IcuException extends \RuntimeException implements IntlException {}
+
+/**
+ * ECMA-402 uses range errors to indicate when a passed value is invalid or out-of-bounds
+ */
+class RangeError extends \ValueError implements IntlException {}

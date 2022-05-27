@@ -34,7 +34,8 @@ namespace Ecma\Intl;
  *
  * @return string[]
  *
- * @throws \RangeException
+ * @throws RangeError when the provided locale or locales is invalid
+ * @throws \ValueError when the locales array contains items that aren't of type string
  */
 function getCanonicalLocales(array|string $locales): array {}
 
@@ -55,7 +56,7 @@ function getSupportedLocales(): array {}
  *
  * @return string[]
  *
- * @throws \RangeException An unsupported key was passed as a parameter.
+ * @throws RangeError when providing an unsupported key
  *
  * @psalm-param 'calendar'|'collation'|'currency'|'numberingSystem'|'timeZone'|'unit' $key
  */
