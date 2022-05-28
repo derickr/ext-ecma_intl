@@ -17,3 +17,6 @@ indent_style = tab
 
 [*.{yml,yaml,m4,w32}]
 indent_size = 2
+
+[*.phpt]
+trim_trailing_whitespace = false
