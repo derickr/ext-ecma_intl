@@ -138,8 +138,8 @@ PHP_FUNCTION(supportedValuesOf)
 	UEnumeration *values = NULL;
 	UErrorCode status = U_ZERO_ERROR;
 
-	int count, length, i, isUnits = 0;
-	const char *identifier, **units;
+	int count, length, i;
+	const char *identifier, **units = NULL;
 
 	ZEND_PARSE_PARAMETERS_START(1, 1)
 		 Z_PARAM_STR(key)
@@ -156,7 +156,6 @@ PHP_FUNCTION(supportedValuesOf)
 	} else if (strcasecmp(CATEGORY_TIME_ZONE, ZSTR_VAL(key)) == 0) {
 		values = ucal_openTimeZones(&status);
 	} else if (strcasecmp(CATEGORY_UNIT, ZSTR_VAL(key)) == 0) {
-		isUnits = 1;
 		units = (const char **) emalloc(sizeof(char *) * UNIT_TOTAL_CAPACITY);
 		values = ecma_intl_getMeasurementUnits(units, &status);
 	} else {
@@ -182,7 +181,7 @@ PHP_FUNCTION(supportedValuesOf)
 
 	uenum_close(values);
 
-	if (isUnits) {
+	if (units) {
 		efree(units);
 	}
 
