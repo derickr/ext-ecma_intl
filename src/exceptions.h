@@ -25,7 +25,8 @@
 #include <php.h>
 #include <Zend/zend_exceptions.h>
 
-void exceptions_register_exception_classes(void);
+void ecma_intl_register_exceptions(void);
+
 extern zend_class_entry *ecma_intl_ce_IntlException;
 extern zend_class_entry *ecma_intl_ce_IcuException;
 extern zend_class_entry *ecma_intl_ce_RangeError;
