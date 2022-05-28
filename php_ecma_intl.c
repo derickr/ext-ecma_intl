@@ -32,6 +32,9 @@
 #include "php_ecma_intl.h"
 #include "src/exceptions.h"
 #include "src/functions_arginfo.h"
+#include "src/locale/locale.h"
+#include "src/locale/options.h"
+#include "src/locale/week_info.h"
 
 zend_module_entry ecma_intl_module_entry = {
 	STANDARD_MODULE_HEADER,
@@ -56,6 +59,9 @@ ZEND_GET_MODULE(ecma_intl)
 PHP_MINIT_FUNCTION(ecma_intl)
 {
 	ecma_intl_register_exceptions();
+	ecma_intl_register_Locale();
+	ecma_intl_register_Locale_Options();
+	ecma_intl_register_Locale_WeekInfo();
 
 	return SUCCESS;
 }
