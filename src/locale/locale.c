@@ -27,11 +27,14 @@
 #include "options.h"
 #include "src/functions.h"
 
+#define PROPERTY_BASE_NAME "baseName"
+
 zend_class_entry *ecma_intl_ce_Locale = NULL;
 
 static zend_object_handlers ecma_intl_locale_obj_handlers;
 static zend_object *ecma_intl_locale_obj_create(zend_class_entry *class_type);
 static void ecma_intl_locale_obj_free(zend_object *object);
+static void set_base_name(zend_object *object, char *bcp47_tag);
 
 static zend_object *ecma_intl_locale_obj_create(zend_class_entry *class_type)
 {
@@ -67,10 +70,31 @@ void ecma_intl_locale_obj_free(zend_object *object)
 	}
 }
 
+void set_base_name(zend_object *object, char *bcp47_tag)
+{
+	char *base_name = NULL;
+	int base_name_len = 0;
+	UErrorCode status = U_ZERO_ERROR;
+
+	base_name = (char *) ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+	base_name_len = uloc_getBaseName(bcp47_tag, base_name, ULOC_FULLNAME_CAPACITY, &status);
+
+	zend_update_property_stringl(
+		ecma_intl_ce_Locale,
+		object,
+		PROPERTY_BASE_NAME,
+		sizeof(PROPERTY_BASE_NAME) - 1,
+		base_name,
+		base_name_len
+	);
+
+	efree(base_name);
+}
+
 PHP_METHOD(Ecma_Intl_Locale, __construct)
 {
-	char *language_tag = NULL, *bcp47_tag = NULL, *base_name = NULL;
-	size_t language_tag_len = 0, bcp47_tag_len = 0, base_name_len = 0;
+	char *language_tag = NULL, *bcp47_tag = NULL;
+	size_t language_tag_len = 0, bcp47_tag_len = 0;
 	zval *options_obj;
 	UErrorCode status = U_ZERO_ERROR;
 
@@ -86,26 +110,15 @@ PHP_METHOD(Ecma_Intl_Locale, __construct)
 	locale_obj->original_locale = estrndup(language_tag, language_tag_len);
 	locale_obj->original_locale_len = language_tag_len;
 
-	bcp47_tag = (char *) emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+	bcp47_tag = (char *) ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
 	bcp47_tag_len = ecma_intl_toCanonicalBcp47LanguageTag(language_tag, bcp47_tag);
 
 	locale_obj->canonical_bcp47_locale = estrndup(bcp47_tag, bcp47_tag_len);
 	locale_obj->canonical_bcp47_locale_len = bcp47_tag_len;
 
-	base_name = (char *) emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-	base_name_len = uloc_getBaseName(bcp47_tag, base_name, ULOC_FULLNAME_CAPACITY, &status);
-
-	zend_update_property_stringl(
-		ecma_intl_ce_Locale,
-		&locale_obj->std,
-		"baseName",
-		sizeof("baseName") - 1,
-		base_name,
-		base_name_len
-	);
+	set_base_name(&locale_obj->std, bcp47_tag);
 
 	efree(bcp47_tag);
-	efree(base_name);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, maximize)
