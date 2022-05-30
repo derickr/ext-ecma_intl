@@ -1,0 +1,159 @@
+--TEST--
+Ecma\Intl\Locale accepts BCP 47 language tags
+--EXTENSIONS--
+ecma_intl
+--FILE--
+<?php
+$tests = [
+    'en',
+    'en-us',
+    'und-US',
+    'und-latn',
+    'en-US-posix',
+    'kok-IN',
+    'en_us',
+    'art-lojban',
+    'zh-hakka',
+    'zh-cmn-CH-u-co-pinyin',
+    'xxx-yy',
+    'fr-234',
+    'i-default',
+    'bogus',
+    'EN-lATN-us',
+    'und-variant-1234',
+    'ja-9876-5432',
+    'en-US-varianta-variantb',
+    'en-US-variantb-varianta',
+    'sl-rozaj-1994-biske',
+    'sl-biske-1994-rozaj',
+    'sl-1994-rozaj-biske',
+    'sl-rozaj-biske-1994',
+    'en-fonipa-scouse',
+    'en-scouse-fonipa',
+    'en-u-ca-gregory',
+    'en-U-cu-USD',
+    'en-US-u-va-posix',
+    'en-us-u-ca-gregory-va-posix',
+    'en-us-posix-u-va-posix',
+    'en-us-u-va-posix2',
+    'en-us-vari1-u-va-posix',
+    'ar-x-1-2-3',
+    'fr-u-nu-latn-cu-eur',
+    'de-k-kext-u-co-phonebk-nu-latn',
+    'ja-u-cu-jpy-ca-jp',
+    'en-us-u-tz-usnyc',
+    'und-a-abc-def',
+    'zh-u-ca-chinese-x-u-ca-chinese',
+    'x-elmer',
+    'en-US-u-attr1-attr2-ca-gregory',
+    'sr-u-kn',
+    'de-u-kn-co-phonebk',
+    'en-u-attr2-attr1-kn-kb',
+    'ja-u-ijkl-efgh-abcd-ca-japanese-xx-yyy-zzz-kn',
+    'de-u-xc-xphonebk-co-phonebk-ca-buddhist-mo-very-lo-extensi-xd-that-de-should-vc-probably-xz-killthebuffer',
+    'en-a-bbb-a-ccc',
+    'en-a-bar-u-baz',
+    'en-a-bar-u-baz-x-u-foo',
+    'en-u-baz',
+    'en-u-baz-ca-islamic-civil',
+    'en-a-bar-u-ca-islamic-civil-x-u-foo',
+    'en-a-bar-u-baz-ca-islamic-civil-x-u-foo',
+    'und-Arab-u-em-emoji',
+    'und-Latn-u-em-emoji',
+    'und-Latn-DE-u-em-emoji',
+    'und-Zzzz-DE-u-em-emoji',
+    'und-DE-u-em-emoji',
+    'zh-x_t-ab',
+    'zh-hans-cn-u-ca-x_t-u',
+    'zh-u-ca-chinese-ca-gregory',
+    'zh-u-ca-gregory-co-pinyin-ca-chinese',
+    'de-latn-DE-1901-u-co-phonebk-co-pinyin-ca-gregory',
+    'th-u-kf-nu-thai-kf-false',
+    'i-navajo',
+    'i-navajo-a-foo',
+    'i-navajo-latn-us',
+    'sgn-br',
+    'sgn-br-u-co-phonebk',
+    'ja-latn-hepburn-heploc',
+    'ja-latn-hepburn-heploc-u-ca-japanese',
+    'en-a-bcde-0-fgh',
+];
+
+foreach ($tests as $test) {
+    $locale = new \Ecma\Intl\Locale($test);
+    echo $locale . "\n";
+}
+?>
+--EXPECT--
+en
+en-US
+und-US
+und-Latn
+en-US-u-va-posix
+kok-IN
+en-US
+jbo
+hak
+cmn-CH-u-co-pinyin
+xxx-YY
+fr-234
+en-x-i-default
+bogus
+en-Latn-US
+und-1234-variant
+ja-5432-9876
+en-US-varianta-variantb
+en-US-varianta-variantb
+sl-1994-biske-rozaj
+sl-1994-biske-rozaj
+sl-1994-biske-rozaj
+sl-1994-biske-rozaj
+en-fonipa-scouse
+en-fonipa-scouse
+en-u-ca-gregory
+en-u-cu-usd
+en-US-u-va-posix
+en-US-u-ca-gregory-va-posix
+en-US-u-va-posix
+en-US-u-va-posix2
+en-US-vari1-u-va-posix
+ar-x-1-2-3
+fr-u-cu-eur-nu-latn
+de-k-kext-u-co-phonebk-nu-latn
+ja-u-ca-cu-jpy-jp
+en-US-u-tz-usnyc
+und-a-abc-def
+zh-u-ca-chinese-x-u-ca-chinese
+und-x-elmer
+en-US-u-attr1-attr2-ca-gregory
+sr-u-kn
+de-u-co-phonebk-kn
+en-u-attr1-attr2-kb-kn
+ja-u-abcd-efgh-ijkl-ca-japanese-kn-xx-yyy-zzz
+de-u-ca-buddhist-co-phonebk-de-should-lo-extensi-mo-very-vc-probably-xc-xphonebk-xd-that-xz
+en-a-bbb
+en-a-bar-u-baz
+en-a-bar-u-baz-x-u-foo
+en-u-baz
+en-u-baz-ca-islamic-civil
+en-a-bar-u-ca-islamic-civil-x-u-foo
+en-a-bar-u-baz-ca-islamic-civil-x-u-foo
+und-Arab-u-em-emoji
+und-Latn-u-em-emoji
+und-Latn-DE-u-em-emoji
+und-Zzzz-DE-u-em-emoji
+und-DE-u-em-emoji
+zh-x-t-ab
+zh-Hans-CN-u-ca-x-t-u
+zh-u-ca-chinese
+zh-u-ca-gregory-co-pinyin
+de-Latn-DE-1901-u-ca-gregory-co-phonebk
+th-u-kf-nu-thai
+nv
+nv-a-foo
+nv-Latn-US
+sgn-BR
+bzs-u-co-phonebk
+ja-Latn-hepburn-heploc
+ja-Latn-alalc97-u-ca-japanese
+en-0-fgh-a-bcde

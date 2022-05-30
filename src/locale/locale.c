@@ -19,33 +19,60 @@
    +----------------------------------------------------------------------+
 */
 
+#include <unicode/uloc.h>
 #include <zend_interfaces.h>
 
 #include "locale.h"
 #include "locale_arginfo.h"
 #include "options.h"
+#include "src/functions.h"
 
 zend_class_entry *ecma_intl_ce_Locale = NULL;
 
 static zend_object_handlers ecma_intl_locale_obj_handlers;
-static zend_object *ecma_intl_locale_obj_new(zend_class_entry *class_type);
+static zend_object *ecma_intl_locale_obj_create(zend_class_entry *class_type);
+static void ecma_intl_locale_obj_free(zend_object *object);
 
-static zend_object *ecma_intl_locale_obj_new(zend_class_entry *class_type)
+static zend_object *ecma_intl_locale_obj_create(zend_class_entry *class_type)
 {
-	ecma_intl_locale_obj *intern = zend_object_alloc(sizeof(ecma_intl_locale_obj), class_type);
+	ecma_intl_locale_obj *intern;
+
+	intern = zend_object_alloc(sizeof(ecma_intl_locale_obj), class_type);
+
+	intern->original_locale = NULL;
+	intern->canonical_bcp47_locale = NULL;
+
 	zend_object_std_init(&intern->std, class_type);
 	object_properties_init(&intern->std, class_type);
+
 	intern->std.handlers = &ecma_intl_locale_obj_handlers;
 
 	return &intern->std;
 }
 
+void ecma_intl_locale_obj_free(zend_object *object)
+{
+	ecma_intl_locale_obj *locale_obj = ecma_intl_locale_obj_from_obj(object);
+
+	zend_object_std_dtor(&locale_obj->std);
+
+	if (locale_obj->original_locale) {
+		efree(locale_obj->original_locale);
+		locale_obj->original_locale = NULL;
+	}
+
+	if (locale_obj->canonical_bcp47_locale) {
+		efree(locale_obj->canonical_bcp47_locale);
+		locale_obj->canonical_bcp47_locale = NULL;
+	}
+}
+
 PHP_METHOD(Ecma_Intl_Locale, __construct)
 {
-	char *language_tag = NULL;
-	size_t language_tag_len = 0;
-	zval *options_obj = NULL;
-	ecma_intl_locale_obj *locale_obj;
+	char *language_tag = NULL, *bcp47_tag = NULL, *base_name = NULL;
+	size_t language_tag_len = 0, bcp47_tag_len = 0, base_name_len = 0;
+	zval *options_obj;
+	UErrorCode status = U_ZERO_ERROR;
 
 	ZEND_PARSE_PARAMETERS_START(1, 2)
 		Z_PARAM_STRING(language_tag, language_tag_len)
@@ -54,16 +81,31 @@ PHP_METHOD(Ecma_Intl_Locale, __construct)
 	ZEND_PARSE_PARAMETERS_END();
 
 	zval *object = getThis();
-	locale_obj = Z_ECMA_LOCALE_P(object);
+	ecma_intl_locale_obj *locale_obj = Z_ECMA_LOCALE_P(object);
+
+	locale_obj->original_locale = estrndup(language_tag, language_tag_len);
+	locale_obj->original_locale_len = language_tag_len;
+
+	bcp47_tag = (char *) emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+	bcp47_tag_len = ecma_intl_toCanonicalBcp47LanguageTag(language_tag, bcp47_tag);
+
+	locale_obj->canonical_bcp47_locale = estrndup(bcp47_tag, bcp47_tag_len);
+	locale_obj->canonical_bcp47_locale_len = bcp47_tag_len;
+
+	base_name = (char *) emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+	base_name_len = uloc_getBaseName(bcp47_tag, base_name, ULOC_FULLNAME_CAPACITY, &status);
 
 	zend_update_property_stringl(
 		ecma_intl_ce_Locale,
 		&locale_obj->std,
 		"baseName",
 		sizeof("baseName") - 1,
-		language_tag,
-		language_tag_len
+		base_name,
+		base_name_len
 	);
+
+	efree(bcp47_tag);
+	efree(base_name);
 }
 
 PHP_METHOD(Ecma_Intl_Locale, maximize)
@@ -79,17 +121,19 @@ PHP_METHOD(Ecma_Intl_Locale, minimize)
 PHP_METHOD(Ecma_Intl_Locale, __toString)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
-}
 
-PHP_METHOD(Ecma_Intl_Locale, toString)
-{
-	ZEND_PARSE_PARAMETERS_NONE();
+	zval *object = getThis();
+	ecma_intl_locale_obj *locale_obj = Z_ECMA_LOCALE_P(object);
+
+	RETURN_STRING(locale_obj->canonical_bcp47_locale);
 }
 
 void ecma_intl_register_Locale()
 {
 	ecma_intl_ce_Locale = register_class_Ecma_Intl_Locale(zend_ce_stringable);
-	ecma_intl_ce_Locale->create_object = ecma_intl_locale_obj_new;
+	ecma_intl_ce_Locale->create_object = ecma_intl_locale_obj_create;
 
 	memcpy(&ecma_intl_locale_obj_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+	ecma_intl_locale_obj_handlers.offset = XtOffsetOf(ecma_intl_locale_obj, std);
+	ecma_intl_locale_obj_handlers.free_obj = ecma_intl_locale_obj_free;
 }

@@ -1,5 +1,5 @@
 --TEST--
-Ecma\Intl\Locale with basic locale
+Ecma\Intl\Locale initialized properties with basic locale
 --EXTENSIONS--
 ecma_intl
 --FILE--

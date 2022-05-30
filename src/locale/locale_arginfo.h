@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 70e4417ad8c54f70e40bc2d610f1caf4add47bbe */
+ * Stub hash: df7ad8126491170bdacf121ec11a229b7e4bd2c9 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, tag, IS_STRING, 0)
@@ -20,7 +20,6 @@ ZEND_END_ARG_INFO()
 ZEND_METHOD(Ecma_Intl_Locale, __construct);
 ZEND_METHOD(Ecma_Intl_Locale, maximize);
 ZEND_METHOD(Ecma_Intl_Locale, minimize);
-ZEND_METHOD(Ecma_Intl_Locale, toString);
 ZEND_METHOD(Ecma_Intl_Locale, __toString);
 
 
@@ -28,7 +27,7 @@ static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale, __construct, arginfo_class_Ecma_Intl_Locale___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, maximize, arginfo_class_Ecma_Intl_Locale_maximize, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, minimize, arginfo_class_Ecma_Intl_Locale_minimize, ZEND_ACC_PUBLIC)
-	ZEND_ME(Ecma_Intl_Locale, toString, arginfo_class_Ecma_Intl_Locale_toString, ZEND_ACC_PUBLIC)
+	ZEND_MALIAS(Ecma_Intl_Locale, toString, __toString, arginfo_class_Ecma_Intl_Locale_toString, ZEND_ACC_PUBLIC)
 	ZEND_ME(Ecma_Intl_Locale, __toString, arginfo_class_Ecma_Intl_Locale___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
@@ -102,7 +101,7 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zend_string_release(property_numberingSystems_name);
 
 	zval property_numeric_default_value;
-	ZVAL_BOOL(&property_numeric_default_value, 0);
+	ZVAL_BOOL(&property_numeric_default_value, false);
 	zend_string *property_numeric_name = zend_string_init("numeric", sizeof("numeric") - 1, 1);
 	zend_declare_typed_property(class_entry, property_numeric_name, &property_numeric_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_BOOL));
 	zend_string_release(property_numeric_name);

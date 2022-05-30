@@ -82,6 +82,9 @@ class Locale implements \Stringable
 
     public function minimize(): Locale {}
 
+    /**
+     * @implementation-alias Ecma\Intl\Locale::__toString
+     */
     public function toString(): string {}
 
     public function __toString(): string {}
