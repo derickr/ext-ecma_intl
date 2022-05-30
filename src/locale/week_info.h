@@ -24,9 +24,9 @@
 
 #include <php.h>
 
-typedef struct ecma_intl_locale_week_info_obj ecma_intl_locale_week_info_obj;
+typedef struct _ecma_intl_locale_week_info_obj ecma_intl_locale_week_info_obj;
 
-struct ecma_intl_locale_week_info_obj {
+struct _ecma_intl_locale_week_info_obj {
 	zend_object std;
 };
 

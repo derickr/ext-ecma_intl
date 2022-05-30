@@ -24,9 +24,9 @@
 
 #include <php.h>
 
-typedef struct ecma_intl_locale_options_obj ecma_intl_locale_options_obj;
+typedef struct _ecma_intl_locale_options_obj ecma_intl_locale_options_obj;
 
-struct ecma_intl_locale_options_obj {
+struct _ecma_intl_locale_options_obj {
 	zend_object std;
 };
 
