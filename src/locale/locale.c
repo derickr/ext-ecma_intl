@@ -34,7 +34,18 @@ zend_class_entry *ecma_intl_ce_Locale = NULL;
 static zend_object_handlers ecma_intl_locale_obj_handlers;
 static zend_object *ecma_intl_locale_obj_create(zend_class_entry *class_type);
 static void ecma_intl_locale_obj_free(zend_object *object);
-static void set_base_name(zend_object *object, char *bcp47_tag);
+
+/**
+ * Derives the base name (language tag without keywords) and sets it in the
+ * "baseName" property of the Locale object.
+ *
+ * This function assumes the BCP 47 language tag is valid. It does not attempt
+ * any error-checking or reporting of the ICU status.
+ *
+ * @param object The Zend object on which to set the baseName property
+ * @param bcp47_tag A pre-validated BCP 47 language tag from which to derive the base name
+ */
+static void ecma_intl_locale_set_base_name(zend_object *object, char *bcp47_tag);
 
 static zend_object *ecma_intl_locale_obj_create(zend_class_entry *class_type)
 {
@@ -53,7 +64,7 @@ static zend_object *ecma_intl_locale_obj_create(zend_class_entry *class_type)
 	return &intern->std;
 }
 
-void ecma_intl_locale_obj_free(zend_object *object)
+static void ecma_intl_locale_obj_free(zend_object *object)
 {
 	ecma_intl_locale_obj *locale_obj = ecma_intl_locale_obj_from_obj(object);
 
@@ -70,7 +81,7 @@ void ecma_intl_locale_obj_free(zend_object *object)
 	}
 }
 
-void set_base_name(zend_object *object, char *bcp47_tag)
+static void ecma_intl_locale_set_base_name(zend_object *object, char *bcp47_tag)
 {
 	char *base_name = NULL;
 	int base_name_len = 0;
@@ -96,7 +107,6 @@ PHP_METHOD(Ecma_Intl_Locale, __construct)
 	char *language_tag = NULL, *bcp47_tag = NULL;
 	size_t language_tag_len = 0, bcp47_tag_len = 0;
 	zval *options_obj;
-	UErrorCode status = U_ZERO_ERROR;
 
 	ZEND_PARSE_PARAMETERS_START(1, 2)
 		Z_PARAM_STRING(language_tag, language_tag_len)
@@ -116,7 +126,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct)
 	locale_obj->canonical_bcp47_locale = estrndup(bcp47_tag, bcp47_tag_len);
 	locale_obj->canonical_bcp47_locale_len = bcp47_tag_len;
 
-	set_base_name(&locale_obj->std, bcp47_tag);
+	ecma_intl_locale_set_base_name(&locale_obj->std, bcp47_tag);
 
 	efree(bcp47_tag);
 }

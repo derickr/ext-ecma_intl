@@ -35,4 +35,4 @@ UEnumeration *ecma_intl_getMeasurementUnits(const char **units, const UErrorCode
 }
 # endif
 
-#endif    /* ECMA_INTL_MEASURE_UNIT_BRIDGE_H */
+#endif /* ECMA_INTL_MEASURE_UNIT_BRIDGE_H */
