@@ -24,17 +24,13 @@
 #include "options.h"
 #include "options_arginfo.h"
 
-zend_class_entry *ecma_intl_ce_Locale_Options = NULL;
+#define UPDATE_STRING_PROPERTY(property, var, len) \
+	zend_update_property_stringl(ecma_intl_ce_Locale_Options, &options->std, property, sizeof(property) - 1, var, len)
 
-#define PROP_CALENDAR "calendar"
-#define PROP_CASE_FIRST "caseFirst"
-#define PROP_COLLATION "collation"
-#define PROP_HOUR_CYCLE "hourCycle"
-#define PROP_LANGUAGE "language"
-#define PROP_NUMBERING_SYSTEM "numberingSystem"
-#define PROP_NUMERIC "numeric"
-#define PROP_REGION "region"
-#define PROP_SCRIPT "script"
+#define UPDATE_BOOL_PROPERTY(property, var) \
+	zend_update_property_bool(ecma_intl_ce_Locale_Options, &options->std, property, sizeof(property) - 1, var)
+
+zend_class_entry *ecma_intl_ce_Locale_Options = NULL;
 
 static zend_object_handlers ecma_intl_locale_options_obj_handlers;
 static zend_object *ecma_intl_locale_options_obj_new(zend_class_entry *class_type);
@@ -85,101 +81,39 @@ PHP_METHOD(Ecma_Intl_Locale_Options, __construct)
 	ecma_intl_locale_options_obj *options = Z_ECMA_LOCALE_OPTIONS_P(object);
 
 	if (calendar) {
-		zend_update_property_stringl(
-			ecma_intl_ce_Locale_Options,
-			&options->std,
-			PROP_CALENDAR,
-			sizeof(PROP_CALENDAR) - 1,
-			calendar,
-			calendar_len
-		);
+		UPDATE_STRING_PROPERTY(OPTIONS_PROP_CALENDAR, calendar, calendar_len);
 	}
 
 	if (case_first) {
-		zend_update_property_stringl(
-			ecma_intl_ce_Locale_Options,
-			&options->std,
-			PROP_CASE_FIRST,
-			sizeof(PROP_CASE_FIRST) - 1,
-			case_first,
-			case_first_len
-		);
+		UPDATE_STRING_PROPERTY(OPTIONS_PROP_CASE_FIRST, case_first, case_first_len);
 	}
 
 	if (collation) {
-		zend_update_property_stringl(
-			ecma_intl_ce_Locale_Options,
-			&options->std,
-			PROP_COLLATION,
-			sizeof(PROP_COLLATION) - 1,
-			collation,
-			collation_len
-		);
+		UPDATE_STRING_PROPERTY(OPTIONS_PROP_COLLATION, collation, collation_len);
 	}
 
 	if (hour_cycle) {
-		zend_update_property_stringl(
-			ecma_intl_ce_Locale_Options,
-			&options->std,
-			PROP_HOUR_CYCLE,
-			sizeof(PROP_HOUR_CYCLE) - 1,
-			hour_cycle,
-			hour_cycle_len
-		);
+		UPDATE_STRING_PROPERTY(OPTIONS_PROP_HOUR_CYCLE, hour_cycle, hour_cycle_len);
 	}
 
 	if (language) {
-		zend_update_property_stringl(
-			ecma_intl_ce_Locale_Options,
-			&options->std,
-			PROP_LANGUAGE,
-			sizeof(PROP_LANGUAGE) - 1,
-			language,
-			language_len
-		);
+		UPDATE_STRING_PROPERTY(OPTIONS_PROP_LANGUAGE, language, language_len);
 	}
 
 	if (numbering_system) {
-		zend_update_property_stringl(
-			ecma_intl_ce_Locale_Options,
-			&options->std,
-			PROP_NUMBERING_SYSTEM,
-			sizeof(PROP_NUMBERING_SYSTEM) - 1,
-			numbering_system,
-			numbering_system_len
-		);
+		UPDATE_STRING_PROPERTY(OPTIONS_PROP_NUMBERING_SYSTEM, numbering_system, numbering_system_len);
 	}
 
 	if (numeric_null == 0) {
-		zend_update_property_bool(
-			ecma_intl_ce_Locale_Options,
-			&options->std,
-			PROP_NUMERIC,
-			sizeof(PROP_NUMERIC) - 1,
-			numeric
-		);
+		UPDATE_BOOL_PROPERTY(OPTIONS_PROP_NUMERIC, numeric);
 	}
 
 	if (region) {
-		zend_update_property_stringl(
-			ecma_intl_ce_Locale_Options,
-			&options->std,
-			PROP_REGION,
-			sizeof(PROP_REGION) - 1,
-			region,
-			region_len
-		);
+		UPDATE_STRING_PROPERTY(OPTIONS_PROP_REGION, region, region_len);
 	}
 
 	if (script) {
-		zend_update_property_stringl(
-			ecma_intl_ce_Locale_Options,
-			&options->std,
-			PROP_SCRIPT,
-			sizeof(PROP_SCRIPT) - 1,
-			script,
-			script_len
-		);
+		UPDATE_STRING_PROPERTY(OPTIONS_PROP_SCRIPT, script, script_len);
 	}
 }
 

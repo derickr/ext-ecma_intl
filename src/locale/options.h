@@ -24,6 +24,16 @@
 
 #include <php.h>
 
+#define OPTIONS_PROP_CALENDAR "calendar"
+#define OPTIONS_PROP_CASE_FIRST "caseFirst"
+#define OPTIONS_PROP_COLLATION "collation"
+#define OPTIONS_PROP_HOUR_CYCLE "hourCycle"
+#define OPTIONS_PROP_LANGUAGE "language"
+#define OPTIONS_PROP_NUMBERING_SYSTEM "numberingSystem"
+#define OPTIONS_PROP_NUMERIC "numeric"
+#define OPTIONS_PROP_REGION "region"
+#define OPTIONS_PROP_SCRIPT "script"
+
 typedef struct _ecma_intl_locale_options_obj ecma_intl_locale_options_obj;
 
 struct _ecma_intl_locale_options_obj {
