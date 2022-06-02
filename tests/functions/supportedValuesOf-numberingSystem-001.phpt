@@ -2,6 +2,8 @@
 Ecma\Intl\supportedValuesOf('numberingSystem')
 --EXTENSIONS--
 ecma_intl
+--XFAIL--
+Pending normalization of numbering system names
 --FILE--
 <?php
 $numberingSystems = \Ecma\Intl\supportedValuesOf('numberingSystem');

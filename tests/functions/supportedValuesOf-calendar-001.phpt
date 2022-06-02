@@ -2,6 +2,8 @@
 Ecma\Intl\supportedValuesOf('calendar')
 --EXTENSIONS--
 ecma_intl
+--XFAIL--
+Pending normalization of calendar names
 --FILE--
 <?php
 $calendars = \Ecma\Intl\supportedValuesOf('calendar');

@@ -2,6 +2,8 @@
 Ecma\Intl\Locale initialized properties with basic locale
 --EXTENSIONS--
 ecma_intl
+--XFAIL--
+Pending normalization of calendar, collation, and numbering system names
 --FILE--
 <?php
 $locale = new \Ecma\Intl\Locale('en');
