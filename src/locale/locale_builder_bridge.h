@@ -19,10 +19,19 @@
    +----------------------------------------------------------------------+
 */
 
-#ifndef ECMA_INTL_FUNCTIONS_H
-# define ECMA_INTL_FUNCTIONS_H
+#ifndef ECMA_INTL_LOCALE_BUILDER_BRIDGE_H
+# define ECMA_INTL_LOCALE_BUILDER_BRIDGE_H
 
-int ecma_intl_toCanonicalBcp47LanguageTag(const char *locale_id, char *language_tag);
-int ecma_intl_normalize_calendar_name(char *name, int name_len, const char *buffer);
+#include "options.h"
 
-#endif	/* ECMA_INTL_FUNCTIONS_H */
+# ifdef __cplusplus
+extern "C" {
+# endif
+
+bool ecma_intl_build_locale(char *constructed_locale, const char *language_tag, ecma_intl_locale_options_obj *options);
+
+# ifdef __cplusplus
+}
+# endif
+
+#endif /* ECMA_INTL_LOCALE_BUILDER_BRIDGE_H */

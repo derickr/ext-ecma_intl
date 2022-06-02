@@ -27,10 +27,8 @@
 typedef struct _ecma_intl_locale_obj ecma_intl_locale_obj;
 
 struct _ecma_intl_locale_obj {
-	char *original_locale;
-	zend_ulong original_locale_len;
-	char *canonical_bcp47_locale;
-	zend_ulong canonical_bcp47_locale_len;
+	char *bcp47_locale;
+	zend_ulong bcp47_locale_len;
 	zend_object std;
 };
 

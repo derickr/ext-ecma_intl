@@ -47,15 +47,26 @@ int ecma_intl_toCanonicalBcp47LanguageTag(const char *locale_id, char *language_
 
 	language_tag_len = uloc_toLanguageTag(locale_id, language_tag, ULOC_FULLNAME_CAPACITY, true, &status);
 
-	if (strcmp(locale_id, "") == 0 || U_FAILURE(status)) {
-		zend_throw_error(ecma_intl_ce_RangeError,
-						 "Invalid language tag: \"%s\"",
-						 locale_id);
-
+	if (U_FAILURE(status)) {
+		zend_throw_error(ecma_intl_ce_RangeError, "invalid language tag");
 		return 0;
 	}
 
 	return language_tag_len;
+}
+
+int ecma_intl_normalize_calendar_name(char *name, int name_len, const char *buffer)
+{
+	if (strcmp(name, "gregorian") == 0) {
+		buffer = "gregory";
+	} else if (strcmp(name, "ethiopic-amete-alem") == 0) {
+		buffer = "ethioaa";
+	} else {
+		buffer = name;
+		return name_len;
+	}
+
+	return strlen(buffer);
 }
 
 static zend_always_inline int php_array_string_case_compare(Bucket *f, Bucket *s)
@@ -137,9 +148,9 @@ PHP_FUNCTION(supportedValuesOf)
 	zend_string *key;
 	UEnumeration *values = NULL;
 	UErrorCode status = U_ZERO_ERROR;
-
-	int count, length, i;
-	const char *identifier, **units = NULL;
+	int identifier_len;
+	char *identifier;
+	const char **units = NULL;
 
 	ZEND_PARSE_PARAMETERS_START(1, 1)
 		 Z_PARAM_STR(key)
@@ -169,14 +180,14 @@ PHP_FUNCTION(supportedValuesOf)
 		RETURN_THROWS();
 	}
 
-	count = uenum_count(values, &status);
+	int count = uenum_count(values, &status);
 	uenum_reset(values, &status);
 
 	array_init_size(return_value, count);
 
-	for (i = 0; i < count; i++) {
-		identifier = uenum_next(values, &length, &status);
-		add_next_index_stringl(return_value, identifier, length);
+	for (int i = 0; i < count; i++) {
+		identifier = (char *) uenum_next(values, &identifier_len, &status);
+		add_next_index_stringl(return_value, identifier, identifier_len);
 	}
 
 	uenum_close(values);

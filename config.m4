@@ -24,7 +24,8 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/locale/week_info.c \
     , $ext_shared,,$ECMA_INTL_COMMON_FLAGS,cxx)
 
-  PHP_ECMA_INTL_CXX_SOURCES="src/measure_unit_bridge.cpp"
+  PHP_ECMA_INTL_CXX_SOURCES="src/measure_unit_bridge.cpp \
+    src/locale/locale_builder_bridge.cpp"
 
   PHP_REQUIRE_CXX()
   PHP_CXX_COMPILE_STDCXX(11, mandatory, PHP_ECMA_INTL_STDCXX)

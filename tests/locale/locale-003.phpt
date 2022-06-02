@@ -31,17 +31,17 @@ foreach ($tests as $test) {
 }
 ?>
 --EXPECTF--
-Invalid language tag: ""
-Invalid language tag: "de-de_euro"
-Invalid language tag: "123"
-Invalid language tag: "en-latn-x"
-Invalid language tag: "zh-cmn-CH"
-Invalid language tag: "i-test"
-Invalid language tag: "ja-jp-jp"
-Invalid language tag: "boguslang"
-Invalid language tag: "und-varzero-var1-vartwo"
-Invalid language tag: "de-1901-1901"
-Invalid language tag: "de-DE-1901-1901"
-Invalid language tag: "hant-cmn-cn"
-Invalid language tag: "zh-cmn-TW"
-Invalid language tag: "en-gb-oed"
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag
+invalid language tag

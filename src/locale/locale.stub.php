@@ -27,7 +27,7 @@ class Locale implements \Stringable
 {
     public readonly string $baseName;
 
-    public readonly ?string $calendar = null;
+    public readonly ?string $calendar;
 
     /**
      * Returns an array of one or more calendar identifiers that are supported by the locale
@@ -37,13 +37,13 @@ class Locale implements \Stringable
      *
      * @var string[]
      */
-    public readonly array $calendars = [];
+    public readonly array $calendars;
 
-    public readonly ?string $caseFirst = null;
+    public readonly ?string $caseFirst;
 
-    public readonly ?string $collation = null;
+    public readonly ?string $collation;
 
-    public readonly ?string $hourCycle = null;
+    public readonly ?string $hourCycle;
 
     /**
      * Returns an array of one or more hour cycle identifiers supported by the locale
@@ -55,17 +55,17 @@ class Locale implements \Stringable
      */
     public readonly array $hourCycles = [];
 
-    public readonly ?string $language = null;
+    public readonly ?string $language;
 
-    public readonly ?string $numberingSystem = null;
+    public readonly ?string $numberingSystem;
 
     public readonly array $numberingSystems = [];
 
-    public readonly bool $numeric = false;
+    public readonly bool $numeric;
 
-    public readonly ?string $region = null;
+    public readonly ?string $region;
 
-    public readonly ?string $script = null;
+    public readonly ?string $script;
 
     public readonly ?string $textInfo = null;
 

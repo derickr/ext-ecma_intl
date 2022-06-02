@@ -14,13 +14,14 @@ foreach ($locale as $property => $value) {
 baseName : 'en'
 calendar : NULL
 calendars : array (
+  0 => 'gregory',
 )
 caseFirst : NULL
 collation : NULL
 hourCycle : NULL
 hourCycles : array (
 )
-language : NULL
+language : 'en'
 numberingSystem : NULL
 numberingSystems : array (
 )
