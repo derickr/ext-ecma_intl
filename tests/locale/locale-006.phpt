@@ -1,45 +1,54 @@
 --TEST--
-Ecma\Intl\Locale initialized properties with basic locale
+Ecma\Intl\Locale with populated options
 --EXTENSIONS--
 ecma_intl
 --FILE--
 <?php
-$locale = new \Ecma\Intl\Locale('en');
+$locale = new \Ecma\Intl\Locale('en', new \Ecma\Intl\Locale\Options(
+    calendar: 'gregory',
+    caseFirst: 'upper',
+    collation: 'standard',
+    hourCycle: 'h23',
+    numberingSystem: 'thai',
+    numeric: true,
+    region: 'CA',
+    script: 'latn',
+));
 var_dump($locale);
 ?>
 --EXPECT--
 object(Ecma\Intl\Locale)#1 (16) {
   ["baseName"]=>
-  string(2) "en"
+  string(10) "en-Latn-CA"
   ["calendar"]=>
-  NULL
+  string(8) "gregory"
   ["calendars"]=>
   array(1) {
     [0]=>
     string(8) "gregory"
   }
   ["caseFirst"]=>
-  NULL
+  string(5) "upper"
   ["collation"]=>
-  NULL
+  string(8) "standard"
   ["hourCycle"]=>
-  NULL
+  string(3) "h23"
   ["hourCycles"]=>
   array(0) {
   }
   ["language"]=>
   string(2) "en"
   ["numberingSystem"]=>
-  NULL
+  string(4) "thai"
   ["numberingSystems"]=>
   array(0) {
   }
   ["numeric"]=>
-  bool(false)
+  bool(true)
   ["region"]=>
-  NULL
+  string(2) "CA"
   ["script"]=>
-  NULL
+  string(4) "Latn"
   ["textInfo"]=>
   NULL
   ["timeZones"]=>

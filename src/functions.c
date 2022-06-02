@@ -55,20 +55,6 @@ int ecma_intl_toCanonicalBcp47LanguageTag(const char *locale_id, char *language_
 	return language_tag_len;
 }
 
-int ecma_intl_normalize_calendar_name(char *name, int name_len, const char *buffer)
-{
-	if (strcmp(name, "gregorian") == 0) {
-		buffer = "gregory";
-	} else if (strcmp(name, "ethiopic-amete-alem") == 0) {
-		buffer = "ethioaa";
-	} else {
-		buffer = name;
-		return name_len;
-	}
-
-	return strlen(buffer);
-}
-
 static zend_always_inline int php_array_string_case_compare(Bucket *f, Bucket *s)
 {
 	return string_case_compare_function(&f->val, &s->val);

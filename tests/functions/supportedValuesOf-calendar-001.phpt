@@ -15,7 +15,6 @@ if (count($calendars) > 0) {
 $tests = [
     'gregory',
     'ethioaa',
-    'iso8601',
 ];
 
 foreach ($tests as $test) {
@@ -30,4 +29,3 @@ foreach ($tests as $test) {
 Has support for %d calendars.
 Found gregory in calendar data.
 Found ethioaa in calendar data.
-Found iso8601 in calendar data.

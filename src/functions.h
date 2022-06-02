@@ -23,6 +23,5 @@
 # define ECMA_INTL_FUNCTIONS_H
 
 int ecma_intl_toCanonicalBcp47LanguageTag(const char *locale_id, char *language_tag);
-int ecma_intl_normalize_calendar_name(char *name, int name_len, const char *buffer);
 
 #endif	/* ECMA_INTL_FUNCTIONS_H */

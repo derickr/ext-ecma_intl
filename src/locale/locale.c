@@ -117,20 +117,16 @@ static void set_base_name(zend_object *object, char *locale_id)
 
 static void set_calendar(zend_object *object, char *locale_id)
 {
-	char *calendar_name = NULL, *value = NULL;
-	int calendar_name_len = 0, value_len = 0;
+	char *value = NULL;
+	int value_len = 0;
 	UErrorCode status = U_ZERO_ERROR;
 
-	calendar_name = (char *) emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-	calendar_name_len = uloc_getKeywordValue(locale_id, "calendar", calendar_name, ULOC_FULLNAME_CAPACITY, &status);
-
 	value = (char *) emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-	value_len = ecma_intl_normalize_calendar_name(calendar_name, calendar_name_len, value);
+	value_len = uloc_getKeywordValue(locale_id, "calendar", value, ULOC_FULLNAME_CAPACITY, &status);
 
 	SET_PROPERTY(PROPERTY_CALENDAR)
 
 	efree(value);
-	efree(calendar_name);
 }
 
 static void set_calendars(zend_object *object, char *locale_id)

@@ -12,10 +12,13 @@ if (count($collations) > 0) {
     echo "Does not support any collations.\n";
 }
 
+var_dump($collations);
+
 $tests = [
-    'big5han',
-    'compat',
-    'emoji',
+    'dict',
+    'gb2312',
+    'phonebk',
+    'trad',
 ];
 
 foreach ($tests as $test) {
@@ -28,6 +31,7 @@ foreach ($tests as $test) {
 ?>
 --EXPECTF--
 Has support for %d collations.
-Found big5han in collation data.
-Found compat in collation data.
-Found emoji in collation data.
+Found dict in collation data.
+Found gb2312 in collation data.
+Found phonebk in collation data.
+Found trad in collation data.

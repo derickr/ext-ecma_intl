@@ -13,9 +13,7 @@ if (count($numberingSystems) > 0) {
 }
 
 $tests = [
-    'arab',
-    'fullwide',
-    'thai',
+    'traditio',
 ];
 
 foreach ($tests as $test) {
@@ -28,6 +26,4 @@ foreach ($tests as $test) {
 ?>
 --EXPECTF--
 Has support for %d numbering systems.
-Found arab in numbering system data.
-Found fullwide in numbering system data.
-Found thai in numbering system data.
+Found traditio in numbering system data.
