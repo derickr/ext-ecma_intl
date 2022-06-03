@@ -20,15 +20,11 @@
 */
 
 #include <cstring>
-#include <php.h>
 #include <unicode/localebuilder.h>
 #include <unicode/locid.h>
 #include <unicode/region.h>
 
-#include "../common.h"
-#include "../exceptions.h"
 #include "locale_builder_bridge.h"
-#include "options.h"
 
 #ifdef __cplusplus
 extern "C" {

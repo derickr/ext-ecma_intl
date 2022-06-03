@@ -19,10 +19,10 @@
    +----------------------------------------------------------------------+
 */
 
-#include <zend_interfaces.h>
-
 #include "week_info.h"
 #include "week_info_arginfo.h"
+
+#include <zend_interfaces.h>
 
 zend_class_entry *ecma_intl_ce_Locale_WeekInfo = NULL;
 

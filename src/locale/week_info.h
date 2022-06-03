@@ -22,7 +22,7 @@
 #ifndef ECMA_INTL_LOCALE_WEEK_INFO_H
 #define ECMA_INTL_LOCALE_WEEK_INFO_H
 
-#include <php.h>
+#include "../common.h"
 
 typedef struct _ecma_intl_locale_week_info_obj ecma_intl_locale_week_info_obj;
 

@@ -22,6 +22,7 @@
 #ifndef ECMA_INTL_LOCALE_BUILDER_BRIDGE_H
 #define ECMA_INTL_LOCALE_BUILDER_BRIDGE_H
 
+#include "../common.h"
 #include "options.h"
 
 #ifdef __cplusplus

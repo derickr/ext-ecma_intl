@@ -25,6 +25,7 @@
 #include <php.h>
 
 #include <Zend/zend_exceptions.h>
+#include <ext/spl/spl_exceptions.h>
 
 void ecma_intl_register_exceptions(void);
 

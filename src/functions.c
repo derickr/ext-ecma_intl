@@ -19,7 +19,6 @@
    +----------------------------------------------------------------------+
 */
 
-#include <php.h>
 #include <unicode/ucal.h>
 #include <unicode/ucol.h>
 #include <unicode/ucurr.h>
@@ -27,8 +26,6 @@
 #include <unicode/unumsys.h>
 #include <unicode/utypes.h>
 
-#include "common.h"
-#include "exceptions.h"
 #include "functions.h"
 #include "measure_unit_bridge.h"
 

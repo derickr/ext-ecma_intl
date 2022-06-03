@@ -22,6 +22,10 @@
 #ifndef ECMA_INTL_COMMON_H
 #define ECMA_INTL_COMMON_H
 
+#include <php.h>
+
+#include "exceptions.h"
+
 #define CASE_FIRST_FALSE "false"
 #define CASE_FIRST_LOWER "lower"
 #define CASE_FIRST_UPPER "upper"

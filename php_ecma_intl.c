@@ -23,19 +23,19 @@
 #include "config.h"
 #endif
 
-#include <php.h>
-
-#include <ext/standard/info.h>
 #include <unicode/ucal.h>
 #include <unicode/uchar.h>
 #include <unicode/uversion.h>
 
 #include "php_ecma_intl.h"
+
 #include "src/exceptions.h"
 #include "src/functions_arginfo.h"
 #include "src/locale/locale.h"
 #include "src/locale/options.h"
 #include "src/locale/week_info.h"
+
+#include <ext/standard/info.h>
 
 zend_module_entry ecma_intl_module_entry = {STANDARD_MODULE_HEADER,
                                             "ecma_intl",

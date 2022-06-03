@@ -22,15 +22,15 @@
 #include <unicode/ucal.h>
 #include <unicode/udatpg.h>
 #include <unicode/uloc.h>
-#include <zend_interfaces.h>
 
 #include "../common.h"
-#include "../exceptions.h"
 #include "../functions.h"
 #include "locale.h"
 #include "locale_arginfo.h"
 #include "locale_builder_bridge.h"
 #include "options.h"
+
+#include <zend_interfaces.h>
 
 #define SET_PROPERTY(name)                                                     \
   if (value_len == 0) {                                                        \

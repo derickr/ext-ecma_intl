@@ -22,7 +22,7 @@
 #ifndef ECMA_INTL_LOCALE_OPTIONS_H
 #define ECMA_INTL_LOCALE_OPTIONS_H
 
-#include <php.h>
+#include "../common.h"
 
 typedef struct _ecma_intl_locale_options_obj ecma_intl_locale_options_obj;
 

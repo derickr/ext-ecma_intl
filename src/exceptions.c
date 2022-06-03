@@ -19,8 +19,6 @@
    +----------------------------------------------------------------------+
 */
 
-#include <ext/spl/spl_exceptions.h>
-
 #include "exceptions.h"
 #include "exceptions_arginfo.h"
 

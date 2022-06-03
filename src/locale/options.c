@@ -19,11 +19,10 @@
    +----------------------------------------------------------------------+
 */
 
-#include <zend_interfaces.h>
-
-#include "../common.h"
 #include "options.h"
 #include "options_arginfo.h"
+
+#include <zend_interfaces.h>
 
 #define UPDATE_STRING_PROPERTY(property, var, len)                             \
   zend_update_property_stringl(ecma_intl_ce_Locale_Options, &options->std,     \
