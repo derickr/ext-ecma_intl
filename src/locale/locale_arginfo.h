@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: b665860acab693d355f5a88fb1d501ba261c9eab */
+ * Stub hash: 29e33bb8768158d91c730ba3996e2a65e5a79a80 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, tag, IS_STRING, 0)
@@ -77,7 +77,7 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zend_string_release(property_hourCycle_name);
 
 	zval property_hourCycles_default_value;
-	ZVAL_EMPTY_ARRAY(&property_hourCycles_default_value);
+	ZVAL_UNDEF(&property_hourCycles_default_value);
 	zend_string *property_hourCycles_name = zend_string_init("hourCycles", sizeof("hourCycles") - 1, 1);
 	zend_declare_typed_property(class_entry, property_hourCycles_name, &property_hourCycles_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
 	zend_string_release(property_hourCycles_name);

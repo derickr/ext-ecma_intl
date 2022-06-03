@@ -20,6 +20,7 @@
 */
 
 #include <unicode/ucal.h>
+#include <unicode/udatpg.h>
 #include <unicode/uloc.h>
 #include <zend_interfaces.h>
 
@@ -189,6 +190,43 @@ static void set_hour_cycle(zend_object *object, char *locale_id)
 	efree(value);
 }
 
+static void set_hour_cycles(zend_object *object, char *locale_id)
+{
+	UDateTimePatternGenerator *pattern_generator;
+	UDateFormatHourCycle hour_cycle;
+	UErrorCode status = U_ZERO_ERROR;
+	zval hour_cycles;
+
+	pattern_generator = udatpg_open(locale_id, &status);
+
+	if (U_FAILURE(status)) {
+		zend_throw_error(ecma_intl_ce_IcuException,"%s", u_errorName(status));
+	} else {
+		array_init_size(&hour_cycles, 1);
+
+		hour_cycle = udatpg_getDefaultHourCycle(pattern_generator, &status);
+
+		if (U_FAILURE(status)) {
+			zend_throw_error(ecma_intl_ce_IcuException, "%s", u_errorName(status));
+		} else {
+			if (hour_cycle == UDAT_HOUR_CYCLE_11) {
+				add_next_index_string(&hour_cycles, HOUR_H11);
+			} else if (hour_cycle == UDAT_HOUR_CYCLE_23) {
+				add_next_index_string(&hour_cycles, HOUR_H23);
+			} else if (hour_cycle == UDAT_HOUR_CYCLE_24) {
+				add_next_index_string(&hour_cycles, HOUR_H24);
+			} else {
+				add_next_index_string(&hour_cycles, HOUR_H12);
+			}
+		}
+
+		zend_update_property(ecma_intl_ce_Locale, object, PROPERTY_HOUR_CYCLES, sizeof(PROPERTY_HOUR_CYCLES) - 1, &hour_cycles);
+		zend_array_release(Z_ARRVAL(hour_cycles));
+	}
+
+	udatpg_close(pattern_generator);
+}
+
 static void set_language(zend_object *object, char *locale_id)
 {
 	char *value = NULL;
@@ -307,6 +345,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct)
 		set_case_first(&locale->std, icu_locale);
 		set_collation(&locale->std, icu_locale);
 		set_hour_cycle(&locale->std, icu_locale);
+		set_hour_cycles(&locale->std, icu_locale);
 		set_language(&locale->std, icu_locale);
 		set_numbering_system(&locale->std, icu_locale);
 		set_numeric(&locale->std, icu_locale);

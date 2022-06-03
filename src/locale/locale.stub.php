@@ -53,7 +53,7 @@ class Locale implements \Stringable
      *
      * @var string[]
      */
-    public readonly array $hourCycles = [];
+    public readonly array $hourCycles;
 
     public readonly ?string $language;
 

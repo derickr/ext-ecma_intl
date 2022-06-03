@@ -36,7 +36,9 @@ object(Ecma\Intl\Locale)#1 (16) {
   ["hourCycle"]=>
   string(3) "h23"
   ["hourCycles"]=>
-  array(0) {
+  array(1) {
+    [0]=>
+    string(3) "h23"
   }
   ["language"]=>
   string(2) "en"
