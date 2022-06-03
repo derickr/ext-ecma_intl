@@ -27,10 +27,10 @@
 #include <Zend/zend_exceptions.h>
 #include <ext/spl/spl_exceptions.h>
 
-void ecma_intl_register_exceptions(void);
+void ecmaIntlRegisterExceptions(void);
 
-extern zend_class_entry *ecma_intl_ce_IntlException;
-extern zend_class_entry *ecma_intl_ce_IcuException;
-extern zend_class_entry *ecma_intl_ce_RangeError;
+extern zend_class_entry *ecmaIntlCeIntlException;
+extern zend_class_entry *ecmaIntlCeIcuException;
+extern zend_class_entry *ecmaIntlCeRangeError;
 
 #endif /* ECMA_INTL_EXCEPTIONS_H */

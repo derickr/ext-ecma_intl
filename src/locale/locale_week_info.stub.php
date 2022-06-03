@@ -24,21 +24,36 @@
 namespace Ecma\Intl\Locale;
 
 /**
+ * WeekInfo indicates information about days of the week for the associated
+ * locale, for calendar purposes.
+ *
  * @link https://tc39.es/proposal-intl-locale-info/#sec-week-info-of-locale Intl Locale Info Proposal
  */
 final class WeekInfo
 {
+    /**
+     * For the associated locale, this number indicates which day of the week
+     * is considered the first day, for calendar purposes.
+     */
     public readonly int $firstDay;
 
     /**
+     * For the associated locale, this is a list of numbers that indicate which
+     * days of the week are considered part of the weekend, for calendar purposes.
+     *
      * @var int[]
      */
     public readonly array $weekend;
 
+    /**
+     * For the associated locale, this number indicates the minimum number of
+     * days required for the first week of a month or year, for calendar purposes.
+     */
     public readonly int $minimalDays;
 
     /**
-     * Disable userland instantiation of WeekInfo class
+     * Instances of this object may only be obtained from the `Locale::$weekInfo`
+     * property.
      */
     private function __construct() {}
 }

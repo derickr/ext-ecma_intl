@@ -32,12 +32,12 @@
 extern "C" {
 #endif
 
-UEnumeration *ecma_intl_getMeasurementUnits(const char **units,
-                                            const UErrorCode *errorCode) {
-  static constexpr int UNITS_CAPACITY = 40;
+UEnumeration *ecmaIntlGetMeasurementUnits(const char **units,
+                                          const UErrorCode *errorCode) {
+  static constexpr int unitsCapacity = 40;
 
   icu::StringEnumeration *availableTypes;
-  icu::MeasureUnit measureUnits[UNITS_CAPACITY];
+  icu::MeasureUnit measureUnits[unitsCapacity];
 
   UEnumeration *enumeratedUnits = nullptr;
   UErrorCode localStatus = U_ZERO_ERROR;
@@ -58,8 +58,8 @@ UEnumeration *ecma_intl_getMeasurementUnits(const char **units,
       continue;
     }
 
-    numUnits = icu::MeasureUnit::getAvailable(type, measureUnits,
-                                              UNITS_CAPACITY, localStatus);
+    numUnits = icu::MeasureUnit::getAvailable(type, measureUnits, unitsCapacity,
+                                              localStatus);
 
     if (numUnits == 0) {
       continue;

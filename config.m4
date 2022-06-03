@@ -20,8 +20,8 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/exceptions.c \
     src/functions.c \
     src/locale/locale.c \
-    src/locale/options.c \
-    src/locale/week_info.c \
+    src/locale/locale_options.c \
+    src/locale/locale_week_info.c \
     , $ext_shared,,$ECMA_INTL_COMMON_FLAGS,cxx)
 
   PHP_ECMA_INTL_CXX_SOURCES="src/measure_unit_bridge.cpp \

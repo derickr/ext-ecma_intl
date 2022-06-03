@@ -31,29 +31,27 @@ extern "C" {
 #endif
 
 #define READ_PROPERTY(name)                                                    \
-  zend_read_property(ecma_intl_ce_Locale_Options, &options->std, name,         \
+  zend_read_property(ecmaIntlCeLocaleOptions, &options->std, name,             \
                      sizeof(name) - 1, false, nullptr)
 
-#define CHECK_AND_SET_PROPERTY(property)                                       \
-  if (locale_set_##property(&builder, property) == ECMA_INTL_FAILURE) {        \
-    zend_throw_error(ecma_intl_ce_RangeError,                                  \
-                     "%s is not a well-formed %s value", #property,            \
-                     #property);                                               \
+#define CHECK_AND_SET_PROPERTY(functionPart, property)                         \
+  if (localeSet##functionPart(&builder, property) == ECMA_INTL_FAILURE) {      \
+    zend_throw_error(ecmaIntlCeRangeError, "%s is not a well-formed %s value", \
+                     #property, #property);                                    \
     return false;                                                              \
   }
 
 #define CHECK_AND_SET_PROPERTY_KEYWORD(property, key)                          \
-  if (locale_set_keyword(&builder, key, property) == ECMA_INTL_FAILURE) {      \
-    zend_throw_error(ecma_intl_ce_RangeError,                                  \
-                     "%s is not a well-formed %s value", #property,            \
-                     #property);                                               \
+  if (localeSetKeyword(&builder, key, property) == ECMA_INTL_FAILURE) {        \
+    zend_throw_error(ecmaIntlCeRangeError, "%s is not a well-formed %s value", \
+                     #property, #property);                                    \
     return false;                                                              \
   }
 
 #define CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(property, key,             \
                                                     error_message)             \
-  if (locale_set_keyword(&builder, key, property) == ECMA_INTL_FAILURE) {      \
-    zend_throw_error(ecma_intl_ce_RangeError, error_message);                  \
+  if (localeSetKeyword(&builder, key, property) == ECMA_INTL_FAILURE) {        \
+    zend_throw_error(ecmaIntlCeRangeError, error_message);                     \
     return false;                                                              \
   }
 
@@ -80,24 +78,24 @@ extern "C" {
   if (U_FAILURE(status))                                                       \
     return ECMA_INTL_FAILURE;
 
-static int locale_set_language(icu::LocaleBuilder *builder, zval *language);
-static int locale_set_region(icu::LocaleBuilder *builder, zval *region);
-static int locale_set_script(icu::LocaleBuilder *builder, zval *script);
-static int locale_set_keyword(icu::LocaleBuilder *builder, const char *key,
-                              zval *value);
+static int localeSetLanguage(icu::LocaleBuilder *builder, zval *language);
+static int localeSetRegion(icu::LocaleBuilder *builder, zval *region);
+static int localeSetScript(icu::LocaleBuilder *builder, zval *script);
+static int localeSetKeyword(icu::LocaleBuilder *builder, const char *key,
+                            zval *value);
 
-bool ecma_intl_build_locale(char *constructed_locale, const char *language_tag,
-                            ecma_intl_locale_options_obj *options) {
+bool ecmaIntlBuildLocale(char *constructedLocale, const char *languageTag,
+                         ecmaIntlLocaleOptionsObj *options) {
   UErrorCode status = U_ZERO_ERROR;
-  zval *calendar, *case_first, *collation, *hour_cycle, *language,
-      *numbering_system, *numeric, *region, *script;
-  icu::Locale locale, new_locale;
+  zval *calendar, *caseFirst, *collation, *hourCycle, *language,
+      *numberingSystem, *numeric, *region, *script;
+  icu::Locale locale, newLocale;
   icu::LocaleBuilder builder;
 
-  locale = icu::Locale::forLanguageTag(language_tag, status);
+  locale = icu::Locale::forLanguageTag(languageTag, status);
 
-  if (strcmp(language_tag, "") == 0 || U_FAILURE(status)) {
-    zend_throw_error(ecma_intl_ce_RangeError, "invalid language tag");
+  if (strcmp(languageTag, "") == 0 || U_FAILURE(status)) {
+    zend_throw_error(ecmaIntlCeRangeError, "invalid language tag");
     return false;
   }
 
@@ -105,51 +103,51 @@ bool ecma_intl_build_locale(char *constructed_locale, const char *language_tag,
   builder.setLocale(locale);
 
   calendar = READ_PROPERTY(PROPERTY_CALENDAR);
-  case_first = READ_PROPERTY(PROPERTY_CASE_FIRST);
+  caseFirst = READ_PROPERTY(PROPERTY_CASE_FIRST);
   collation = READ_PROPERTY(PROPERTY_COLLATION);
-  hour_cycle = READ_PROPERTY(PROPERTY_HOUR_CYCLE);
+  hourCycle = READ_PROPERTY(PROPERTY_HOUR_CYCLE);
   language = READ_PROPERTY(PROPERTY_LANGUAGE);
-  numbering_system = READ_PROPERTY(PROPERTY_NUMBERING_SYSTEM);
+  numberingSystem = READ_PROPERTY(PROPERTY_NUMBERING_SYSTEM);
   numeric = READ_PROPERTY(PROPERTY_NUMERIC);
   region = READ_PROPERTY(PROPERTY_REGION);
   script = READ_PROPERTY(PROPERTY_SCRIPT);
 
   CHECK_AND_SET_PROPERTY_KEYWORD(calendar, KEYWORD_BCP_47_CALENDAR)
   CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(
-      case_first, KEYWORD_BCP_47_CASE_FIRST,
+      caseFirst, KEYWORD_BCP_47_CASE_FIRST,
       "caseFirst must be either \"upper\", \"lower\", or \"false\"")
   CHECK_AND_SET_PROPERTY_KEYWORD(collation, KEYWORD_BCP_47_COLLATION)
   CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(
-      hour_cycle, KEYWORD_BCP_47_HOUR_CYCLE,
+      hourCycle, KEYWORD_BCP_47_HOUR_CYCLE,
       "hourCycle must be \"h11\", \"h12\", \"h23\", or \"h24\"")
-  CHECK_AND_SET_PROPERTY(language)
+  CHECK_AND_SET_PROPERTY(Language, language)
   CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(
-      numbering_system, KEYWORD_BCP_47_NUMBERING_SYSTEM,
+      numberingSystem, KEYWORD_BCP_47_NUMBERING_SYSTEM,
       "numberingSystem is not a well-formed numbering system value")
   CHECK_AND_SET_PROPERTY_KEYWORD(numeric, KEYWORD_BCP_47_NUMERIC)
-  CHECK_AND_SET_PROPERTY(region)
-  CHECK_AND_SET_PROPERTY(script)
+  CHECK_AND_SET_PROPERTY(Region, region)
+  CHECK_AND_SET_PROPERTY(Script, script)
 
-  new_locale = builder.build(status);
+  newLocale = builder.build(status);
 
   if (U_FAILURE(status)) {
-    zend_throw_error(ecma_intl_ce_IcuException, "%s", u_errorName(status));
+    zend_throw_error(ecmaIntlCeIcuException, "%s", u_errorName(status));
     return false;
   }
 
-  std::string constructed = new_locale.toLanguageTag<std::string>(status);
+  std::string constructed = newLocale.toLanguageTag<std::string>(status);
 
   if (U_FAILURE(status)) {
-    zend_throw_error(ecma_intl_ce_IcuException, "%s", u_errorName(status));
+    zend_throw_error(ecmaIntlCeIcuException, "%s", u_errorName(status));
     return false;
   }
 
-  std::memcpy(constructed_locale, constructed.c_str(), constructed.size() + 1);
+  std::memcpy(constructedLocale, constructed.c_str(), constructed.size() + 1);
 
   return true;
 }
 
-int locale_set_language(icu::LocaleBuilder *builder, zval *language) {
+int localeSetLanguage(icu::LocaleBuilder *builder, zval *language) {
   CHECK_NULL(language)
   CHECK_EMPTY(Z_STRVAL_P(language))
 
@@ -164,22 +162,22 @@ int locale_set_language(icu::LocaleBuilder *builder, zval *language) {
   return ECMA_INTL_SUCCESS;
 }
 
-int locale_set_region(icu::LocaleBuilder *builder, zval *region) {
+int localeSetRegion(icu::LocaleBuilder *builder, zval *region) {
   CHECK_NULL(region)
   CHECK_EMPTY(Z_STRVAL_P(region))
 
   UErrorCode status = U_ZERO_ERROR;
-  const icu::Region *region_obj =
+  const icu::Region *regionObj =
       icu::Region::getInstance(Z_STRVAL_P(region), status);
 
   CHECK_FAILURE(status)
 
-  builder->setRegion(region_obj->getRegionCode());
+  builder->setRegion(regionObj->getRegionCode());
 
   return ECMA_INTL_SUCCESS;
 }
 
-int locale_set_script(icu::LocaleBuilder *builder, zval *script) {
+int localeSetScript(icu::LocaleBuilder *builder, zval *script) {
   CHECK_NULL(script)
   CHECK_EMPTY(Z_STRVAL_P(script))
 
@@ -194,32 +192,32 @@ int locale_set_script(icu::LocaleBuilder *builder, zval *script) {
   return ECMA_INTL_SUCCESS;
 }
 
-int locale_set_keyword(icu::LocaleBuilder *builder, const char *key,
-                       zval *value) {
+int localeSetKeyword(icu::LocaleBuilder *builder, const char *key,
+                     zval *value) {
   CHECK_NULL(value)
 
-  const char *value_str;
+  const char *valueStr;
 
   if (Z_TYPE_P(value) == IS_TRUE || Z_TYPE_P(value) == IS_FALSE) {
-    value_str = Z_TYPE_P(value) == IS_TRUE ? NUMERIC_YES : NUMERIC_NO;
+    valueStr = Z_TYPE_P(value) == IS_TRUE ? NUMERIC_YES : NUMERIC_NO;
   } else {
-    value_str = Z_STRVAL_P(value);
+    valueStr = Z_STRVAL_P(value);
   }
 
-  CHECK_EMPTY(value_str)
+  CHECK_EMPTY(valueStr)
 
   if (strcmp(key, KEYWORD_BCP_47_CASE_FIRST) == 0) {
-    CHECK_CASE_FIRST(value_str)
+    CHECK_CASE_FIRST(valueStr)
   }
 
   if (strcmp(key, KEYWORD_BCP_47_HOUR_CYCLE) == 0) {
-    CHECK_HOUR_CYCLE(value_str)
+    CHECK_HOUR_CYCLE(valueStr)
   }
 
   UErrorCode status = U_ZERO_ERROR;
   icu::Locale locale = icu::LocaleBuilder()
                            .setLanguageTag(LANGUAGE_UNDETERMINED)
-                           .setUnicodeLocaleKeyword(key, value_str)
+                           .setUnicodeLocaleKeyword(key, valueStr)
                            .build(status);
 
   CHECK_FAILURE(status)

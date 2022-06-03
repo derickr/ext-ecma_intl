@@ -32,8 +32,8 @@
 #include "src/exceptions.h"
 #include "src/functions_arginfo.h"
 #include "src/locale/locale.h"
-#include "src/locale/options.h"
-#include "src/locale/week_info.h"
+#include "src/locale/locale_options.h"
+#include "src/locale/locale_week_info.h"
 
 #include <ext/standard/info.h>
 
@@ -56,10 +56,10 @@ ZEND_GET_MODULE(ecma_intl)
 #endif
 
 PHP_MINIT_FUNCTION(ecma_intl) {
-  ecma_intl_register_exceptions();
-  ecma_intl_register_Locale();
-  ecma_intl_register_Locale_Options();
-  ecma_intl_register_Locale_WeekInfo();
+  ecmaIntlRegisterExceptions();
+  ecmaIntlRegisterLocale();
+  ecmaIntlRegisterLocaleOptions();
+  ecmaIntlRegisterLocaleWeekInfo();
 
   return SUCCESS;
 }

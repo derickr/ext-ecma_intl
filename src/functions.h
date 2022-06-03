@@ -24,7 +24,7 @@
 
 #include "common.h"
 
-int ecma_intl_toCanonicalBcp47LanguageTag(const char *locale_id,
-                                          char *language_tag);
+int ecmaIntlToCanonicalBcp47LanguageTag(const char *localeId,
+                                        char *languageTag);
 
 #endif /* ECMA_INTL_FUNCTIONS_H */

@@ -23,14 +23,14 @@
 #define ECMA_INTL_LOCALE_BUILDER_BRIDGE_H
 
 #include "../common.h"
-#include "options.h"
+#include "locale_options.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-bool ecma_intl_build_locale(char *constructed_locale, const char *language_tag,
-                            ecma_intl_locale_options_obj *options);
+bool ecmaIntlBuildLocale(char *constructedLocale, const char *languageTag,
+                         ecmaIntlLocaleOptionsObj *options);
 
 #ifdef __cplusplus
 }

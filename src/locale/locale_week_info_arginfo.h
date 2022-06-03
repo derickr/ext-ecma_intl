@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: d92faa6a92a942bfb4da311afd0b6a89a8b0c990 */
+ * Stub hash: 84ac5fc9d7b4ff3eeb61750ae0a871464214ecd3 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_WeekInfo___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()

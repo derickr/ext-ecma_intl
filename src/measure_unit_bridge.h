@@ -29,8 +29,8 @@
 extern "C" {
 #endif
 
-UEnumeration *ecma_intl_getMeasurementUnits(const char **units,
-                                            const UErrorCode *errorCode);
+UEnumeration *ecmaIntlGetMeasurementUnits(const char **units,
+                                          const UErrorCode *errorCode);
 
 #ifdef __cplusplus
 }

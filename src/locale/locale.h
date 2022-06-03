@@ -24,24 +24,23 @@
 
 #include "../common.h"
 
-typedef struct _ecma_intl_locale_obj ecma_intl_locale_obj;
+typedef struct ecmaIntlLocaleObj ecmaIntlLocaleObj;
 
-struct _ecma_intl_locale_obj {
-  char *bcp47_locale;
-  zend_ulong bcp47_locale_len;
+struct ecmaIntlLocaleObj {
+  char *bcp47Locale;
+  zend_ulong bcp47LocaleLen;
   zend_object std;
 };
 
-static inline ecma_intl_locale_obj *
-ecma_intl_locale_obj_from_obj(zend_object *obj) {
-  return (ecma_intl_locale_obj *)((char *)(obj)-XtOffsetOf(ecma_intl_locale_obj,
-                                                           std));
+static inline ecmaIntlLocaleObj *ecmaIntlLocaleObjFromObj(zend_object *obj) {
+  return (
+      ecmaIntlLocaleObj *)((char *)(obj)-XtOffsetOf(ecmaIntlLocaleObj, std));
 }
 
-#define Z_ECMA_LOCALE_P(zv) ecma_intl_locale_obj_from_obj(Z_OBJ_P(zv))
+#define Z_ECMA_LOCALE_P(zv) ecmaIntlLocaleObjFromObj(Z_OBJ_P(zv))
 
-extern zend_class_entry *ecma_intl_ce_Locale;
+extern zend_class_entry *ecmaIntlCeLocale;
 
-void ecma_intl_register_Locale(void);
+void ecmaIntlRegisterLocale(void);
 
 #endif /* ECMA_INTL_LOCALE_H */

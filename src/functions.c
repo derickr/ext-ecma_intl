@@ -38,72 +38,71 @@
 
 #define UNIT_TOTAL_CAPACITY 200
 
-int ecma_intl_toCanonicalBcp47LanguageTag(const char *locale_id,
-                                          char *language_tag) {
-  int language_tag_len;
+int ecmaIntlToCanonicalBcp47LanguageTag(const char *localeId,
+                                        char *languageTag) {
+  int languageTagLen;
   UErrorCode status = U_ZERO_ERROR;
 
-  language_tag_len = uloc_toLanguageTag(locale_id, language_tag,
-                                        ULOC_FULLNAME_CAPACITY, true, &status);
+  languageTagLen = uloc_toLanguageTag(localeId, languageTag,
+                                      ULOC_FULLNAME_CAPACITY, true, &status);
 
   if (U_FAILURE(status)) {
-    zend_throw_error(ecma_intl_ce_RangeError, "invalid language tag");
+    zend_throw_error(ecmaIntlCeRangeError, "invalid language tag");
     return 0;
   }
 
-  return language_tag_len;
+  return languageTagLen;
 }
 
-static zend_always_inline int php_array_string_case_compare(Bucket *f,
-                                                            Bucket *s) {
+static zend_always_inline int phpArrayStringCaseCompare(Bucket *f, Bucket *s) {
   return string_case_compare_function(&f->val, &s->val);
 }
 
 PHP_FUNCTION(getCanonicalLocales) {
-  HashTable *locale_array;
-  zval *locale_from_array, locale_from_string;
-  zend_string *locale_string;
+  HashTable *localeArray;
+  zval *localeFromArray, localeFromString;
+  zend_string *localeString;
 
   ZEND_PARSE_PARAMETERS_START(1, 1)
-  Z_PARAM_ARRAY_HT_OR_STR(locale_array, locale_string)
+  Z_PARAM_ARRAY_HT_OR_STR(localeArray, localeString)
   ZEND_PARSE_PARAMETERS_END();
 
-  if (locale_array == NULL) {
-    ALLOC_HASHTABLE(locale_array);
-    zend_hash_init(locale_array, 1, NULL, ZVAL_PTR_DTOR, 0);
-    ZVAL_STR(&locale_from_string, locale_string);
-    zend_hash_index_update(locale_array, 0, &locale_from_string);
-    zend_string_release(locale_string);
-    zval_ptr_dtor(&locale_from_string);
+  if (localeArray == NULL) {
+    ALLOC_HASHTABLE(localeArray);
+    zend_hash_init(localeArray, 1, NULL, ZVAL_PTR_DTOR, 0);
+    ZVAL_STR(&localeFromString, localeString);
+    zend_hash_index_update(localeArray, 0, &localeFromString);
+    zend_string_release(localeString);
+    zval_ptr_dtor(&localeFromString);
   }
 
-  array_init_size(return_value, zend_hash_num_elements(locale_array));
+  array_init_size(return_value, zend_hash_num_elements(localeArray));
 
-  if (zend_hash_num_elements(locale_array) == 0) {
-    if (locale_string) {
-      zend_hash_destroy(locale_array);
-      FREE_HASHTABLE(locale_array);
+  if (zend_hash_num_elements(localeArray) == 0) {
+    if (localeString) {
+      zend_hash_destroy(localeArray);
+      FREE_HASHTABLE(localeArray);
     }
     return;
   }
 
-  ZEND_HASH_FOREACH_VAL(locale_array, locale_from_array)
-  if (Z_TYPE_P(locale_from_array) != IS_STRING) {
+  ZEND_HASH_FOREACH_VAL(localeArray, localeFromArray)
+  if (Z_TYPE_P(localeFromArray) != IS_STRING) {
     zend_throw_error(
         zend_ce_value_error,
         "The $locales argument must be type string or an array of type string");
     RETURN_THROWS();
   }
   char languageTag[ULOC_FULLNAME_CAPACITY];
-  if (ecma_intl_toCanonicalBcp47LanguageTag(Z_STRVAL_P(locale_from_array),
-                                            languageTag)) {
+  if (ecmaIntlToCanonicalBcp47LanguageTag(Z_STRVAL_P(localeFromArray),
+                                          languageTag)) {
     add_next_index_string(return_value, languageTag);
   }
   ZEND_HASH_FOREACH_END();
 
-  if (locale_string) {
-    zend_hash_destroy(locale_array);
-    FREE_HASHTABLE(locale_array);
+  if (localeString) {
+    zend_hash_destroy(localeArray);
+    FREE_HASHTABLE(localeArray);
   }
 
   if (EG(exception)) {
@@ -122,7 +121,7 @@ PHP_FUNCTION(getSupportedLocales) {
     const char *locale;
     char languageTag[ULOC_FULLNAME_CAPACITY];
     locale = uloc_getAvailable(i);
-    if (ecma_intl_toCanonicalBcp47LanguageTag(locale, languageTag)) {
+    if (ecmaIntlToCanonicalBcp47LanguageTag(locale, languageTag)) {
       add_next_index_string(return_value, languageTag);
     }
   }
@@ -132,7 +131,7 @@ PHP_FUNCTION(supportedValuesOf) {
   zend_string *key;
   UEnumeration *values = NULL;
   UErrorCode status = U_ZERO_ERROR;
-  int identifier_len;
+  int identifierLen;
   const char *identifier, **units = NULL;
 
   ZEND_PARSE_PARAMETERS_START(1, 1)
@@ -151,15 +150,15 @@ PHP_FUNCTION(supportedValuesOf) {
     values = ucal_openTimeZones(&status);
   } else if (strcasecmp(CATEGORY_UNIT, ZSTR_VAL(key)) == 0) {
     units = (const char **)emalloc(sizeof(char *) * UNIT_TOTAL_CAPACITY);
-    values = ecma_intl_getMeasurementUnits(units, &status);
+    values = ecmaIntlGetMeasurementUnits(units, &status);
   } else {
-    zend_throw_error(ecma_intl_ce_RangeError,
+    zend_throw_error(ecmaIntlCeRangeError,
                      "Unknown key for Ecma\\Intl\\supportedValuesOf()");
     RETURN_THROWS();
   }
 
   if (U_FAILURE(status)) {
-    zend_throw_error(ecma_intl_ce_IcuException, "%s", u_errorName(status));
+    zend_throw_error(ecmaIntlCeIcuException, "%s", u_errorName(status));
     RETURN_THROWS();
   }
 
@@ -169,7 +168,7 @@ PHP_FUNCTION(supportedValuesOf) {
   array_init_size(return_value, count);
 
   for (int i = 0; i < count; i++) {
-    identifier = uenum_next(values, &identifier_len, &status);
+    identifier = uenum_next(values, &identifierLen, &status);
 
     if (strcasecmp(CATEGORY_CALENDAR, ZSTR_VAL(key)) == 0) {
       add_next_index_string(
@@ -184,7 +183,7 @@ PHP_FUNCTION(supportedValuesOf) {
           return_value,
           uloc_toUnicodeLocaleType(KEYWORD_ICU_NUMBERING_SYSTEM, identifier));
     } else {
-      add_next_index_stringl(return_value, identifier, identifier_len);
+      add_next_index_stringl(return_value, identifier, identifierLen);
     }
   }
 
@@ -194,5 +193,5 @@ PHP_FUNCTION(supportedValuesOf) {
     efree(units);
   }
 
-  zend_hash_sort(Z_ARRVAL_P(return_value), php_array_string_case_compare, 1);
+  zend_hash_sort(Z_ARRVAL_P(return_value), phpArrayStringCaseCompare, 1);
 }
