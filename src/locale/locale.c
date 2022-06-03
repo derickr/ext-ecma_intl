@@ -20,29 +20,16 @@
 */
 
 #include <unicode/ucal.h>
-#include <unicode/ucol.h>
 #include <unicode/uloc.h>
 #include <zend_interfaces.h>
 
+#include "../common.h"
 #include "locale.h"
 #include "locale_arginfo.h"
 #include "locale_builder_bridge.h"
 #include "options.h"
 #include "src/exceptions.h"
 #include "src/functions.h"
-
-#define PROPERTY_BASE_NAME "baseName"
-#define PROPERTY_CALENDAR "calendar"
-#define PROPERTY_CALENDARS "calendars"
-#define PROPERTY_CASE_FIRST "caseFirst"
-#define PROPERTY_COLLATION "collation"
-#define PROPERTY_HOUR_CYCLE "hourCycle"
-#define PROPERTY_LANGUAGE "language"
-#define PROPERTY_NUMBERING_SYSTEM "numberingSystem"
-#define PROPERTY_NUMERIC "numeric"
-#define PROPERTY_REGION "region"
-#define PROPERTY_TEXT_INFO "textInfo"
-#define PROPERTY_SCRIPT "script"
 
 #define SET_PROPERTY(name) \
 	if (value_len == 0) {     \
@@ -122,7 +109,7 @@ static void set_calendar(zend_object *object, char *locale_id)
 	UErrorCode status = U_ZERO_ERROR;
 
 	value = (char *) emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-	value_len = uloc_getKeywordValue(locale_id, "calendar", value, ULOC_FULLNAME_CAPACITY, &status);
+	value_len = uloc_getKeywordValue(locale_id, KEYWORD_ICU_CALENDAR, value, ULOC_FULLNAME_CAPACITY, &status);
 
 	SET_PROPERTY(PROPERTY_CALENDAR)
 
@@ -137,7 +124,7 @@ static void set_calendars(zend_object *object, char *locale_id)
 	const char *identifier;
 	zval calendars;
 
-	values = ucal_getKeywordValuesForLocale("calendar", locale_id, 1, &status);
+	values = ucal_getKeywordValuesForLocale(KEYWORD_ICU_CALENDAR, locale_id, 1, &status);
 
 	if (U_FAILURE(status)) {
 		zend_throw_error(ecma_intl_ce_IcuException,"%s", u_errorName(status));
@@ -167,7 +154,7 @@ static void set_case_first(zend_object *object, char *locale_id)
 	UErrorCode status = U_ZERO_ERROR;
 
 	value = (char *) ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-	value_len = uloc_getKeywordValue(locale_id, "colcasefirst", value, ULOC_FULLNAME_CAPACITY, &status);
+	value_len = uloc_getKeywordValue(locale_id, KEYWORD_ICU_CASE_FIRST, value, ULOC_FULLNAME_CAPACITY, &status);
 
 	SET_PROPERTY(PROPERTY_CASE_FIRST)
 
@@ -181,7 +168,7 @@ static void set_collation(zend_object *object, char *locale_id)
 	UErrorCode status = U_ZERO_ERROR;
 
 	value = (char *) ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-	value_len = uloc_getKeywordValue(locale_id, "collation", value, ULOC_FULLNAME_CAPACITY, &status);
+	value_len = uloc_getKeywordValue(locale_id, KEYWORD_ICU_COLLATION, value, ULOC_FULLNAME_CAPACITY, &status);
 
 	SET_PROPERTY(PROPERTY_COLLATION)
 
@@ -195,7 +182,7 @@ static void set_hour_cycle(zend_object *object, char *locale_id)
 	UErrorCode status = U_ZERO_ERROR;
 
 	value = (char *) ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-	value_len = uloc_getKeywordValue(locale_id, "hours", value, ULOC_FULLNAME_CAPACITY, &status);
+	value_len = uloc_getKeywordValue(locale_id, KEYWORD_ICU_HOUR_CYCLE, value, ULOC_FULLNAME_CAPACITY, &status);
 
 	SET_PROPERTY(PROPERTY_HOUR_CYCLE)
 
@@ -223,7 +210,7 @@ static void set_numbering_system(zend_object *object, char *locale_id)
 	UErrorCode status = U_ZERO_ERROR;
 
 	value = (char *) ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-	value_len = uloc_getKeywordValue(locale_id, "numbers", value, ULOC_FULLNAME_CAPACITY, &status);
+	value_len = uloc_getKeywordValue(locale_id, KEYWORD_ICU_NUMBERING_SYSTEM, value, ULOC_FULLNAME_CAPACITY, &status);
 
 	SET_PROPERTY(PROPERTY_NUMBERING_SYSTEM)
 
@@ -236,7 +223,7 @@ static void set_numeric(zend_object *object, char *locale_id)
 	UErrorCode status = U_ZERO_ERROR;
 
 	value = (char *) ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-	uloc_getKeywordValue(locale_id, "colnumeric", value, ULOC_FULLNAME_CAPACITY, &status);
+	uloc_getKeywordValue(locale_id, KEYWORD_ICU_NUMERIC, value, ULOC_FULLNAME_CAPACITY, &status);
 
 	if (strcmp(value, "yes") == 0) {
 		zend_update_property_bool(ecma_intl_ce_Locale, object, PROPERTY_NUMERIC, sizeof(PROPERTY_NUMERIC) - 1, 1);

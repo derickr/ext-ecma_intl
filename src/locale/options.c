@@ -21,6 +21,7 @@
 
 #include <zend_interfaces.h>
 
+#include "../common.h"
 #include "options.h"
 #include "options_arginfo.h"
 
@@ -81,39 +82,39 @@ PHP_METHOD(Ecma_Intl_Locale_Options, __construct)
 	ecma_intl_locale_options_obj *options = Z_ECMA_LOCALE_OPTIONS_P(object);
 
 	if (calendar) {
-		UPDATE_STRING_PROPERTY(OPTIONS_PROP_CALENDAR, calendar, calendar_len);
+		UPDATE_STRING_PROPERTY(PROPERTY_CALENDAR, calendar, calendar_len);
 	}
 
 	if (case_first) {
-		UPDATE_STRING_PROPERTY(OPTIONS_PROP_CASE_FIRST, case_first, case_first_len);
+		UPDATE_STRING_PROPERTY(PROPERTY_CASE_FIRST, case_first, case_first_len);
 	}
 
 	if (collation) {
-		UPDATE_STRING_PROPERTY(OPTIONS_PROP_COLLATION, collation, collation_len);
+		UPDATE_STRING_PROPERTY(PROPERTY_COLLATION, collation, collation_len);
 	}
 
 	if (hour_cycle) {
-		UPDATE_STRING_PROPERTY(OPTIONS_PROP_HOUR_CYCLE, hour_cycle, hour_cycle_len);
+		UPDATE_STRING_PROPERTY(PROPERTY_HOUR_CYCLE, hour_cycle, hour_cycle_len);
 	}
 
 	if (language) {
-		UPDATE_STRING_PROPERTY(OPTIONS_PROP_LANGUAGE, language, language_len);
+		UPDATE_STRING_PROPERTY(PROPERTY_LANGUAGE, language, language_len);
 	}
 
 	if (numbering_system) {
-		UPDATE_STRING_PROPERTY(OPTIONS_PROP_NUMBERING_SYSTEM, numbering_system, numbering_system_len);
+		UPDATE_STRING_PROPERTY(PROPERTY_NUMBERING_SYSTEM, numbering_system, numbering_system_len);
 	}
 
 	if (numeric_null == 0) {
-		UPDATE_BOOL_PROPERTY(OPTIONS_PROP_NUMERIC, numeric);
+		UPDATE_BOOL_PROPERTY(PROPERTY_NUMERIC, numeric);
 	}
 
 	if (region) {
-		UPDATE_STRING_PROPERTY(OPTIONS_PROP_REGION, region, region_len);
+		UPDATE_STRING_PROPERTY(PROPERTY_REGION, region, region_len);
 	}
 
 	if (script) {
-		UPDATE_STRING_PROPERTY(OPTIONS_PROP_SCRIPT, script, script_len);
+		UPDATE_STRING_PROPERTY(PROPERTY_SCRIPT, script, script_len);
 	}
 }
 

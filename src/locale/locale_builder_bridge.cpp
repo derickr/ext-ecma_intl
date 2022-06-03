@@ -25,6 +25,7 @@
 #include <unicode/locid.h>
 #include <unicode/region.h>
 
+#include "../common.h"
 #include "locale_builder_bridge.h"
 #include "options.h"
 #include "src/exceptions.h"
@@ -33,46 +34,33 @@
 extern "C" {
 #endif
 
-#define OPTION_FAILURE (-1)
-#define OPTION_NOOP 0
-#define OPTION_SUCCESS 1
-
-#define CASE_UPPER "upper"
-#define CASE_LOWER "lower"
-#define CASE_FALSE "false"
-
-#define HOUR_H11 "h11"
-#define HOUR_H12 "h12"
-#define HOUR_H23 "h23"
-#define HOUR_H24 "h24"
-
 #define READ_PROPERTY(name) \
 	zend_read_property(ecma_intl_ce_Locale_Options, &options->std, name, sizeof(name) - 1, false, nullptr)
 
 #define CHECK_AND_SET_PROPERTY(property) \
-	if (locale_set_##property(&builder, property) == OPTION_FAILURE) { \
+	if (locale_set_##property(&builder, property) == ECMA_INTL_FAILURE) { \
         zend_throw_error(ecma_intl_ce_RangeError, "%s is not a well-formed %s value", #property, #property); \
         return false; \
 	}
 
 #define CHECK_AND_SET_PROPERTY_KEYWORD(property, key) \
-	if (locale_set_keyword(&builder, key, property) == OPTION_FAILURE) { \
+	if (locale_set_keyword(&builder, key, property) == ECMA_INTL_FAILURE) { \
         zend_throw_error(ecma_intl_ce_RangeError, "%s is not a well-formed %s value", #property, #property); \
         return false; \
 	}
 
 #define CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(property, key, error_message) \
-	if (locale_set_keyword(&builder, key, property) == OPTION_FAILURE) { \
+	if (locale_set_keyword(&builder, key, property) == ECMA_INTL_FAILURE) { \
         zend_throw_error(ecma_intl_ce_RangeError, error_message); \
         return false; \
 	}
 
 #define CHECK_CASE_FIRST(value) \
-	if (strcmp(value, CASE_UPPER) != 0 \
-		&& strcmp(value, CASE_LOWER) != 0 \
-		&& strcmp(value, CASE_FALSE) != 0 \
+	if (strcmp(value, CASE_FIRST_UPPER) != 0 \
+		&& strcmp(value, CASE_FIRST_LOWER) != 0 \
+		&& strcmp(value, CASE_FIRST_FALSE) != 0 \
 	) { \
-        return OPTION_FAILURE; \
+        return ECMA_INTL_FAILURE; \
     }
 
 #define CHECK_HOUR_CYCLE(value) \
@@ -81,12 +69,12 @@ extern "C" {
 		&& strcmp(value, HOUR_H23) != 0 \
 		&& strcmp(value, HOUR_H24) != 0 \
 	) { \
-        return OPTION_FAILURE; \
+        return ECMA_INTL_FAILURE; \
     }
 
-#define CHECK_NULL(option) if (ZVAL_IS_NULL(option)) return OPTION_NOOP;
-#define CHECK_EMPTY(value) if (strcmp(value, "") == 0) return OPTION_FAILURE;
-#define CHECK_FAILURE(status) if (U_FAILURE(status)) return OPTION_FAILURE;
+#define CHECK_NULL(option) if (ZVAL_IS_NULL(option)) return ECMA_INTL_NOOP;
+#define CHECK_EMPTY(value) if (strcmp(value, "") == 0) return ECMA_INTL_FAILURE;
+#define CHECK_FAILURE(status) if (U_FAILURE(status)) return ECMA_INTL_FAILURE;
 
 static int locale_set_language(icu::LocaleBuilder *builder, zval *language);
 static int locale_set_region(icu::LocaleBuilder *builder, zval *region);
@@ -111,23 +99,23 @@ bool ecma_intl_build_locale(char *constructed_locale, const char *language_tag, 
 	builder = icu::LocaleBuilder();
 	builder.setLocale(locale);
 
-	calendar = READ_PROPERTY(OPTIONS_PROP_CALENDAR);
-	case_first = READ_PROPERTY(OPTIONS_PROP_CASE_FIRST);
-	collation = READ_PROPERTY(OPTIONS_PROP_COLLATION);
-	hour_cycle = READ_PROPERTY(OPTIONS_PROP_HOUR_CYCLE);
-	language = READ_PROPERTY(OPTIONS_PROP_LANGUAGE);
-	numbering_system = READ_PROPERTY(OPTIONS_PROP_NUMBERING_SYSTEM);
-	numeric = READ_PROPERTY(OPTIONS_PROP_NUMERIC);
-	region = READ_PROPERTY(OPTIONS_PROP_REGION);
-	script = READ_PROPERTY(OPTIONS_PROP_SCRIPT);
+	calendar = READ_PROPERTY(PROPERTY_CALENDAR);
+	case_first = READ_PROPERTY(PROPERTY_CASE_FIRST);
+	collation = READ_PROPERTY(PROPERTY_COLLATION);
+	hour_cycle = READ_PROPERTY(PROPERTY_HOUR_CYCLE);
+	language = READ_PROPERTY(PROPERTY_LANGUAGE);
+	numbering_system = READ_PROPERTY(PROPERTY_NUMBERING_SYSTEM);
+	numeric = READ_PROPERTY(PROPERTY_NUMERIC);
+	region = READ_PROPERTY(PROPERTY_REGION);
+	script = READ_PROPERTY(PROPERTY_SCRIPT);
 
-	CHECK_AND_SET_PROPERTY_KEYWORD(calendar, "ca")
-	CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(case_first, "kf", "caseFirst must be either \"upper\", \"lower\", or \"false\"")
-	CHECK_AND_SET_PROPERTY_KEYWORD(collation, "co")
-	CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(hour_cycle, "hc", "hourCycle must be \"h11\", \"h12\", \"h23\", or \"h24\"")
+	CHECK_AND_SET_PROPERTY_KEYWORD(calendar, KEYWORD_BCP_47_CALENDAR)
+	CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(case_first, KEYWORD_BCP_47_CASE_FIRST, "caseFirst must be either \"upper\", \"lower\", or \"false\"")
+	CHECK_AND_SET_PROPERTY_KEYWORD(collation, KEYWORD_BCP_47_COLLATION)
+	CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(hour_cycle, KEYWORD_BCP_47_HOUR_CYCLE, "hourCycle must be \"h11\", \"h12\", \"h23\", or \"h24\"")
 	CHECK_AND_SET_PROPERTY(language)
-	CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(numbering_system, "nu", "numberingSystem is not a well-formed numbering system value")
-	CHECK_AND_SET_PROPERTY_KEYWORD(numeric, "kn")
+	CHECK_AND_SET_PROPERTY_KEYWORD_WITH_MESSAGE(numbering_system, KEYWORD_BCP_47_NUMBERING_SYSTEM, "numberingSystem is not a well-formed numbering system value")
+	CHECK_AND_SET_PROPERTY_KEYWORD(numeric, KEYWORD_BCP_47_NUMERIC)
 	CHECK_AND_SET_PROPERTY(region)
 	CHECK_AND_SET_PROPERTY(script)
 
@@ -162,7 +150,7 @@ int locale_set_language(icu::LocaleBuilder *builder, zval *language)
 
 	builder->setLanguage(locale.getLanguage());
 
-	return OPTION_SUCCESS;
+	return ECMA_INTL_SUCCESS;
 }
 
 int locale_set_region(icu::LocaleBuilder *builder, zval *region)
@@ -177,7 +165,7 @@ int locale_set_region(icu::LocaleBuilder *builder, zval *region)
 
 	builder->setRegion(region_obj->getRegionCode());
 
-	return OPTION_SUCCESS;
+	return ECMA_INTL_SUCCESS;
 }
 
 int locale_set_script(icu::LocaleBuilder *builder, zval *script)
@@ -192,7 +180,7 @@ int locale_set_script(icu::LocaleBuilder *builder, zval *script)
 
 	builder->setScript(locale.getScript());
 
-	return OPTION_SUCCESS;
+	return ECMA_INTL_SUCCESS;
 }
 
 int locale_set_keyword(icu::LocaleBuilder *builder, const char *key, zval *value)
@@ -202,24 +190,24 @@ int locale_set_keyword(icu::LocaleBuilder *builder, const char *key, zval *value
 	const char *value_str;
 
 	if (Z_TYPE_P(value) == IS_TRUE || Z_TYPE_P(value) == IS_FALSE) {
-		value_str = Z_TYPE_P(value) == IS_TRUE ? "true" : "false";
+		value_str = Z_TYPE_P(value) == IS_TRUE ? NUMERIC_YES : NUMERIC_NO;
 	} else {
 		value_str = Z_STRVAL_P(value);
 	}
 
 	CHECK_EMPTY(value_str)
 
-	if (strcmp(key, "kf") == 0) {
+	if (strcmp(key, KEYWORD_BCP_47_CASE_FIRST) == 0) {
 		CHECK_CASE_FIRST(value_str)
 	}
 
-	if (strcmp(key, "hc") == 0) {
+	if (strcmp(key, KEYWORD_BCP_47_HOUR_CYCLE) == 0) {
 		CHECK_HOUR_CYCLE(value_str)
 	}
 
 	UErrorCode status = U_ZERO_ERROR;
 	icu::Locale locale = icu::LocaleBuilder()
-		.setLanguageTag("und")
+		.setLanguageTag(LANGUAGE_UNDETERMINED)
 		.setUnicodeLocaleKeyword(key, value_str)
 		.build(status);
 
@@ -230,7 +218,7 @@ int locale_set_keyword(icu::LocaleBuilder *builder, const char *key, zval *value
 		locale.getUnicodeKeywordValue<std::string>(key, status)
 	);
 
-	return OPTION_SUCCESS;
+	return ECMA_INTL_SUCCESS;
 }
 
 #ifdef __cplusplus

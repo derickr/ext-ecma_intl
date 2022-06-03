@@ -14,8 +14,6 @@ if (count($collations) > 0) {
     echo "Does not support any collations.\n";
 }
 
-var_dump($collations);
-
 $tests = [
     'dict',
     'gb2312',
