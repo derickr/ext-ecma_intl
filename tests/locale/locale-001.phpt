@@ -2,8 +2,6 @@
 Ecma\Intl\Locale initialized properties with basic locale
 --EXTENSIONS--
 ecma_intl
---XFAIL--
-Pending normalization of calendar, collation, and numbering system names
 --FILE--
 <?php
 $locale = new \Ecma\Intl\Locale('en');
@@ -18,7 +16,7 @@ object(Ecma\Intl\Locale)#1 (16) {
   ["calendars"]=>
   array(1) {
     [0]=>
-    string(8) "gregory"
+    string(7) "gregory"
   }
   ["caseFirst"]=>
   NULL

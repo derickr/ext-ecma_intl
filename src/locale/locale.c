@@ -25,12 +25,12 @@
 #include <zend_interfaces.h>
 
 #include "../common.h"
+#include "../exceptions.h"
+#include "../functions.h"
 #include "locale.h"
 #include "locale_arginfo.h"
 #include "locale_builder_bridge.h"
 #include "options.h"
-#include "src/exceptions.h"
-#include "src/functions.h"
 
 #define SET_PROPERTY(name) \
 	if (value_len == 0) {     \
@@ -112,7 +112,17 @@ static void set_calendar(zend_object *object, char *locale_id)
 	value = (char *) emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
 	value_len = uloc_getKeywordValue(locale_id, KEYWORD_ICU_CALENDAR, value, ULOC_FULLNAME_CAPACITY, &status);
 
-	SET_PROPERTY(PROPERTY_CALENDAR)
+	if (value_len == 0) {
+		zend_update_property_null(ecma_intl_ce_Locale, object, PROPERTY_CALENDAR, sizeof(PROPERTY_CALENDAR) - 1);
+	} else {
+		zend_update_property_string(
+			ecma_intl_ce_Locale,
+			object,
+			PROPERTY_CALENDAR,
+			sizeof(PROPERTY_CALENDAR) - 1,
+			uloc_toUnicodeLocaleType(KEYWORD_ICU_CALENDAR, value)
+		);
+	}
 
 	efree(value);
 }
@@ -137,7 +147,7 @@ static void set_calendars(zend_object *object, char *locale_id)
 
 		for (i = 0; i < count; i++) {
 			identifier = uenum_next(values, &length, &status);
-			add_next_index_stringl(&calendars, identifier, length);
+			add_next_index_string(&calendars, uloc_toUnicodeLocaleType(KEYWORD_ICU_CALENDAR, identifier));
 		}
 
 		zend_update_property(ecma_intl_ce_Locale, object, PROPERTY_CALENDARS, sizeof(PROPERTY_CALENDARS) - 1, &calendars);
@@ -171,7 +181,17 @@ static void set_collation(zend_object *object, char *locale_id)
 	value = (char *) ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
 	value_len = uloc_getKeywordValue(locale_id, KEYWORD_ICU_COLLATION, value, ULOC_FULLNAME_CAPACITY, &status);
 
-	SET_PROPERTY(PROPERTY_COLLATION)
+	if (value_len == 0) {
+		zend_update_property_null(ecma_intl_ce_Locale, object, PROPERTY_COLLATION, sizeof(PROPERTY_COLLATION) - 1);
+	} else {
+		zend_update_property_string(
+			ecma_intl_ce_Locale,
+			object,
+			PROPERTY_COLLATION,
+			sizeof(PROPERTY_COLLATION) - 1,
+			uloc_toUnicodeLocaleType(KEYWORD_ICU_COLLATION, value)
+		);
+	}
 
 	efree(value);
 }
@@ -250,7 +270,17 @@ static void set_numbering_system(zend_object *object, char *locale_id)
 	value = (char *) ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
 	value_len = uloc_getKeywordValue(locale_id, KEYWORD_ICU_NUMBERING_SYSTEM, value, ULOC_FULLNAME_CAPACITY, &status);
 
-	SET_PROPERTY(PROPERTY_NUMBERING_SYSTEM)
+	if (value_len == 0) {
+		zend_update_property_null(ecma_intl_ce_Locale, object, PROPERTY_NUMBERING_SYSTEM, sizeof(PROPERTY_NUMBERING_SYSTEM) - 1);
+	} else {
+		zend_update_property_string(
+			ecma_intl_ce_Locale,
+			object,
+			PROPERTY_NUMBERING_SYSTEM,
+			sizeof(PROPERTY_NUMBERING_SYSTEM) - 1,
+			uloc_toUnicodeLocaleType(KEYWORD_ICU_NUMBERING_SYSTEM, value)
+		);
+	}
 
 	efree(value);
 }

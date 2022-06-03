@@ -27,6 +27,7 @@
 #include <unicode/unumsys.h>
 #include <unicode/utypes.h>
 
+#include "common.h"
 #include "exceptions.h"
 #include "functions.h"
 #include "measure_unit_bridge.h"
@@ -135,8 +136,7 @@ PHP_FUNCTION(supportedValuesOf)
 	UEnumeration *values = NULL;
 	UErrorCode status = U_ZERO_ERROR;
 	int identifier_len;
-	char *identifier;
-	const char **units = NULL;
+	const char *identifier, **units = NULL;
 
 	ZEND_PARSE_PARAMETERS_START(1, 1)
 		 Z_PARAM_STR(key)
@@ -172,8 +172,17 @@ PHP_FUNCTION(supportedValuesOf)
 	array_init_size(return_value, count);
 
 	for (int i = 0; i < count; i++) {
-		identifier = (char *) uenum_next(values, &identifier_len, &status);
-		add_next_index_stringl(return_value, identifier, identifier_len);
+		identifier = uenum_next(values, &identifier_len, &status);
+
+		if (strcasecmp(CATEGORY_CALENDAR, ZSTR_VAL(key)) == 0) {
+			add_next_index_string(return_value, uloc_toUnicodeLocaleType(KEYWORD_ICU_CALENDAR, identifier));
+		} else if (strcasecmp(CATEGORY_COLLATION, ZSTR_VAL(key)) == 0) {
+			add_next_index_string(return_value, uloc_toUnicodeLocaleType(KEYWORD_ICU_COLLATION, identifier));
+		} else if (strcasecmp(CATEGORY_NUMBERING_SYSTEM, ZSTR_VAL(key)) == 0) {
+			add_next_index_string(return_value, uloc_toUnicodeLocaleType(KEYWORD_ICU_NUMBERING_SYSTEM, identifier));
+		} else {
+			add_next_index_stringl(return_value, identifier, identifier_len);
+		}
 	}
 
 	uenum_close(values);

@@ -2,8 +2,6 @@
 Ecma\Intl\supportedValuesOf('numberingSystem')
 --EXTENSIONS--
 ecma_intl
---XFAIL--
-Pending normalization of numbering system names
 --FILE--
 <?php
 $numberingSystems = \Ecma\Intl\supportedValuesOf('numberingSystem');
@@ -15,7 +13,8 @@ if (count($numberingSystems) > 0) {
 }
 
 $tests = [
-    'traditio',
+    'arab',
+    'fullwide',
 ];
 
 foreach ($tests as $test) {
@@ -28,4 +27,5 @@ foreach ($tests as $test) {
 ?>
 --EXPECTF--
 Has support for %d numbering systems.
-Found traditio in numbering system data.
+Found arab in numbering system data.
+Found fullwide in numbering system data.

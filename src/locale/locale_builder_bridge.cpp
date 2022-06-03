@@ -26,9 +26,9 @@
 #include <unicode/region.h>
 
 #include "../common.h"
+#include "../exceptions.h"
 #include "locale_builder_bridge.h"
 #include "options.h"
-#include "src/exceptions.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -2,16 +2,14 @@
 Ecma\Intl\Locale with populated options
 --EXTENSIONS--
 ecma_intl
---XFAIL--
-Pending normalization of calendar, collation, and numbering system names
 --FILE--
 <?php
 $locale = new \Ecma\Intl\Locale('en', new \Ecma\Intl\Locale\Options(
     calendar: 'gregory',
     caseFirst: 'upper',
-    collation: 'standard',
+    collation: 'phonebk',
     hourCycle: 'h23',
-    numberingSystem: 'thai',
+    numberingSystem: 'traditio',
     numeric: true,
     region: 'CA',
     script: 'latn',
@@ -23,16 +21,16 @@ object(Ecma\Intl\Locale)#1 (16) {
   ["baseName"]=>
   string(10) "en-Latn-CA"
   ["calendar"]=>
-  string(8) "gregory"
+  string(7) "gregory"
   ["calendars"]=>
   array(1) {
     [0]=>
-    string(8) "gregory"
+    string(7) "gregory"
   }
   ["caseFirst"]=>
   string(5) "upper"
   ["collation"]=>
-  string(8) "standard"
+  string(7) "phonebk"
   ["hourCycle"]=>
   string(3) "h23"
   ["hourCycles"]=>
@@ -43,7 +41,7 @@ object(Ecma\Intl\Locale)#1 (16) {
   ["language"]=>
   string(2) "en"
   ["numberingSystem"]=>
-  string(4) "thai"
+  string(8) "traditio"
   ["numberingSystems"]=>
   array(0) {
   }
