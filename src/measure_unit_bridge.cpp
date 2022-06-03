@@ -32,56 +32,59 @@
 extern "C" {
 #endif
 
-UEnumeration *ecma_intl_getMeasurementUnits(const char **units, const UErrorCode *errorCode)
-{
-	static constexpr int UNITS_CAPACITY = 40;
+UEnumeration *ecma_intl_getMeasurementUnits(const char **units,
+                                            const UErrorCode *errorCode) {
+  static constexpr int UNITS_CAPACITY = 40;
 
-	icu::StringEnumeration *availableTypes;
-	icu::MeasureUnit measureUnits[UNITS_CAPACITY];
+  icu::StringEnumeration *availableTypes;
+  icu::MeasureUnit measureUnits[UNITS_CAPACITY];
 
-	UEnumeration *enumeratedUnits = nullptr;
-	UErrorCode localStatus = U_ZERO_ERROR;
+  UEnumeration *enumeratedUnits = nullptr;
+  UErrorCode localStatus = U_ZERO_ERROR;
 
-	int typesCount, numUnits, unitsCount = 0, resultLength = 40;
-	const char *type, *identifier;
+  int typesCount, numUnits, unitsCount = 0, resultLength = 40;
+  const char *type, *identifier;
 
-	availableTypes = icu::MeasureUnit::getAvailableTypes(localStatus);
-	typesCount = availableTypes->count(localStatus);
-	availableTypes->reset(localStatus);
+  availableTypes = icu::MeasureUnit::getAvailableTypes(localStatus);
+  typesCount = availableTypes->count(localStatus);
+  availableTypes->reset(localStatus);
 
-	for (int i = 0; i < typesCount; i++) {
-		type = availableTypes->next(&resultLength, localStatus);
+  for (int i = 0; i < typesCount; i++) {
+    type = availableTypes->next(&resultLength, localStatus);
 
-		/* Skip currency; we do not want to return currency identifiers as measurement units. */
-		if (strcmp("currency", type) == 0) {
-			continue;
-		}
+    /* Skip currency; we do not want to return currency identifiers as
+     * measurement units. */
+    if (strcmp("currency", type) == 0) {
+      continue;
+    }
 
-		numUnits = icu::MeasureUnit::getAvailable(type, measureUnits, UNITS_CAPACITY, localStatus);
+    numUnits = icu::MeasureUnit::getAvailable(type, measureUnits,
+                                              UNITS_CAPACITY, localStatus);
 
-		if (numUnits == 0) {
-			continue;
-		}
+    if (numUnits == 0) {
+      continue;
+    }
 
-		for (int j = 0; j < numUnits; j++) {
-			identifier = measureUnits[j].getIdentifier();
+    for (int j = 0; j < numUnits; j++) {
+      identifier = measureUnits[j].getIdentifier();
 
-			if (strcmp(identifier, "") == 0) {
-				continue;
-			}
+      if (strcmp(identifier, "") == 0) {
+        continue;
+      }
 
-			units[unitsCount++] = identifier;
-		}
-	}
+      units[unitsCount++] = identifier;
+    }
+  }
 
-	delete availableTypes;
-	enumeratedUnits = uenum_openCharStringsEnumeration(units, unitsCount, &localStatus);
+  delete availableTypes;
+  enumeratedUnits =
+      uenum_openCharStringsEnumeration(units, unitsCount, &localStatus);
 
-	if (U_FAILURE(localStatus)) {
-		errorCode = &localStatus;
-	}
+  if (U_FAILURE(localStatus)) {
+    errorCode = &localStatus;
+  }
 
-	return enumeratedUnits;
+  return enumeratedUnits;
 }
 
 #ifdef __cplusplus

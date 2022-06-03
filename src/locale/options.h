@@ -20,21 +20,24 @@
 */
 
 #ifndef ECMA_INTL_LOCALE_OPTIONS_H
-# define ECMA_INTL_LOCALE_OPTIONS_H
+#define ECMA_INTL_LOCALE_OPTIONS_H
 
 #include <php.h>
 
 typedef struct _ecma_intl_locale_options_obj ecma_intl_locale_options_obj;
 
 struct _ecma_intl_locale_options_obj {
-	zend_object std;
+  zend_object std;
 };
 
-static inline ecma_intl_locale_options_obj *ecma_intl_locale_options_obj_from_obj(zend_object *obj) {
-	return (ecma_intl_locale_options_obj *)((char *)(obj) - XtOffsetOf(ecma_intl_locale_options_obj, std));
+static inline ecma_intl_locale_options_obj *
+ecma_intl_locale_options_obj_from_obj(zend_object *obj) {
+  return (ecma_intl_locale_options_obj *)((char *)(obj)-XtOffsetOf(
+      ecma_intl_locale_options_obj, std));
 }
 
-#define Z_ECMA_LOCALE_OPTIONS_P(zv) ecma_intl_locale_options_obj_from_obj(Z_OBJ_P(zv))
+#define Z_ECMA_LOCALE_OPTIONS_P(zv)                                            \
+  ecma_intl_locale_options_obj_from_obj(Z_OBJ_P(zv))
 
 extern zend_class_entry *ecma_intl_ce_Locale_Options;
 

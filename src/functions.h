@@ -20,8 +20,9 @@
 */
 
 #ifndef ECMA_INTL_FUNCTIONS_H
-# define ECMA_INTL_FUNCTIONS_H
+#define ECMA_INTL_FUNCTIONS_H
 
-int ecma_intl_toCanonicalBcp47LanguageTag(const char *locale_id, char *language_tag);
+int ecma_intl_toCanonicalBcp47LanguageTag(const char *locale_id,
+                                          char *language_tag);
 
-#endif	/* ECMA_INTL_FUNCTIONS_H */
+#endif /* ECMA_INTL_FUNCTIONS_H */

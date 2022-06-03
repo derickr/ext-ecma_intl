@@ -20,9 +20,10 @@
 */
 
 #ifndef ECMA_INTL_EXCEPTIONS_H
-# define ECMA_INTL_EXCEPTIONS_H
+#define ECMA_INTL_EXCEPTIONS_H
 
 #include <php.h>
+
 #include <Zend/zend_exceptions.h>
 
 void ecma_intl_register_exceptions(void);

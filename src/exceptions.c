@@ -28,17 +28,12 @@ zend_class_entry *ecma_intl_ce_IntlException = NULL;
 zend_class_entry *ecma_intl_ce_IcuException = NULL;
 zend_class_entry *ecma_intl_ce_RangeError = NULL;
 
-void ecma_intl_register_exceptions()
-{
-	ecma_intl_ce_IntlException = register_class_Ecma_Intl_IntlException();
+void ecma_intl_register_exceptions() {
+  ecma_intl_ce_IntlException = register_class_Ecma_Intl_IntlException();
 
-	ecma_intl_ce_IcuException = register_class_Ecma_Intl_IcuException(
-		spl_ce_RuntimeException,
-		ecma_intl_ce_IntlException
-	);
+  ecma_intl_ce_IcuException = register_class_Ecma_Intl_IcuException(
+      spl_ce_RuntimeException, ecma_intl_ce_IntlException);
 
-	ecma_intl_ce_RangeError = register_class_Ecma_Intl_RangeError(
-		zend_ce_value_error,
-		ecma_intl_ce_IntlException
-	);
+  ecma_intl_ce_RangeError = register_class_Ecma_Intl_RangeError(
+      zend_ce_value_error, ecma_intl_ce_IntlException);
 }

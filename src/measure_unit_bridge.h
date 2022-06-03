@@ -20,19 +20,20 @@
 */
 
 #ifndef ECMA_INTL_MEASURE_UNIT_BRIDGE_H
-# define ECMA_INTL_MEASURE_UNIT_BRIDGE_H
+#define ECMA_INTL_MEASURE_UNIT_BRIDGE_H
 
 #include <unicode/errorcode.h>
 #include <unicode/uenum.h>
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-# endif
+#endif
 
-UEnumeration *ecma_intl_getMeasurementUnits(const char **units, const UErrorCode *errorCode);
+UEnumeration *ecma_intl_getMeasurementUnits(const char **units,
+                                            const UErrorCode *errorCode);
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 }
-# endif
+#endif
 
 #endif /* ECMA_INTL_MEASURE_UNIT_BRIDGE_H */

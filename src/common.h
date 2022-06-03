@@ -20,7 +20,7 @@
 */
 
 #ifndef ECMA_INTL_COMMON_H
-# define ECMA_INTL_COMMON_H
+#define ECMA_INTL_COMMON_H
 
 #define CASE_FIRST_FALSE "false"
 #define CASE_FIRST_LOWER "lower"

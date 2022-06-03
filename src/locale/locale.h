@@ -20,20 +20,22 @@
 */
 
 #ifndef ECMA_INTL_LOCALE_H
-# define ECMA_INTL_LOCALE_H
+#define ECMA_INTL_LOCALE_H
 
 #include <php.h>
 
 typedef struct _ecma_intl_locale_obj ecma_intl_locale_obj;
 
 struct _ecma_intl_locale_obj {
-	char *bcp47_locale;
-	zend_ulong bcp47_locale_len;
-	zend_object std;
+  char *bcp47_locale;
+  zend_ulong bcp47_locale_len;
+  zend_object std;
 };
 
-static inline ecma_intl_locale_obj *ecma_intl_locale_obj_from_obj(zend_object *obj) {
-	return (ecma_intl_locale_obj *)((char *)(obj) - XtOffsetOf(ecma_intl_locale_obj, std));
+static inline ecma_intl_locale_obj *
+ecma_intl_locale_obj_from_obj(zend_object *obj) {
+  return (ecma_intl_locale_obj *)((char *)(obj)-XtOffsetOf(ecma_intl_locale_obj,
+                                                           std));
 }
 
 #define Z_ECMA_LOCALE_P(zv) ecma_intl_locale_obj_from_obj(Z_OBJ_P(zv))

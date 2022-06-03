@@ -20,18 +20,19 @@
 */
 
 #ifndef ECMA_INTL_LOCALE_BUILDER_BRIDGE_H
-# define ECMA_INTL_LOCALE_BUILDER_BRIDGE_H
+#define ECMA_INTL_LOCALE_BUILDER_BRIDGE_H
 
 #include "options.h"
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-# endif
+#endif
 
-bool ecma_intl_build_locale(char *constructed_locale, const char *language_tag, ecma_intl_locale_options_obj *options);
+bool ecma_intl_build_locale(char *constructed_locale, const char *language_tag,
+                            ecma_intl_locale_options_obj *options);
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 }
-# endif
+#endif
 
 #endif /* ECMA_INTL_LOCALE_BUILDER_BRIDGE_H */
