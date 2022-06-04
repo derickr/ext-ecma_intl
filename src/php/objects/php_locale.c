@@ -30,6 +30,7 @@
 #include <unicode/ucal.h>
 #include <unicode/udatpg.h>
 #include <unicode/uloc.h>
+#include <unicode/unumsys.h>
 
 #define SET_PROPERTY(name)                                                     \
   if (valueLen == 0) {                                                         \
@@ -249,6 +250,33 @@ void localeSetNumberingSystem(zend_object *object, char *localeId) {
   }
 
   efree(value);
+}
+
+void localeSetNumberingSystems(zend_object *object, char *localeId) {
+  UNumberingSystem *numberingSystem;
+  UErrorCode status = U_ZERO_ERROR;
+  zval numberingSystems;
+
+  numberingSystem = unumsys_open(localeId, &status);
+
+  if (U_FAILURE(status)) {
+    zend_throw_error(ecmaIntlClassIcuException, "%s", u_errorName(status));
+  } else {
+    array_init_size(&numberingSystems, 1);
+
+    add_next_index_string(
+        &numberingSystems,
+        uloc_toUnicodeLocaleType(KEYWORD_ICU_NUMBERING_SYSTEM,
+                                 unumsys_getName(numberingSystem)));
+
+    zend_update_property(
+        ecmaIntlClassLocale, object, PROPERTY_NUMBERING_SYSTEMS,
+        sizeof(PROPERTY_NUMBERING_SYSTEMS) - 1, &numberingSystems);
+
+    zend_array_release(Z_ARRVAL(numberingSystems));
+  }
+
+  unumsys_close(numberingSystem);
 }
 
 void localeSetNumeric(zend_object *object, char *localeId) {

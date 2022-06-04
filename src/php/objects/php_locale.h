@@ -48,6 +48,7 @@ void localeSetHourCycle(zend_object *object, char *localeId);
 void localeSetHourCycles(zend_object *object, char *localeId);
 void localeSetLanguage(zend_object *object, char *localeId);
 void localeSetNumberingSystem(zend_object *object, char *localeId);
+void localeSetNumberingSystems(zend_object *object, char *localeId);
 void localeSetNumeric(zend_object *object, char *localeId);
 void localeSetRegion(zend_object *object, char *localeId);
 void localeSetScript(zend_object *object, char *localeId);

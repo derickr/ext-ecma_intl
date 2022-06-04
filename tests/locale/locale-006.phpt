@@ -4,7 +4,7 @@ Ecma\Intl\Locale with populated options
 ecma_intl
 --FILE--
 <?php
-$locale = new \Ecma\Intl\Locale('en', new \Ecma\Intl\Locale\Options(
+$locale = new \Ecma\Intl\Locale('ar', new \Ecma\Intl\Locale\Options(
     calendar: 'gregory',
     caseFirst: 'upper',
     collation: 'phonebk',
@@ -19,7 +19,7 @@ var_dump($locale);
 --EXPECT--
 object(Ecma\Intl\Locale)#1 (16) {
   ["baseName"]=>
-  string(10) "en-Latn-CA"
+  string(10) "ar-Latn-CA"
   ["calendar"]=>
   string(7) "gregory"
   ["calendars"]=>
@@ -39,11 +39,13 @@ object(Ecma\Intl\Locale)#1 (16) {
     string(3) "h23"
   }
   ["language"]=>
-  string(2) "en"
+  string(2) "ar"
   ["numberingSystem"]=>
   string(8) "traditio"
   ["numberingSystems"]=>
-  array(0) {
+  array(1) {
+    [0]=>
+    string(4) "arab"
   }
   ["numeric"]=>
   bool(true)

@@ -87,6 +87,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     localeSetHourCycles(&locale->std, icuLocale);
     localeSetLanguage(&locale->std, icuLocale);
     localeSetNumberingSystem(&locale->std, icuLocale);
+    localeSetNumberingSystems(&locale->std, icuLocale);
     localeSetNumeric(&locale->std, icuLocale);
     localeSetRegion(&locale->std, icuLocale);
     localeSetScript(&locale->std, icuLocale);

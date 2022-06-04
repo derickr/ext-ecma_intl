@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 771816f404422b184ec4aab6deb8a9e436208552 */
+ * Stub hash: b0efb356f32d00f6c33ad272294708ae8b55797e */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_TYPE_MASK(0, locales, MAY_BE_ARRAY|MAY_BE_STRING, NULL)
@@ -193,7 +193,7 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zend_string_release(property_numberingSystem_name);
 
 	zval property_numberingSystems_default_value;
-	ZVAL_EMPTY_ARRAY(&property_numberingSystems_default_value);
+	ZVAL_UNDEF(&property_numberingSystems_default_value);
 	zend_string *property_numberingSystems_name = zend_string_init("numberingSystems", sizeof("numberingSystems") - 1, 1);
 	zend_declare_typed_property(class_entry, property_numberingSystems_name, &property_numberingSystems_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
 	zend_string_release(property_numberingSystems_name);

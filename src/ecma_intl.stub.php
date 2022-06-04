@@ -110,7 +110,7 @@ namespace Ecma\Intl
 
         public readonly ?string $numberingSystem;
 
-        public readonly array $numberingSystems = [];
+        public readonly array $numberingSystems;
 
         public readonly bool $numeric;
 

@@ -34,7 +34,9 @@ object(Ecma\Intl\Locale)#1 (16) {
   ["numberingSystem"]=>
   NULL
   ["numberingSystems"]=>
-  array(0) {
+  array(1) {
+    [0]=>
+    string(4) "latn"
   }
   ["numeric"]=>
   bool(false)
