@@ -19,21 +19,11 @@
    +----------------------------------------------------------------------+
 */
 
-#ifndef ECMA_INTL_LOCALE_BUILDER_BRIDGE_H
-#define ECMA_INTL_LOCALE_BUILDER_BRIDGE_H
+#ifndef ECMA_INTL_PHP_LOCALE_HANDLERS_H
+#define ECMA_INTL_PHP_LOCALE_HANDLERS_H
 
-#include "../common.h"
-#include "locale_options.h"
+extern zend_object_handlers ecmaIntlLocaleObjHandlers;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+void ecmaIntlRegisterLocaleHandlers();
 
-bool ecmaIntlBuildLocale(char *constructedLocale, const char *languageTag,
-                         ecmaIntlLocaleOptionsObj *options);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* ECMA_INTL_LOCALE_BUILDER_BRIDGE_H */
+#endif /* ECMA_INTL_PHP_LOCALE_HANDLERS_H */

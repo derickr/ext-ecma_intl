@@ -19,21 +19,11 @@
    +----------------------------------------------------------------------+
 */
 
-#ifndef ECMA_INTL_MEASURE_UNIT_BRIDGE_H
-#define ECMA_INTL_MEASURE_UNIT_BRIDGE_H
+#ifndef ECMA_INTL_PHP_LOCALE_OPTIONS_CE_H
+#define ECMA_INTL_PHP_LOCALE_OPTIONS_CE_H
 
-#include <unicode/errorcode.h>
-#include <unicode/uenum.h>
+extern zend_class_entry *ecmaIntlClassLocaleOptions;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+void ecmaIntlRegisterClassLocaleOptions(void);
 
-UEnumeration *ecmaIntlGetMeasurementUnits(const char **units,
-                                          const UErrorCode *errorCode);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* ECMA_INTL_MEASURE_UNIT_BRIDGE_H */
+#endif /* ECMA_INTL_PHP_LOCALE_OPTIONS_CE_H */

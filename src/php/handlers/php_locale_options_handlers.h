@@ -19,19 +19,11 @@
    +----------------------------------------------------------------------+
 */
 
-#include "exceptions.h"
-#include "exceptions_arginfo.h"
+#ifndef ECMA_INTL_PHP_LOCALE_OPTIONS_HANDLERS_H
+#define ECMA_INTL_PHP_LOCALE_OPTIONS_HANDLERS_H
 
-zend_class_entry *ecmaIntlCeIntlException = NULL;
-zend_class_entry *ecmaIntlCeIcuException = NULL;
-zend_class_entry *ecmaIntlCeRangeError = NULL;
+extern zend_object_handlers ecmaIntlLocaleOptionsObjHandlers;
 
-void ecmaIntlRegisterExceptions() {
-  ecmaIntlCeIntlException = register_class_Ecma_Intl_IntlException();
+void ecmaIntlRegisterLocaleOptionsHandlers();
 
-  ecmaIntlCeIcuException = register_class_Ecma_Intl_IcuException(
-      spl_ce_RuntimeException, ecmaIntlCeIntlException);
-
-  ecmaIntlCeRangeError = register_class_Ecma_Intl_RangeError(
-      zend_ce_value_error, ecmaIntlCeIntlException);
-}
+#endif /* ECMA_INTL_PHP_LOCALE_OPTIONS_HANDLERS_H */

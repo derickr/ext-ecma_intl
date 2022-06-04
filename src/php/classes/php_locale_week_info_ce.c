@@ -19,18 +19,22 @@
    +----------------------------------------------------------------------+
 */
 
-#ifndef ECMA_INTL_EXCEPTIONS_H
-#define ECMA_INTL_EXCEPTIONS_H
+#include "src/common.h"
 
-#include <php.h>
+#include "php_locale_week_info_ce.h"
+#include "src/ecma_intl_arginfo.h"
+#include "src/php/handlers/php_locale_week_info_handlers.h"
+#include "src/php/objects/php_locale_week_info.h"
 
-#include <Zend/zend_exceptions.h>
-#include <ext/spl/spl_exceptions.h>
+zend_class_entry *ecmaIntlClassLocaleWeekInfo = NULL;
 
-void ecmaIntlRegisterExceptions(void);
+PHP_METHOD(Ecma_Intl_Locale_WeekInfo, __construct) {
+  ZEND_PARSE_PARAMETERS_NONE();
+}
 
-extern zend_class_entry *ecmaIntlCeIntlException;
-extern zend_class_entry *ecmaIntlCeIcuException;
-extern zend_class_entry *ecmaIntlCeRangeError;
+void ecmaIntlRegisterClassLocaleWeekInfo() {
+  ecmaIntlClassLocaleWeekInfo = register_class_Ecma_Intl_Locale_WeekInfo();
+  ecmaIntlClassLocaleWeekInfo->create_object = ecmaIntlLocaleWeekInfoObjCreate;
 
-#endif /* ECMA_INTL_EXCEPTIONS_H */
+  ecmaIntlRegisterLocaleWeekInfoHandlers();
+}

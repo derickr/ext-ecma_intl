@@ -19,21 +19,20 @@
    +----------------------------------------------------------------------+
 */
 
+#include "units.h"
+
 #include <cstring>
 #include <unicode/measunit.h>
 #include <unicode/putil.h>
 #include <unicode/strenum.h>
-#include <unicode/uenum.h>
 #include <vector>
-
-#include "measure_unit_bridge.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-UEnumeration *ecmaIntlGetMeasurementUnits(const char **units,
-                                          const UErrorCode *errorCode) {
+UEnumeration *icuGetMeasurementUnits(const char **units,
+                                     const UErrorCode *errorCode) {
   static constexpr int unitsCapacity = 40;
 
   icu::StringEnumeration *availableTypes;

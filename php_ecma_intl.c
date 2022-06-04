@@ -23,17 +23,18 @@
 #include "config.h"
 #endif
 
+#include <php.h>
 #include <unicode/ucal.h>
 #include <unicode/uchar.h>
 #include <unicode/uversion.h>
 
 #include "php_ecma_intl.h"
 
-#include "src/exceptions.h"
-#include "src/functions_arginfo.h"
-#include "src/locale/locale.h"
-#include "src/locale/locale_options.h"
-#include "src/locale/locale_week_info.h"
+#include "src/ecma_intl_arginfo.h"
+#include "src/php/classes/php_exceptions_ce.h"
+#include "src/php/classes/php_locale_ce.h"
+#include "src/php/classes/php_locale_options_ce.h"
+#include "src/php/classes/php_locale_week_info_ce.h"
 
 #include <ext/standard/info.h>
 
@@ -56,10 +57,10 @@ ZEND_GET_MODULE(ecma_intl)
 #endif
 
 PHP_MINIT_FUNCTION(ecma_intl) {
-  ecmaIntlRegisterExceptions();
-  ecmaIntlRegisterLocale();
-  ecmaIntlRegisterLocaleOptions();
-  ecmaIntlRegisterLocaleWeekInfo();
+  ecmaIntlRegisterClassExceptions();
+  ecmaIntlRegisterClassLocale();
+  ecmaIntlRegisterClassLocaleOptions();
+  ecmaIntlRegisterClassLocaleWeekInfo();
 
   return SUCCESS;
 }

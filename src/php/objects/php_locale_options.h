@@ -19,28 +19,23 @@
    +----------------------------------------------------------------------+
 */
 
-#ifndef ECMA_INTL_LOCALE_WEEK_INFO_H
-#define ECMA_INTL_LOCALE_WEEK_INFO_H
+#ifndef ECMA_INTL_PHP_LOCALE_OPTIONS_H
+#define ECMA_INTL_PHP_LOCALE_OPTIONS_H
 
-#include "../common.h"
+typedef struct ecmaIntlLocaleOptionsObj ecmaIntlLocaleOptionsObj;
 
-typedef struct ecmaIntlLocaleWeekInfoObj ecmaIntlLocaleWeekInfoObj;
-
-struct ecmaIntlLocaleWeekInfoObj {
+struct ecmaIntlLocaleOptionsObj {
   zend_object std;
 };
 
-static inline ecmaIntlLocaleWeekInfoObj *
-ecmaIntlLocaleWeekInfoObjFromObj(zend_object *obj) {
-  return (ecmaIntlLocaleWeekInfoObj *)((char *)(obj)-XtOffsetOf(
-      ecmaIntlLocaleWeekInfoObj, std));
+static inline ecmaIntlLocaleOptionsObj *
+ecmaIntlLocaleOptionsObjFromObj(zend_object *obj) {
+  return (ecmaIntlLocaleOptionsObj *)((char *)(obj)-XtOffsetOf(
+      ecmaIntlLocaleOptionsObj, std));
 }
 
-#define Z_ECMA_LOCALE_WEEK_INFO_P(zv)                                          \
-  ecmaIntlLocaleWeekInfoObjFromObj(Z_OBJ_P(zv))
+#define Z_ECMA_LOCALE_OPTIONS_P(zv) ecmaIntlLocaleOptionsObjFromObj(Z_OBJ_P(zv))
 
-extern zend_class_entry *ecmaIntlCeLocaleWeekInfo;
+zend_object *ecmaIntlLocaleOptionsObjCreate(zend_class_entry *classType);
 
-void ecmaIntlRegisterLocaleWeekInfo(void);
-
-#endif /* ECMA_INTL_LOCALE_WEEK_INFO_H */
+#endif /* ECMA_INTL_PHP_LOCALE_OPTIONS_H */

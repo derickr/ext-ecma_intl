@@ -19,28 +19,20 @@
    +----------------------------------------------------------------------+
 */
 
-#ifndef ECMA_INTL_LOCALE_H
-#define ECMA_INTL_LOCALE_H
+#ifndef ECMA_INTL_BUILDER_H
+#define ECMA_INTL_BUILDER_H
 
-#include "../common.h"
+#include "src/php/objects/php_locale_options.h"
 
-typedef struct ecmaIntlLocaleObj ecmaIntlLocaleObj;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-struct ecmaIntlLocaleObj {
-  char *bcp47Locale;
-  zend_ulong bcp47LocaleLen;
-  zend_object std;
-};
+bool icuBuildLocale(char *constructedLocale, const char *languageTag,
+                    ecmaIntlLocaleOptionsObj *options);
 
-static inline ecmaIntlLocaleObj *ecmaIntlLocaleObjFromObj(zend_object *obj) {
-  return (
-      ecmaIntlLocaleObj *)((char *)(obj)-XtOffsetOf(ecmaIntlLocaleObj, std));
+#ifdef __cplusplus
 }
+#endif
 
-#define Z_ECMA_LOCALE_P(zv) ecmaIntlLocaleObjFromObj(Z_OBJ_P(zv))
-
-extern zend_class_entry *ecmaIntlCeLocale;
-
-void ecmaIntlRegisterLocale(void);
-
-#endif /* ECMA_INTL_LOCALE_H */
+#endif /* ECMA_INTL_BUILDER_H */

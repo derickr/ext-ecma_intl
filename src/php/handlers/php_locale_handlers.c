@@ -19,33 +19,28 @@
    +----------------------------------------------------------------------+
 */
 
-#include "locale_week_info.h"
-#include "locale_week_info_arginfo.h"
+#include "src/common.h"
 
-#include <zend_interfaces.h>
+#include "php_locale_handlers.h"
+#include "src/php/objects/php_locale.h"
 
-zend_class_entry *ecmaIntlCeLocaleWeekInfo = NULL;
+zend_object_handlers ecmaIntlLocaleObjHandlers;
 
-static zend_object_handlers ecmaIntlLocaleWeekInfoObjHandlers;
+static void ecmaIntlLocaleObjFree(zend_object *object) {
+  ecmaIntlLocaleObj *localeObj = ecmaIntlLocaleObjFromObj(object);
 
-static zend_object *ecmaIntlLocaleWeekInfoObjNew(zend_class_entry *classType) {
-  ecmaIntlLocaleWeekInfoObj *weekInfoObj =
-      zend_object_alloc(sizeof(ecmaIntlLocaleWeekInfoObj), classType);
-  zend_object_std_init(&weekInfoObj->std, classType);
-  object_properties_init(&weekInfoObj->std, classType);
-  weekInfoObj->std.handlers = &ecmaIntlLocaleWeekInfoObjHandlers;
+  zend_object_std_dtor(&localeObj->std);
 
-  return &weekInfoObj->std;
+  if (localeObj->bcp47Locale) {
+    efree(localeObj->bcp47Locale);
+    localeObj->bcp47Locale = NULL;
+  }
 }
 
-PHP_METHOD(Ecma_Intl_Locale_WeekInfo, __construct) {
-  ZEND_PARSE_PARAMETERS_NONE();
-}
-
-void ecmaIntlRegisterLocaleWeekInfo() {
-  ecmaIntlCeLocaleWeekInfo = register_class_Ecma_Intl_Locale_WeekInfo();
-  ecmaIntlCeLocaleWeekInfo->create_object = ecmaIntlLocaleWeekInfoObjNew;
-
-  memcpy(&ecmaIntlLocaleWeekInfoObjHandlers, &std_object_handlers,
+void ecmaIntlRegisterLocaleHandlers() {
+  memcpy(&ecmaIntlLocaleObjHandlers, zend_get_std_object_handlers(),
          sizeof(zend_object_handlers));
+
+  ecmaIntlLocaleObjHandlers.offset = XtOffsetOf(ecmaIntlLocaleObj, std);
+  ecmaIntlLocaleObjHandlers.free_obj = ecmaIntlLocaleObjFree;
 }

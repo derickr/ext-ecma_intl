@@ -24,8 +24,6 @@
 
 #include <php.h>
 
-#include "exceptions.h"
-
 #define CASE_FIRST_FALSE "false"
 #define CASE_FIRST_LOWER "lower"
 #define CASE_FIRST_UPPER "upper"
@@ -34,10 +32,10 @@
 #define ECMA_INTL_NOOP 0
 #define ECMA_INTL_SUCCESS 1
 
-#define HOUR_H11 "h11"
-#define HOUR_H12 "h12"
-#define HOUR_H23 "h23"
-#define HOUR_H24 "h24"
+#define HOUR_H_11 "h11"
+#define HOUR_H_12 "h12"
+#define HOUR_H_23 "h23"
+#define HOUR_H_24 "h24"
 
 #define KEYWORD_BCP_47_CALENDAR "ca"
 #define KEYWORD_BCP_47_CASE_FIRST "kf"

@@ -16,16 +16,28 @@ if test "$PHP_ECMA_INTL" != "no"; then
 
   ECMA_INTL_COMMON_FLAGS="$ICU_CFLAGS"
 
-  PHP_NEW_EXTENSION(ecma_intl, php_ecma_intl.c \
-    src/exceptions.c \
-    src/functions.c \
-    src/locale/locale.c \
-    src/locale/locale_options.c \
-    src/locale/locale_week_info.c \
+  PHP_NEW_EXTENSION(ecma_intl, \
+    php_ecma_intl.c \
+    src/php/classes/php_exceptions_ce.c \
+    src/php/classes/php_locale_ce.c \
+    src/php/classes/php_locale_options_ce.c \
+    src/php/classes/php_locale_week_info_ce.c \
+    src/php/functions/php_get_canonical_locales.c \
+    src/php/functions/php_get_supported_locales.c \
+    src/php/functions/php_supported_values_of.c \
+    src/php/handlers/php_locale_handlers.c \
+    src/php/handlers/php_locale_options_handlers.c \
+    src/php/handlers/php_locale_week_info_handlers.c \
+    src/php/objects/php_locale.c \
+    src/php/objects/php_locale_options.c \
+    src/php/objects/php_locale_week_info.c \
+    src/unicode/bcp47.c \
     , $ext_shared,,$ECMA_INTL_COMMON_FLAGS,cxx)
 
-  PHP_ECMA_INTL_CXX_SOURCES="src/measure_unit_bridge.cpp \
-    src/locale/locale_builder_bridge.cpp"
+  PHP_ECMA_INTL_CXX_SOURCES=" \
+    src/unicode/builder.cpp \
+    src/unicode/units.cpp \
+    "
 
   PHP_REQUIRE_CXX()
   PHP_CXX_COMPILE_STDCXX(11, mandatory, PHP_ECMA_INTL_STDCXX)

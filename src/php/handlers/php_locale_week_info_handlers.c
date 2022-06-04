@@ -19,27 +19,13 @@
    +----------------------------------------------------------------------+
 */
 
-#ifndef ECMA_INTL_LOCALE_OPTIONS_H
-#define ECMA_INTL_LOCALE_OPTIONS_H
+#include "src/common.h"
 
-#include "../common.h"
+#include "php_locale_week_info_handlers.h"
 
-typedef struct ecmaIntlLocaleOptionsObj ecmaIntlLocaleOptionsObj;
+zend_object_handlers ecmaIntlLocaleWeekInfoObjHandlers;
 
-struct ecmaIntlLocaleOptionsObj {
-  zend_object std;
-};
-
-static inline ecmaIntlLocaleOptionsObj *
-ecmaIntlLocaleOptionsObjFromObj(zend_object *obj) {
-  return (ecmaIntlLocaleOptionsObj *)((char *)(obj)-XtOffsetOf(
-      ecmaIntlLocaleOptionsObj, std));
+void ecmaIntlRegisterLocaleWeekInfoHandlers() {
+  memcpy(&ecmaIntlLocaleWeekInfoObjHandlers, zend_get_std_object_handlers(),
+         sizeof(zend_object_handlers));
 }
-
-#define Z_ECMA_LOCALE_OPTIONS_P(zv) ecmaIntlLocaleOptionsObjFromObj(Z_OBJ_P(zv))
-
-extern zend_class_entry *ecmaIntlCeLocaleOptions;
-
-void ecmaIntlRegisterLocaleOptions(void);
-
-#endif /* ECMA_INTL_LOCALE_OPTIONS_H */

@@ -19,12 +19,11 @@
    +----------------------------------------------------------------------+
 */
 
-#ifndef ECMA_INTL_FUNCTIONS_H
-#define ECMA_INTL_FUNCTIONS_H
+#ifndef ECMA_INTL_PHP_LOCALE_CE_H
+#define ECMA_INTL_PHP_LOCALE_CE_H
 
-#include "common.h"
+extern zend_class_entry *ecmaIntlClassLocale;
 
-int ecmaIntlToCanonicalBcp47LanguageTag(const char *localeId,
-                                        char *languageTag);
+void ecmaIntlRegisterClassLocale(void);
 
-#endif /* ECMA_INTL_FUNCTIONS_H */
+#endif /* ECMA_INTL_PHP_LOCALE_CE_H */

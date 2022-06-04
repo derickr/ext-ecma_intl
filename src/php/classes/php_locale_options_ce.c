@@ -19,41 +19,24 @@
    +----------------------------------------------------------------------+
 */
 
-#include "locale_options.h"
-#include "locale_options_arginfo.h"
+#include "src/common.h"
+
+#include "php_locale_options_ce.h"
+#include "src/ecma_intl_arginfo.h"
+#include "src/php/handlers/php_locale_options_handlers.h"
+#include "src/php/objects/php_locale_options.h"
 
 #include <zend_interfaces.h>
 
 #define UPDATE_STRING_PROPERTY(property, var, len)                             \
-  zend_update_property_stringl(ecmaIntlCeLocaleOptions, &options->std,         \
+  zend_update_property_stringl(ecmaIntlClassLocaleOptions, &options->std,      \
                                property, sizeof(property) - 1, var, len)
 
 #define UPDATE_BOOL_PROPERTY(property, var)                                    \
-  zend_update_property_bool(ecmaIntlCeLocaleOptions, &options->std, property,  \
-                            sizeof(property) - 1, var)
+  zend_update_property_bool(ecmaIntlClassLocaleOptions, &options->std,         \
+                            property, sizeof(property) - 1, var)
 
-zend_class_entry *ecmaIntlCeLocaleOptions = NULL;
-
-static zend_object_handlers ecmaIntlLocaleOptionsObjHandlers;
-static zend_object *ecmaIntlLocaleOptionsObjNew(zend_class_entry *classType);
-static void ecmaIntlLocaleOptionsObjFree(zend_object *object);
-
-static zend_object *ecmaIntlLocaleOptionsObjNew(zend_class_entry *classType) {
-  ecmaIntlLocaleOptionsObj *optionsObj =
-      zend_object_alloc(sizeof(ecmaIntlLocaleOptionsObj), classType);
-  zend_object_std_init(&optionsObj->std, classType);
-  object_properties_init(&optionsObj->std, classType);
-  optionsObj->std.handlers = &ecmaIntlLocaleOptionsObjHandlers;
-
-  return &optionsObj->std;
-}
-
-void ecmaIntlLocaleOptionsObjFree(zend_object *object) {
-  ecmaIntlLocaleOptionsObj *optionsObj =
-      ecmaIntlLocaleOptionsObjFromObj(object);
-
-  zend_object_std_dtor(&optionsObj->std);
-}
+zend_class_entry *ecmaIntlClassLocaleOptions = NULL;
 
 PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
   char *calendar = NULL, *caseFirst = NULL, *collation = NULL,
@@ -119,13 +102,9 @@ PHP_METHOD(Ecma_Intl_Locale_Options, __construct) {
   }
 }
 
-void ecmaIntlRegisterLocaleOptions() {
-  ecmaIntlCeLocaleOptions = register_class_Ecma_Intl_Locale_Options();
-  ecmaIntlCeLocaleOptions->create_object = ecmaIntlLocaleOptionsObjNew;
+void ecmaIntlRegisterClassLocaleOptions() {
+  ecmaIntlClassLocaleOptions = register_class_Ecma_Intl_Locale_Options();
+  ecmaIntlClassLocaleOptions->create_object = ecmaIntlLocaleOptionsObjCreate;
 
-  memcpy(&ecmaIntlLocaleOptionsObjHandlers, &std_object_handlers,
-         sizeof(zend_object_handlers));
-  ecmaIntlLocaleOptionsObjHandlers.offset =
-      XtOffsetOf(ecmaIntlLocaleOptionsObj, std);
-  ecmaIntlLocaleOptionsObjHandlers.free_obj = ecmaIntlLocaleOptionsObjFree;
+  ecmaIntlRegisterLocaleOptionsHandlers();
 }
