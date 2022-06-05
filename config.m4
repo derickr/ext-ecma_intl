@@ -1,9 +1,9 @@
 PHP_ARG_ENABLE(
   [ecma_intl],
-  [for internationalization support, Ecma-style (ECMA-402)],
+  [for i18n support, Ecma-style (ECMA-402)],
   [AS_HELP_STRING(
     [--enable-ecma_intl],
-    [Enable internationalization support, Ecma-style (ECMA-402)])
+    [Enable i18n support, Ecma-style (ECMA-402)])
   ],
   [yes]
 )
