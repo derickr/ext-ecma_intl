@@ -120,7 +120,7 @@ namespace Ecma\Intl
 
         public readonly ?string $script;
 
-        public readonly ?string $textInfo = null;
+        public readonly ?Locale\TextInfo $textInfo;
 
         public readonly ?array $timeZones;
 
@@ -185,6 +185,13 @@ namespace Ecma\Intl\Locale
         case RightToLeft = 'rtl';
         case TopToBottom = 'ttb';
         case BottomToTop = 'btt';
+    }
+
+    final class TextInfo
+    {
+        public readonly TextDirection $direction;
+
+        private function __construct() {}
     }
 
     /**

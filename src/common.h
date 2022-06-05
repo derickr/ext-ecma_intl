@@ -63,6 +63,7 @@
 #define PROPERTY_CASE_FIRST "caseFirst"
 #define PROPERTY_COLLATION "collation"
 #define PROPERTY_COLLATIONS "collations"
+#define PROPERTY_DIRECTION "direction"
 #define PROPERTY_HOUR_CYCLE "hourCycle"
 #define PROPERTY_HOUR_CYCLES "hourCycles"
 #define PROPERTY_LANGUAGE "language"
@@ -74,5 +75,10 @@
 #define PROPERTY_TEXT_INFO "textInfo"
 #define PROPERTY_TIME_ZONES "timeZones"
 #define PROPERTY_WEEK_INFO "weekInfo"
+
+#define TEXT_DIRECTION_CASE_BTT "BottomToTop"
+#define TEXT_DIRECTION_CASE_LTR "LeftToRight"
+#define TEXT_DIRECTION_CASE_RTL "RightToLeft"
+#define TEXT_DIRECTION_CASE_TTB "TopToBottom"
 
 #endif /* ECMA_INTL_COMMON_H */

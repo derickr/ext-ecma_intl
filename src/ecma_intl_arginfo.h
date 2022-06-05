@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 0e82029429f5c414dc88b883759bf155370eda53 */
+ * Stub hash: 1e111f7707bd217a229466c0a4f52eb91e6e74a8 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_TYPE_MASK(0, locales, MAY_BE_ARRAY|MAY_BE_STRING, NULL)
@@ -39,8 +39,10 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_Options___construct, 0, 0,
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, script, IS_STRING, 1, "null")
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_WeekInfo___construct, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_Ecma_Intl_Locale_TextInfo___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
+
+#define arginfo_class_Ecma_Intl_Locale_WeekInfo___construct arginfo_class_Ecma_Intl_Locale_TextInfo___construct
 
 
 ZEND_FUNCTION(getCanonicalLocales);
@@ -51,6 +53,7 @@ ZEND_METHOD(Ecma_Intl_Locale, maximize);
 ZEND_METHOD(Ecma_Intl_Locale, minimize);
 ZEND_METHOD(Ecma_Intl_Locale, __toString);
 ZEND_METHOD(Ecma_Intl_Locale_Options, __construct);
+ZEND_METHOD(Ecma_Intl_Locale_TextInfo, __construct);
 ZEND_METHOD(Ecma_Intl_Locale_WeekInfo, __construct);
 
 
@@ -94,6 +97,12 @@ static const zend_function_entry class_Ecma_Intl_Locale_Options_methods[] = {
 
 
 static const zend_function_entry class_Ecma_Intl_Locale_TextDirection_methods[] = {
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Ecma_Intl_Locale_TextInfo_methods[] = {
+	ZEND_ME(Ecma_Intl_Locale_TextInfo, __construct, arginfo_class_Ecma_Intl_Locale_TextInfo___construct, ZEND_ACC_PRIVATE)
 	ZEND_FE_END
 };
 
@@ -227,10 +236,11 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 	zend_declare_typed_property(class_entry, property_script_name, &property_script_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
 	zend_string_release(property_script_name);
 
+	zend_string *property_textInfo_class_Ecma_Intl_Locale_TextInfo = zend_string_init("Ecma\\Intl\\Locale\\TextInfo", sizeof("Ecma\\Intl\\Locale\\TextInfo")-1, 1);
 	zval property_textInfo_default_value;
-	ZVAL_NULL(&property_textInfo_default_value);
+	ZVAL_UNDEF(&property_textInfo_default_value);
 	zend_string *property_textInfo_name = zend_string_init("textInfo", sizeof("textInfo") - 1, 1);
-	zend_declare_typed_property(class_entry, property_textInfo_name, &property_textInfo_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
+	zend_declare_typed_property(class_entry, property_textInfo_name, &property_textInfo_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_textInfo_class_Ecma_Intl_Locale_TextInfo, 0, MAY_BE_NULL));
 	zend_string_release(property_textInfo_name);
 
 	zval property_timeZones_default_value;
@@ -336,6 +346,24 @@ static zend_class_entry *register_class_Ecma_Intl_Locale_TextDirection(void)
 	zend_string *enum_case_BottomToTop_value_str = zend_string_init("btt", sizeof("btt") - 1, 1);
 	ZVAL_STR(&enum_case_BottomToTop_value, enum_case_BottomToTop_value_str);
 	zend_enum_add_case_cstr(class_entry, "BottomToTop", &enum_case_BottomToTop_value);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_Ecma_Intl_Locale_TextInfo(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "Ecma\\Intl\\Locale", "TextInfo", class_Ecma_Intl_Locale_TextInfo_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+	class_entry->ce_flags |= ZEND_ACC_FINAL;
+
+	zend_string *property_direction_class_Ecma_Intl_Locale_TextDirection = zend_string_init("Ecma\\Intl\\Locale\\TextDirection", sizeof("Ecma\\Intl\\Locale\\TextDirection")-1, 1);
+	zval property_direction_default_value;
+	ZVAL_UNDEF(&property_direction_default_value);
+	zend_string *property_direction_name = zend_string_init("direction", sizeof("direction") - 1, 1);
+	zend_declare_typed_property(class_entry, property_direction_name, &property_direction_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_direction_class_Ecma_Intl_Locale_TextDirection, 0, 0));
+	zend_string_release(property_direction_name);
 
 	return class_entry;
 }

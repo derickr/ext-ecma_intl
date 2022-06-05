@@ -53,6 +53,8 @@
                         <file name="php_locale_options_ce.h" role="src"/>
                         <file name="php_locale_text_direction_ce.c" role="src"/>
                         <file name="php_locale_text_direction_ce.h" role="src"/>
+                        <file name="php_locale_text_info_ce.c" role="src"/>
+                        <file name="php_locale_text_info_ce.h" role="src"/>
                         <file name="php_locale_week_info_ce.c" role="src"/>
                         <file name="php_locale_week_info_ce.h" role="src"/>
                     </dir>
@@ -66,6 +68,8 @@
                         <file name="php_locale_handlers.h" role="src"/>
                         <file name="php_locale_options_handlers.c" role="src"/>
                         <file name="php_locale_options_handlers.h" role="src"/>
+                        <file name="php_locale_text_info_handlers.c" role="src"/>
+                        <file name="php_locale_text_info_handlers.h" role="src"/>
                         <file name="php_locale_week_info_handlers.c" role="src"/>
                         <file name="php_locale_week_info_handlers.h" role="src"/>
                     </dir>
@@ -74,6 +78,8 @@
                         <file name="php_locale.h" role="src"/>
                         <file name="php_locale_options.c" role="src"/>
                         <file name="php_locale_options.h" role="src"/>
+                        <file name="php_locale_text_info.c" role="src"/>
+                        <file name="php_locale_text_info.h" role="src"/>
                         <file name="php_locale_week_info.c" role="src"/>
                         <file name="php_locale_week_info.h" role="src"/>
                     </dir>

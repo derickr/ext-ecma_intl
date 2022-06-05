@@ -7,8 +7,8 @@ ecma_intl
 $locale = new \Ecma\Intl\Locale('en');
 var_dump($locale);
 ?>
---EXPECT--
-object(Ecma\Intl\Locale)#1 (17) {
+--EXPECTF--
+object(Ecma\Intl\Locale)#%d (17) {
   ["baseName"]=>
   string(2) "en"
   ["calendar"]=>
@@ -52,7 +52,10 @@ object(Ecma\Intl\Locale)#1 (17) {
   ["script"]=>
   NULL
   ["textInfo"]=>
-  NULL
+  object(Ecma\Intl\Locale\TextInfo)#%d (1) {
+    ["direction"]=>
+    enum(Ecma\Intl\Locale\TextDirection::LeftToRight)
+  }
   ["timeZones"]=>
   NULL
   ["weekInfo"]=>

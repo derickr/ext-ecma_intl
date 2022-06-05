@@ -24,7 +24,10 @@
 #include "php_locale.h"
 #include "src/php/classes/php_exceptions_ce.h"
 #include "src/php/classes/php_locale_ce.h"
+#include "src/php/classes/php_locale_text_direction_ce.h"
+#include "src/php/classes/php_locale_text_info_ce.h"
 #include "src/php/handlers/php_locale_handlers.h"
+#include "src/php/objects/php_locale_text_info.h"
 #include "src/unicode/bcp47.h"
 
 #include <unicode/ucal.h>
@@ -411,6 +414,58 @@ void localeSetScript(zend_object *object, char *localeId) {
   SET_PROPERTY(PROPERTY_SCRIPT)
 
   efree(value);
+}
+
+void localeSetTextInfo(zend_object *object, char *localeId) {
+  ULayoutType layout;
+  UErrorCode status = U_ZERO_ERROR;
+  zend_object *textInfoObj, *textDirectionCase = NULL;
+  zval textInfo, textDirection;
+
+  layout = uloc_getCharacterOrientation(localeId, &status);
+
+  CHECK_ERROR(status) else {
+    switch (layout) {
+    case ULOC_LAYOUT_BTT:
+      textDirectionCase = zend_enum_get_case_cstr(
+          ecmaIntlEnumLocaleTextDirection, TEXT_DIRECTION_CASE_BTT);
+      break;
+    case ULOC_LAYOUT_LTR:
+      textDirectionCase = zend_enum_get_case_cstr(
+          ecmaIntlEnumLocaleTextDirection, TEXT_DIRECTION_CASE_LTR);
+      break;
+    case ULOC_LAYOUT_RTL:
+      textDirectionCase = zend_enum_get_case_cstr(
+          ecmaIntlEnumLocaleTextDirection, TEXT_DIRECTION_CASE_RTL);
+      break;
+    case ULOC_LAYOUT_TTB:
+      textDirectionCase = zend_enum_get_case_cstr(
+          ecmaIntlEnumLocaleTextDirection, TEXT_DIRECTION_CASE_TTB);
+      break;
+    case ULOC_LAYOUT_UNKNOWN:
+    default:
+      /* do nothing */
+      break;
+    }
+  }
+
+  if (textDirectionCase) {
+    textInfoObj = ecmaIntlLocaleTextInfoObjCreate(ecmaIntlClassLocaleTextInfo);
+
+    ZVAL_OBJ(&textDirection, textDirectionCase);
+    zend_update_property(ecmaIntlClassLocaleTextInfo, textInfoObj,
+                         PROPERTY_DIRECTION, sizeof(PROPERTY_DIRECTION) - 1,
+                         &textDirection);
+
+    ZVAL_OBJ(&textInfo, textInfoObj);
+    zend_update_property(ecmaIntlClassLocale, object, PROPERTY_TEXT_INFO,
+                         sizeof(PROPERTY_TEXT_INFO) - 1, &textInfo);
+
+    zend_object_release(textInfoObj);
+  } else {
+    zend_update_property_null(ecmaIntlClassLocale, object, PROPERTY_TEXT_INFO,
+                              sizeof(PROPERTY_TEXT_INFO) - 1);
+  }
 }
 
 void localeSetTimeZones(zend_object *object, char *localeId) {

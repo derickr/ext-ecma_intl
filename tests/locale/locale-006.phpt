@@ -16,8 +16,8 @@ $locale = new \Ecma\Intl\Locale('ar', new \Ecma\Intl\Locale\Options(
 ));
 var_dump($locale);
 ?>
---EXPECT--
-object(Ecma\Intl\Locale)#1 (17) {
+--EXPECTF--
+object(Ecma\Intl\Locale)#%d (17) {
   ["baseName"]=>
   string(10) "ar-Latn-CA"
   ["calendar"]=>
@@ -59,7 +59,10 @@ object(Ecma\Intl\Locale)#1 (17) {
   ["script"]=>
   string(4) "Latn"
   ["textInfo"]=>
-  NULL
+  object(Ecma\Intl\Locale\TextInfo)#%d (1) {
+    ["direction"]=>
+    enum(Ecma\Intl\Locale\TextDirection::RightToLeft)
+  }
   ["timeZones"]=>
   array(29) {
     [0]=>

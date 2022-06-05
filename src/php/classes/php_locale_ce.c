@@ -92,6 +92,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     localeSetNumeric(&locale->std, icuLocale);
     localeSetRegion(&locale->std, icuLocale);
     localeSetScript(&locale->std, icuLocale);
+    localeSetTextInfo(&locale->std, icuLocale);
     localeSetTimeZones(&locale->std, icuLocale);
   }
 
