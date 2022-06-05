@@ -44,6 +44,7 @@ void localeSetCalendar(zend_object *object, char *localeId);
 void localeSetCalendars(zend_object *object, char *localeId);
 void localeSetCaseFirst(zend_object *object, char *localeId);
 void localeSetCollation(zend_object *object, char *localeId);
+void localeSetCollations(zend_object *object, char *localeId);
 void localeSetHourCycle(zend_object *object, char *localeId);
 void localeSetHourCycles(zend_object *object, char *localeId);
 void localeSetLanguage(zend_object *object, char *localeId);
@@ -52,5 +53,6 @@ void localeSetNumberingSystems(zend_object *object, char *localeId);
 void localeSetNumeric(zend_object *object, char *localeId);
 void localeSetRegion(zend_object *object, char *localeId);
 void localeSetScript(zend_object *object, char *localeId);
+void localeSetTimeZones(zend_object *object, char *localeId);
 
 #endif /* ECMA_INTL_PHP_LOCALE_H */

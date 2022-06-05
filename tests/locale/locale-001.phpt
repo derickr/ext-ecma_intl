@@ -8,7 +8,7 @@ $locale = new \Ecma\Intl\Locale('en');
 var_dump($locale);
 ?>
 --EXPECT--
-object(Ecma\Intl\Locale)#1 (16) {
+object(Ecma\Intl\Locale)#1 (17) {
   ["baseName"]=>
   string(2) "en"
   ["calendar"]=>
@@ -22,6 +22,13 @@ object(Ecma\Intl\Locale)#1 (16) {
   NULL
   ["collation"]=>
   NULL
+  ["collations"]=>
+  array(2) {
+    [0]=>
+    string(5) "emoji"
+    [1]=>
+    string(3) "eor"
+  }
   ["hourCycle"]=>
   NULL
   ["hourCycles"]=>
@@ -47,8 +54,7 @@ object(Ecma\Intl\Locale)#1 (16) {
   ["textInfo"]=>
   NULL
   ["timeZones"]=>
-  array(0) {
-  }
+  NULL
   ["weekInfo"]=>
   NULL
 }

@@ -28,6 +28,7 @@
 #include "src/unicode/bcp47.h"
 
 #include <unicode/ucal.h>
+#include <unicode/ucol.h>
 #include <unicode/udatpg.h>
 #include <unicode/uloc.h>
 #include <unicode/unumsys.h>
@@ -39,6 +40,11 @@
   } else {                                                                     \
     zend_update_property_stringl(ecmaIntlClassLocale, object, name,            \
                                  sizeof(name) - 1, value, valueLen);           \
+  }
+
+#define CHECK_ERROR(status)                                                    \
+  if (U_FAILURE(status)) {                                                     \
+    zend_throw_error(ecmaIntlClassIcuException, "%s", u_errorName(status));    \
   }
 
 zend_object *ecmaIntlLocaleObjCreate(zend_class_entry *classType) {
@@ -99,34 +105,43 @@ void localeSetCalendar(zend_object *object, char *localeId) {
 void localeSetCalendars(zend_object *object, char *localeId) {
   UEnumeration *values = NULL;
   UErrorCode status = U_ZERO_ERROR;
-  int count, length, i;
-  const char *identifier;
+  char *preferred;
+  const char *calendar;
+  int preferredLen, calendarLen;
   zval calendars;
 
-  values = ucal_getKeywordValuesForLocale(KEYWORD_ICU_CALENDAR, localeId, 1,
-                                          &status);
+  array_init(&calendars);
 
-  if (U_FAILURE(status)) {
-    zend_throw_error(ecmaIntlClassIcuException, "%s", u_errorName(status));
-  } else {
-    count = uenum_count(values, &status);
-    uenum_reset(values, &status);
+  preferred = (char *)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  preferredLen = uloc_getKeywordValue(localeId, KEYWORD_ICU_CALENDAR, preferred,
+                                      ULOC_FULLNAME_CAPACITY, &status);
 
-    array_init_size(&calendars, count);
+  CHECK_ERROR(status) else if (preferredLen > 0) {
+    add_next_index_string(
+        &calendars, uloc_toUnicodeLocaleType(KEYWORD_ICU_CALENDAR, preferred));
+  }
+  else {
+    values = ucal_getKeywordValuesForLocale(KEYWORD_ICU_CALENDAR, localeId, 1,
+                                            &status);
 
-    for (i = 0; i < count; i++) {
-      identifier = uenum_next(values, &length, &status);
-      add_next_index_string(&calendars, uloc_toUnicodeLocaleType(
-                                            KEYWORD_ICU_CALENDAR, identifier));
+    CHECK_ERROR(status) else {
+      while ((calendar = uenum_next(values, &calendarLen, &status)) &&
+             U_SUCCESS(status)) {
+        add_next_index_string(&calendars, uloc_toUnicodeLocaleType(
+                                              KEYWORD_ICU_CALENDAR, calendar));
+      }
+
+      CHECK_ERROR(status)
     }
 
-    zend_update_property(ecmaIntlClassLocale, object, PROPERTY_CALENDARS,
-                         sizeof(PROPERTY_CALENDARS) - 1, &calendars);
-
-    zend_array_release(Z_ARRVAL(calendars));
+    uenum_close(values);
   }
 
-  uenum_close(values);
+  zend_update_property(ecmaIntlClassLocale, object, PROPERTY_CALENDARS,
+                       sizeof(PROPERTY_CALENDARS) - 1, &calendars);
+
+  efree(preferred);
+  zend_array_release(Z_ARRVAL(calendars));
 }
 
 void localeSetCaseFirst(zend_object *object, char *localeId) {
@@ -165,6 +180,57 @@ void localeSetCollation(zend_object *object, char *localeId) {
   efree(value);
 }
 
+void localeSetCollations(zend_object *object, char *localeId) {
+  UEnumeration *values = NULL;
+  UErrorCode status = U_ZERO_ERROR;
+  char *preferred;
+  const char *collation;
+  int preferredLen, collationLen;
+  zval collations;
+
+  array_init(&collations);
+
+  preferred = (char *)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  preferredLen =
+      uloc_getKeywordValue(localeId, KEYWORD_ICU_COLLATION, preferred,
+                           ULOC_FULLNAME_CAPACITY, &status);
+
+  CHECK_ERROR(status) else if (preferredLen > 0) {
+    add_next_index_string(&collations, uloc_toUnicodeLocaleType(
+                                           KEYWORD_ICU_COLLATION, preferred));
+  }
+  else {
+    values = ucol_getKeywordValuesForLocale(KEYWORD_ICU_COLLATION, localeId, 1,
+                                            &status);
+
+    CHECK_ERROR(status) else {
+      while ((collation = uenum_next(values, &collationLen, &status)) &&
+             U_SUCCESS(status)) {
+        /* 1.1.3 step 4, The values "standard" and "search" must be excluded
+         * from list. */
+        if (strcmp(collation, "standard") == 0 ||
+            strcmp(collation, "search") == 0) {
+          continue;
+        }
+
+        add_next_index_string(
+            &collations,
+            uloc_toUnicodeLocaleType(KEYWORD_ICU_COLLATION, collation));
+      }
+
+      CHECK_ERROR(status)
+    }
+
+    uenum_close(values);
+  }
+
+  zend_update_property(ecmaIntlClassLocale, object, PROPERTY_COLLATIONS,
+                       sizeof(PROPERTY_COLLATIONS) - 1, &collations);
+
+  efree(preferred);
+  zend_array_release(Z_ARRVAL(collations));
+}
+
 void localeSetHourCycle(zend_object *object, char *localeId) {
   char *value = NULL;
   int valueLen;
@@ -184,36 +250,46 @@ void localeSetHourCycles(zend_object *object, char *localeId) {
   UDateFormatHourCycle hourCycle;
   UErrorCode status = U_ZERO_ERROR;
   zval hourCycles;
+  char *preferred;
+  int preferredLen;
 
-  patternGenerator = udatpg_open(localeId, &status);
+  array_init(&hourCycles);
 
-  if (U_FAILURE(status)) {
-    zend_throw_error(ecmaIntlClassIcuException, "%s", u_errorName(status));
-  } else {
-    array_init_size(&hourCycles, 1);
+  preferred = (char *)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  preferredLen =
+      uloc_getKeywordValue(localeId, KEYWORD_ICU_HOUR_CYCLE, preferred,
+                           ULOC_FULLNAME_CAPACITY, &status);
 
-    hourCycle = udatpg_getDefaultHourCycle(patternGenerator, &status);
+  CHECK_ERROR(status) else if (preferredLen > 0) {
+    add_next_index_string(&hourCycles, preferred);
+  }
+  else {
+    patternGenerator = udatpg_open(localeId, &status);
 
-    if (U_FAILURE(status)) {
-      zend_throw_error(ecmaIntlClassIcuException, "%s", u_errorName(status));
-    } else {
-      if (hourCycle == UDAT_HOUR_CYCLE_11) {
-        add_next_index_string(&hourCycles, HOUR_H_11);
-      } else if (hourCycle == UDAT_HOUR_CYCLE_23) {
-        add_next_index_string(&hourCycles, HOUR_H_23);
-      } else if (hourCycle == UDAT_HOUR_CYCLE_24) {
-        add_next_index_string(&hourCycles, HOUR_H_24);
-      } else {
-        add_next_index_string(&hourCycles, HOUR_H_12);
+    CHECK_ERROR(status) else {
+      hourCycle = udatpg_getDefaultHourCycle(patternGenerator, &status);
+
+      CHECK_ERROR(status) else {
+        if (hourCycle == UDAT_HOUR_CYCLE_11) {
+          add_next_index_string(&hourCycles, HOUR_H_11);
+        } else if (hourCycle == UDAT_HOUR_CYCLE_23) {
+          add_next_index_string(&hourCycles, HOUR_H_23);
+        } else if (hourCycle == UDAT_HOUR_CYCLE_24) {
+          add_next_index_string(&hourCycles, HOUR_H_24);
+        } else {
+          add_next_index_string(&hourCycles, HOUR_H_12);
+        }
       }
     }
 
-    zend_update_property(ecmaIntlClassLocale, object, PROPERTY_HOUR_CYCLES,
-                         sizeof(PROPERTY_HOUR_CYCLES) - 1, &hourCycles);
-    zend_array_release(Z_ARRVAL(hourCycles));
+    udatpg_close(patternGenerator);
   }
 
-  udatpg_close(patternGenerator);
+  zend_update_property(ecmaIntlClassLocale, object, PROPERTY_HOUR_CYCLES,
+                       sizeof(PROPERTY_HOUR_CYCLES) - 1, &hourCycles);
+
+  efree(preferred);
+  zend_array_release(Z_ARRVAL(hourCycles));
 }
 
 void localeSetLanguage(zend_object *object, char *localeId) {
@@ -256,27 +332,40 @@ void localeSetNumberingSystems(zend_object *object, char *localeId) {
   UNumberingSystem *numberingSystem;
   UErrorCode status = U_ZERO_ERROR;
   zval numberingSystems;
+  char *preferred;
+  int preferredLen;
 
-  numberingSystem = unumsys_open(localeId, &status);
+  array_init_size(&numberingSystems, 1);
 
-  if (U_FAILURE(status)) {
-    zend_throw_error(ecmaIntlClassIcuException, "%s", u_errorName(status));
-  } else {
-    array_init_size(&numberingSystems, 1);
+  preferred = (char *)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  preferredLen =
+      uloc_getKeywordValue(localeId, KEYWORD_ICU_NUMBERING_SYSTEM, preferred,
+                           ULOC_FULLNAME_CAPACITY, &status);
 
+  CHECK_ERROR(status) else if (preferredLen > 0) {
     add_next_index_string(
         &numberingSystems,
-        uloc_toUnicodeLocaleType(KEYWORD_ICU_NUMBERING_SYSTEM,
-                                 unumsys_getName(numberingSystem)));
+        uloc_toUnicodeLocaleType(KEYWORD_ICU_NUMBERING_SYSTEM, preferred));
+  }
+  else {
+    numberingSystem = unumsys_open(localeId, &status);
 
-    zend_update_property(
-        ecmaIntlClassLocale, object, PROPERTY_NUMBERING_SYSTEMS,
-        sizeof(PROPERTY_NUMBERING_SYSTEMS) - 1, &numberingSystems);
+    CHECK_ERROR(status) else {
+      add_next_index_string(
+          &numberingSystems,
+          uloc_toUnicodeLocaleType(KEYWORD_ICU_NUMBERING_SYSTEM,
+                                   unumsys_getName(numberingSystem)));
+    }
 
-    zend_array_release(Z_ARRVAL(numberingSystems));
+    unumsys_close(numberingSystem);
   }
 
-  unumsys_close(numberingSystem);
+  zend_update_property(ecmaIntlClassLocale, object, PROPERTY_NUMBERING_SYSTEMS,
+                       sizeof(PROPERTY_NUMBERING_SYSTEMS) - 1,
+                       &numberingSystems);
+
+  efree(preferred);
+  zend_array_release(Z_ARRVAL(numberingSystems));
 }
 
 void localeSetNumeric(zend_object *object, char *localeId) {
@@ -322,4 +411,48 @@ void localeSetScript(zend_object *object, char *localeId) {
   SET_PROPERTY(PROPERTY_SCRIPT)
 
   efree(value);
+}
+
+void localeSetTimeZones(zend_object *object, char *localeId) {
+  char *region = NULL;
+  const char *timeZone;
+  int regionLen = 0, timeZoneLen, count;
+  UErrorCode status = U_ZERO_ERROR;
+  UEnumeration *values = NULL;
+  zval timeZones;
+
+  region = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  regionLen =
+      uloc_getCountry(localeId, region, ULOC_FULLNAME_CAPACITY, &status);
+
+  CHECK_ERROR(status) else if (regionLen > 0) {
+    values = ucal_openTimeZoneIDEnumeration(UCAL_ZONE_TYPE_CANONICAL, region,
+                                            NULL, &status);
+
+    CHECK_ERROR(status) else {
+      count = uenum_count(values, &status);
+      uenum_reset(values, &status);
+
+      array_init_size(&timeZones, count);
+
+      while ((timeZone = uenum_next(values, &timeZoneLen, &status)) &&
+             U_SUCCESS(status)) {
+        add_next_index_stringl(&timeZones, timeZone, timeZoneLen);
+      }
+
+      CHECK_ERROR(status)
+
+      zend_update_property(ecmaIntlClassLocale, object, PROPERTY_TIME_ZONES,
+                           sizeof(PROPERTY_TIME_ZONES) - 1, &timeZones);
+
+      zend_array_release(Z_ARRVAL(timeZones));
+    }
+  }
+
+  if (regionLen == 0) {
+    zend_update_property_null(ecmaIntlClassLocale, object, PROPERTY_TIME_ZONES,
+                              sizeof(PROPERTY_TIME_ZONES) - 1);
+  }
+
+  efree(region);
 }

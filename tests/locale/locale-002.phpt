@@ -1,5 +1,5 @@
 --TEST--
-Ecma\Intl\Locale accepts BCP 47 language tags
+Ecma\Intl\Locale accepts ICU and BCP 47 language tags and canonicalizes to BCP 47
 --EXTENSIONS--
 ecma_intl
 --FILE--
@@ -48,9 +48,11 @@ $tests = [
     'en-US-u-attr1-attr2-ca-gregory',
     'sr-u-kn',
     'de-u-kn-co-phonebk',
+    'de@collation=phonebook;colnumeric=yes',
     'en-u-attr2-attr1-kn-kb',
     'ja-u-ijkl-efgh-abcd-ca-japanese-xx-yyy-zzz-kn',
     'de-u-xc-xphonebk-co-phonebk-ca-buddhist-mo-very-lo-extensi-xd-that-de-should-vc-probably-xz-killthebuffer',
+    'de@calendar=buddhist;collation=phonebook;de=should;lo=extensi;mo=very;vc=probably;xc=xphonebk;xd=that;xz=yes',
     'en-a-bbb-a-ccc',
     'en-a-bar-u-baz',
     'en-a-bar-u-baz-x-u-foo',
@@ -128,8 +130,10 @@ und-x-elmer
 en-US-u-attr1-attr2-ca-gregory
 sr-u-kn
 de-u-co-phonebk-kn
+de-u-co-phonebk-kn
 en-u-attr1-attr2-kb-kn
 ja-u-abcd-efgh-ijkl-ca-japanese-kn-xx-yyy-zzz
+de-u-ca-buddhist-co-phonebk-de-should-lo-extensi-mo-very-vc-probably-xc-xphonebk-xd-that-xz
 de-u-ca-buddhist-co-phonebk-de-should-lo-extensi-mo-very-vc-probably-xc-xphonebk-xd-that-xz
 en-a-bbb
 en-a-bar-u-baz

@@ -83,6 +83,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     localeSetCalendars(&locale->std, icuLocale);
     localeSetCaseFirst(&locale->std, icuLocale);
     localeSetCollation(&locale->std, icuLocale);
+    localeSetCollations(&locale->std, icuLocale);
     localeSetHourCycle(&locale->std, icuLocale);
     localeSetHourCycles(&locale->std, icuLocale);
     localeSetLanguage(&locale->std, icuLocale);
@@ -91,6 +92,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     localeSetNumeric(&locale->std, icuLocale);
     localeSetRegion(&locale->std, icuLocale);
     localeSetScript(&locale->std, icuLocale);
+    localeSetTimeZones(&locale->std, icuLocale);
   }
 
   efree(icuLocale);

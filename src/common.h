@@ -61,6 +61,7 @@
 #define PROPERTY_CALENDARS "calendars"
 #define PROPERTY_CASE_FIRST "caseFirst"
 #define PROPERTY_COLLATION "collation"
+#define PROPERTY_COLLATIONS "collations"
 #define PROPERTY_HOUR_CYCLE "hourCycle"
 #define PROPERTY_HOUR_CYCLES "hourCycles"
 #define PROPERTY_LANGUAGE "language"

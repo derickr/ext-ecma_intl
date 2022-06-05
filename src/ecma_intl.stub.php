@@ -94,6 +94,8 @@ namespace Ecma\Intl
 
         public readonly ?string $collation;
 
+        public readonly array $collations;
+
         public readonly ?string $hourCycle;
 
         /**
@@ -120,7 +122,7 @@ namespace Ecma\Intl
 
         public readonly ?string $textInfo = null;
 
-        public readonly array $timeZones = [];
+        public readonly ?array $timeZones;
 
         /**
          * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/weekInfo MDN web docs
