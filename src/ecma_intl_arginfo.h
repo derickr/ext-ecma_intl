@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 261b73c19c283167ce7f72670617b4003aae0cc4 */
+ * Stub hash: 0e82029429f5c414dc88b883759bf155370eda53 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_TYPE_MASK(0, locales, MAY_BE_ARRAY|MAY_BE_STRING, NULL)
@@ -89,6 +89,11 @@ static const zend_function_entry class_Ecma_Intl_Locale_methods[] = {
 
 static const zend_function_entry class_Ecma_Intl_Locale_Options_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale_Options, __construct, arginfo_class_Ecma_Intl_Locale_Options___construct, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Ecma_Intl_Locale_TextDirection_methods[] = {
 	ZEND_FE_END
 };
 
@@ -304,6 +309,33 @@ static zend_class_entry *register_class_Ecma_Intl_Locale_Options(void)
 	zend_string *property_script_name = zend_string_init("script", sizeof("script") - 1, 1);
 	zend_declare_typed_property(class_entry, property_script_name, &property_script_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
 	zend_string_release(property_script_name);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_Ecma_Intl_Locale_TextDirection(void)
+{
+	zend_class_entry *class_entry = zend_register_internal_enum("Ecma\\Intl\\Locale\\TextDirection", IS_STRING, class_Ecma_Intl_Locale_TextDirection_methods);
+
+	zval enum_case_LeftToRight_value;
+	zend_string *enum_case_LeftToRight_value_str = zend_string_init("ltr", sizeof("ltr") - 1, 1);
+	ZVAL_STR(&enum_case_LeftToRight_value, enum_case_LeftToRight_value_str);
+	zend_enum_add_case_cstr(class_entry, "LeftToRight", &enum_case_LeftToRight_value);
+
+	zval enum_case_RightToLeft_value;
+	zend_string *enum_case_RightToLeft_value_str = zend_string_init("rtl", sizeof("rtl") - 1, 1);
+	ZVAL_STR(&enum_case_RightToLeft_value, enum_case_RightToLeft_value_str);
+	zend_enum_add_case_cstr(class_entry, "RightToLeft", &enum_case_RightToLeft_value);
+
+	zval enum_case_TopToBottom_value;
+	zend_string *enum_case_TopToBottom_value_str = zend_string_init("ttb", sizeof("ttb") - 1, 1);
+	ZVAL_STR(&enum_case_TopToBottom_value, enum_case_TopToBottom_value_str);
+	zend_enum_add_case_cstr(class_entry, "TopToBottom", &enum_case_TopToBottom_value);
+
+	zval enum_case_BottomToTop_value;
+	zend_string *enum_case_BottomToTop_value_str = zend_string_init("btt", sizeof("btt") - 1, 1);
+	ZVAL_STR(&enum_case_BottomToTop_value, enum_case_BottomToTop_value_str);
+	zend_enum_add_case_cstr(class_entry, "BottomToTop", &enum_case_BottomToTop_value);
 
 	return class_entry;
 }

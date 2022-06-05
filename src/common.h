@@ -23,6 +23,7 @@
 #define ECMA_INTL_COMMON_H
 
 #include <php.h>
+#include <zend_enum.h>
 
 #define CASE_FIRST_FALSE "false"
 #define CASE_FIRST_LOWER "lower"

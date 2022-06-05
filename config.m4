@@ -24,6 +24,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/php/classes/php_exceptions_ce.c                                      \
     src/php/classes/php_locale_ce.c                                          \
     src/php/classes/php_locale_options_ce.c                                  \
+    src/php/classes/php_locale_text_direction_ce.c                           \
     src/php/classes/php_locale_week_info_ce.c                                \
                                                                              \
     src/php/functions/php_get_canonical_locales.c                            \

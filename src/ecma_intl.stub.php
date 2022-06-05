@@ -179,6 +179,14 @@ namespace Ecma\Intl\Locale
         ) {}
     }
 
+    enum TextDirection: string
+    {
+        case LeftToRight = 'ltr';
+        case RightToLeft = 'rtl';
+        case TopToBottom = 'ttb';
+        case BottomToTop = 'btt';
+    }
+
     /**
      * WeekInfo indicates information about days of the week for the associated
      * locale, for calendar purposes.
