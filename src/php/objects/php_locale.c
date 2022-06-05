@@ -88,9 +88,9 @@ void localeSetCalendar(zend_object *object, char *localeId) {
   int valueLen;
   UErrorCode status = U_ZERO_ERROR;
 
-  value = (char *)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  value = (char *)emalloc(sizeof(char *) * ULOC_KEYWORD_AND_VALUES_CAPACITY);
   valueLen = uloc_getKeywordValue(localeId, KEYWORD_ICU_CALENDAR, value,
-                                  ULOC_FULLNAME_CAPACITY, &status);
+                                  ULOC_KEYWORD_AND_VALUES_CAPACITY, &status);
 
   if (valueLen == 0) {
     zend_update_property_null(ecmaIntlClassLocale, object, PROPERTY_CALENDAR,
@@ -115,9 +115,11 @@ void localeSetCalendars(zend_object *object, char *localeId) {
 
   array_init(&calendars);
 
-  preferred = (char *)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-  preferredLen = uloc_getKeywordValue(localeId, KEYWORD_ICU_CALENDAR, preferred,
-                                      ULOC_FULLNAME_CAPACITY, &status);
+  preferred =
+      (char *)emalloc(sizeof(char *) * ULOC_KEYWORD_AND_VALUES_CAPACITY);
+  preferredLen =
+      uloc_getKeywordValue(localeId, KEYWORD_ICU_CALENDAR, preferred,
+                           ULOC_KEYWORD_AND_VALUES_CAPACITY, &status);
 
   CHECK_ERROR(status) else if (preferredLen > 0) {
     add_next_index_string(
@@ -152,9 +154,9 @@ void localeSetCaseFirst(zend_object *object, char *localeId) {
   int valueLen;
   UErrorCode status = U_ZERO_ERROR;
 
-  value = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  value = (char *)ecalloc(1, sizeof(char *) * ULOC_KEYWORD_AND_VALUES_CAPACITY);
   valueLen = uloc_getKeywordValue(localeId, KEYWORD_ICU_CASE_FIRST, value,
-                                  ULOC_FULLNAME_CAPACITY, &status);
+                                  ULOC_KEYWORD_AND_VALUES_CAPACITY, &status);
 
   SET_PROPERTY(PROPERTY_CASE_FIRST)
 
@@ -166,9 +168,9 @@ void localeSetCollation(zend_object *object, char *localeId) {
   int valueLen;
   UErrorCode status = U_ZERO_ERROR;
 
-  value = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  value = (char *)ecalloc(1, sizeof(char *) * ULOC_KEYWORD_AND_VALUES_CAPACITY);
   valueLen = uloc_getKeywordValue(localeId, KEYWORD_ICU_COLLATION, value,
-                                  ULOC_FULLNAME_CAPACITY, &status);
+                                  ULOC_KEYWORD_AND_VALUES_CAPACITY, &status);
 
   if (valueLen == 0) {
     zend_update_property_null(ecmaIntlClassLocale, object, PROPERTY_COLLATION,
@@ -193,10 +195,11 @@ void localeSetCollations(zend_object *object, char *localeId) {
 
   array_init(&collations);
 
-  preferred = (char *)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  preferred =
+      (char *)emalloc(sizeof(char *) * ULOC_KEYWORD_AND_VALUES_CAPACITY);
   preferredLen =
       uloc_getKeywordValue(localeId, KEYWORD_ICU_COLLATION, preferred,
-                           ULOC_FULLNAME_CAPACITY, &status);
+                           ULOC_KEYWORD_AND_VALUES_CAPACITY, &status);
 
   CHECK_ERROR(status) else if (preferredLen > 0) {
     add_next_index_string(&collations, uloc_toUnicodeLocaleType(
@@ -239,9 +242,9 @@ void localeSetHourCycle(zend_object *object, char *localeId) {
   int valueLen;
   UErrorCode status = U_ZERO_ERROR;
 
-  value = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  value = (char *)ecalloc(1, sizeof(char *) * ULOC_KEYWORD_AND_VALUES_CAPACITY);
   valueLen = uloc_getKeywordValue(localeId, KEYWORD_ICU_HOUR_CYCLE, value,
-                                  ULOC_FULLNAME_CAPACITY, &status);
+                                  ULOC_KEYWORD_AND_VALUES_CAPACITY, &status);
 
   SET_PROPERTY(PROPERTY_HOUR_CYCLE)
 
@@ -258,10 +261,11 @@ void localeSetHourCycles(zend_object *object, char *localeId) {
 
   array_init(&hourCycles);
 
-  preferred = (char *)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  preferred =
+      (char *)emalloc(sizeof(char *) * ULOC_KEYWORD_AND_VALUES_CAPACITY);
   preferredLen =
       uloc_getKeywordValue(localeId, KEYWORD_ICU_HOUR_CYCLE, preferred,
-                           ULOC_FULLNAME_CAPACITY, &status);
+                           ULOC_KEYWORD_AND_VALUES_CAPACITY, &status);
 
   CHECK_ERROR(status) else if (preferredLen > 0) {
     add_next_index_string(&hourCycles, preferred);
@@ -300,8 +304,8 @@ void localeSetLanguage(zend_object *object, char *localeId) {
   int valueLen;
   UErrorCode status = U_ZERO_ERROR;
 
-  value = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-  valueLen = uloc_getLanguage(localeId, value, ULOC_FULLNAME_CAPACITY, &status);
+  value = (char *)ecalloc(1, sizeof(char *) * ULOC_LANG_CAPACITY);
+  valueLen = uloc_getLanguage(localeId, value, ULOC_LANG_CAPACITY, &status);
 
   SET_PROPERTY(PROPERTY_LANGUAGE)
 
@@ -313,9 +317,9 @@ void localeSetNumberingSystem(zend_object *object, char *localeId) {
   int valueLen;
   UErrorCode status = U_ZERO_ERROR;
 
-  value = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  value = (char *)ecalloc(1, sizeof(char *) * ULOC_KEYWORD_AND_VALUES_CAPACITY);
   valueLen = uloc_getKeywordValue(localeId, KEYWORD_ICU_NUMBERING_SYSTEM, value,
-                                  ULOC_FULLNAME_CAPACITY, &status);
+                                  ULOC_KEYWORD_AND_VALUES_CAPACITY, &status);
 
   if (valueLen == 0) {
     zend_update_property_null(ecmaIntlClassLocale, object,
@@ -340,10 +344,11 @@ void localeSetNumberingSystems(zend_object *object, char *localeId) {
 
   array_init_size(&numberingSystems, 1);
 
-  preferred = (char *)emalloc(sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  preferred =
+      (char *)emalloc(sizeof(char *) * ULOC_KEYWORD_AND_VALUES_CAPACITY);
   preferredLen =
       uloc_getKeywordValue(localeId, KEYWORD_ICU_NUMBERING_SYSTEM, preferred,
-                           ULOC_FULLNAME_CAPACITY, &status);
+                           ULOC_KEYWORD_AND_VALUES_CAPACITY, &status);
 
   CHECK_ERROR(status) else if (preferredLen > 0) {
     add_next_index_string(
@@ -375,9 +380,9 @@ void localeSetNumeric(zend_object *object, char *localeId) {
   char *value = NULL;
   UErrorCode status = U_ZERO_ERROR;
 
-  value = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  value = (char *)ecalloc(1, sizeof(char *) * ULOC_KEYWORD_AND_VALUES_CAPACITY);
   uloc_getKeywordValue(localeId, KEYWORD_ICU_NUMERIC, value,
-                       ULOC_FULLNAME_CAPACITY, &status);
+                       ULOC_KEYWORD_AND_VALUES_CAPACITY, &status);
 
   if (strcmp(value, "yes") == 0) {
     zend_update_property_bool(ecmaIntlClassLocale, object, PROPERTY_NUMERIC,
@@ -395,8 +400,8 @@ void localeSetRegion(zend_object *object, char *localeId) {
   int valueLen;
   UErrorCode status = U_ZERO_ERROR;
 
-  value = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-  valueLen = uloc_getCountry(localeId, value, ULOC_FULLNAME_CAPACITY, &status);
+  value = (char *)ecalloc(1, sizeof(char *) * ULOC_COUNTRY_CAPACITY);
+  valueLen = uloc_getCountry(localeId, value, ULOC_COUNTRY_CAPACITY, &status);
 
   SET_PROPERTY(PROPERTY_REGION)
 
@@ -408,8 +413,8 @@ void localeSetScript(zend_object *object, char *localeId) {
   int valueLen;
   UErrorCode status = U_ZERO_ERROR;
 
-  value = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-  valueLen = uloc_getScript(localeId, value, ULOC_FULLNAME_CAPACITY, &status);
+  value = (char *)ecalloc(1, sizeof(char *) * ULOC_SCRIPT_CAPACITY);
+  valueLen = uloc_getScript(localeId, value, ULOC_SCRIPT_CAPACITY, &status);
 
   SET_PROPERTY(PROPERTY_SCRIPT)
 
@@ -476,9 +481,8 @@ void localeSetTimeZones(zend_object *object, char *localeId) {
   UEnumeration *values = NULL;
   zval timeZones;
 
-  region = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-  regionLen =
-      uloc_getCountry(localeId, region, ULOC_FULLNAME_CAPACITY, &status);
+  region = (char *)ecalloc(1, sizeof(char *) * ULOC_COUNTRY_CAPACITY);
+  regionLen = uloc_getCountry(localeId, region, ULOC_COUNTRY_CAPACITY, &status);
 
   CHECK_ERROR(status) else if (regionLen > 0) {
     values = ucal_openTimeZoneIDEnumeration(UCAL_ZONE_TYPE_CANONICAL, region,
