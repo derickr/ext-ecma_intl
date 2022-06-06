@@ -11,7 +11,7 @@ echo TextDirection::RightToLeft->value . "\n";
 echo TextDirection::TopToBottom->value . "\n";
 echo TextDirection::BottomToTop->value . "\n";
 ?>
---EXPECTF--
+--EXPECT--
 ltr
 rtl
 ttb

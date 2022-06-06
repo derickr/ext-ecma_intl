@@ -55,6 +55,8 @@
                         <file name="php_locale_text_direction_ce.h" role="src"/>
                         <file name="php_locale_text_info_ce.c" role="src"/>
                         <file name="php_locale_text_info_ce.h" role="src"/>
+                        <file name="php_locale_week_day_ce.c" role="src"/>
+                        <file name="php_locale_week_day_ce.h" role="src"/>
                         <file name="php_locale_week_info_ce.c" role="src"/>
                         <file name="php_locale_week_info_ce.h" role="src"/>
                     </dir>
@@ -87,6 +89,8 @@
                 <dir name="unicode">
                     <file name="bcp47.c" role="src"/>
                     <file name="bcp47.h" role="src"/>
+                    <file name="calendar.c" role="src"/>
+                    <file name="calendar.h" role="src"/>
                     <file name="builder.cpp" role="src"/>
                     <file name="builder.h" role="src"/>
                     <file name="units.cpp" role="src"/>

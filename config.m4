@@ -26,6 +26,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/php/classes/php_locale_options_ce.c                                  \
     src/php/classes/php_locale_text_direction_ce.c                           \
     src/php/classes/php_locale_text_info_ce.c                                \
+    src/php/classes/php_locale_week_day_ce.c                                 \
     src/php/classes/php_locale_week_info_ce.c                                \
                                                                              \
     src/php/functions/php_get_canonical_locales.c                            \
@@ -43,6 +44,7 @@ if test "$PHP_ECMA_INTL" != "no"; then
     src/php/objects/php_locale_week_info.c                                   \
                                                                              \
     src/unicode/bcp47.c                                                      \
+    src/unicode/calendar.c                                                   \
                                                                              \
     php_ecma_intl.c                                                          \
                                                                              \

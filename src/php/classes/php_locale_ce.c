@@ -94,6 +94,7 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
     localeSetScript(&locale->std, icuLocale);
     localeSetTextInfo(&locale->std, icuLocale);
     localeSetTimeZones(&locale->std, icuLocale);
+    localeSetWeekInfo(&locale->std, icuLocale);
   }
 
   efree(icuLocale);

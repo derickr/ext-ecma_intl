@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 1e111f7707bd217a229466c0a4f52eb91e6e74a8 */
+ * Stub hash: d1e39c20ed284ef26df2c69ffa8471b6267a062d */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Ecma_Intl_getCanonicalLocales, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_TYPE_MASK(0, locales, MAY_BE_ARRAY|MAY_BE_STRING, NULL)
@@ -103,6 +103,11 @@ static const zend_function_entry class_Ecma_Intl_Locale_TextDirection_methods[] 
 
 static const zend_function_entry class_Ecma_Intl_Locale_TextInfo_methods[] = {
 	ZEND_ME(Ecma_Intl_Locale_TextInfo, __construct, arginfo_class_Ecma_Intl_Locale_TextInfo___construct, ZEND_ACC_PRIVATE)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_Ecma_Intl_Locale_WeekDay_methods[] = {
 	ZEND_FE_END
 };
 
@@ -251,7 +256,7 @@ static zend_class_entry *register_class_Ecma_Intl_Locale(zend_class_entry *class
 
 	zend_string *property_weekInfo_class_Ecma_Intl_Locale_WeekInfo = zend_string_init("Ecma\\Intl\\Locale\\WeekInfo", sizeof("Ecma\\Intl\\Locale\\WeekInfo")-1, 1);
 	zval property_weekInfo_default_value;
-	ZVAL_NULL(&property_weekInfo_default_value);
+	ZVAL_UNDEF(&property_weekInfo_default_value);
 	zend_string *property_weekInfo_name = zend_string_init("weekInfo", sizeof("weekInfo") - 1, 1);
 	zend_declare_typed_property(class_entry, property_weekInfo_name, &property_weekInfo_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_weekInfo_class_Ecma_Intl_Locale_WeekInfo, 0, MAY_BE_NULL));
 	zend_string_release(property_weekInfo_name);
@@ -368,6 +373,41 @@ static zend_class_entry *register_class_Ecma_Intl_Locale_TextInfo(void)
 	return class_entry;
 }
 
+static zend_class_entry *register_class_Ecma_Intl_Locale_WeekDay(void)
+{
+	zend_class_entry *class_entry = zend_register_internal_enum("Ecma\\Intl\\Locale\\WeekDay", IS_LONG, class_Ecma_Intl_Locale_WeekDay_methods);
+
+	zval enum_case_Monday_value;
+	ZVAL_LONG(&enum_case_Monday_value, 1);
+	zend_enum_add_case_cstr(class_entry, "Monday", &enum_case_Monday_value);
+
+	zval enum_case_Tuesday_value;
+	ZVAL_LONG(&enum_case_Tuesday_value, 2);
+	zend_enum_add_case_cstr(class_entry, "Tuesday", &enum_case_Tuesday_value);
+
+	zval enum_case_Wednesday_value;
+	ZVAL_LONG(&enum_case_Wednesday_value, 3);
+	zend_enum_add_case_cstr(class_entry, "Wednesday", &enum_case_Wednesday_value);
+
+	zval enum_case_Thursday_value;
+	ZVAL_LONG(&enum_case_Thursday_value, 4);
+	zend_enum_add_case_cstr(class_entry, "Thursday", &enum_case_Thursday_value);
+
+	zval enum_case_Friday_value;
+	ZVAL_LONG(&enum_case_Friday_value, 5);
+	zend_enum_add_case_cstr(class_entry, "Friday", &enum_case_Friday_value);
+
+	zval enum_case_Saturday_value;
+	ZVAL_LONG(&enum_case_Saturday_value, 6);
+	zend_enum_add_case_cstr(class_entry, "Saturday", &enum_case_Saturday_value);
+
+	zval enum_case_Sunday_value;
+	ZVAL_LONG(&enum_case_Sunday_value, 7);
+	zend_enum_add_case_cstr(class_entry, "Sunday", &enum_case_Sunday_value);
+
+	return class_entry;
+}
+
 static zend_class_entry *register_class_Ecma_Intl_Locale_WeekInfo(void)
 {
 	zend_class_entry ce, *class_entry;
@@ -376,23 +416,24 @@ static zend_class_entry *register_class_Ecma_Intl_Locale_WeekInfo(void)
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
 	class_entry->ce_flags |= ZEND_ACC_FINAL;
 
+	zend_string *property_firstDay_class_Ecma_Intl_Locale_WeekDay = zend_string_init("Ecma\\Intl\\Locale\\WeekDay", sizeof("Ecma\\Intl\\Locale\\WeekDay")-1, 1);
 	zval property_firstDay_default_value;
 	ZVAL_UNDEF(&property_firstDay_default_value);
 	zend_string *property_firstDay_name = zend_string_init("firstDay", sizeof("firstDay") - 1, 1);
-	zend_declare_typed_property(class_entry, property_firstDay_name, &property_firstDay_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_declare_typed_property(class_entry, property_firstDay_name, &property_firstDay_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_firstDay_class_Ecma_Intl_Locale_WeekDay, 0, 0));
 	zend_string_release(property_firstDay_name);
-
-	zval property_weekend_default_value;
-	ZVAL_UNDEF(&property_weekend_default_value);
-	zend_string *property_weekend_name = zend_string_init("weekend", sizeof("weekend") - 1, 1);
-	zend_declare_typed_property(class_entry, property_weekend_name, &property_weekend_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
-	zend_string_release(property_weekend_name);
 
 	zval property_minimalDays_default_value;
 	ZVAL_UNDEF(&property_minimalDays_default_value);
 	zend_string *property_minimalDays_name = zend_string_init("minimalDays", sizeof("minimalDays") - 1, 1);
 	zend_declare_typed_property(class_entry, property_minimalDays_name, &property_minimalDays_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
 	zend_string_release(property_minimalDays_name);
+
+	zval property_weekend_default_value;
+	ZVAL_UNDEF(&property_weekend_default_value);
+	zend_string *property_weekend_name = zend_string_init("weekend", sizeof("weekend") - 1, 1);
+	zend_declare_typed_property(class_entry, property_weekend_name, &property_weekend_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
+	zend_string_release(property_weekend_name);
 
 	return class_entry;
 }

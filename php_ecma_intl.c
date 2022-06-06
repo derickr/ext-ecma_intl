@@ -36,6 +36,7 @@
 #include "src/php/classes/php_locale_options_ce.h"
 #include "src/php/classes/php_locale_text_direction_ce.h"
 #include "src/php/classes/php_locale_text_info_ce.h"
+#include "src/php/classes/php_locale_week_day_ce.h"
 #include "src/php/classes/php_locale_week_info_ce.h"
 
 #include <ext/standard/info.h>
@@ -62,9 +63,11 @@ PHP_MINIT_FUNCTION(ecma_intl) {
   ecmaIntlRegisterClassExceptions();
   ecmaIntlRegisterClassLocale();
   ecmaIntlRegisterClassLocaleOptions();
-  ecmaIntlRegisterEnumLocaleTextDirection();
   ecmaIntlRegisterClassLocaleTextInfo();
   ecmaIntlRegisterClassLocaleWeekInfo();
+
+  ecmaIntlRegisterEnumLocaleTextDirection();
+  ecmaIntlRegisterEnumLocaleWeekDay();
 
   return SUCCESS;
 }

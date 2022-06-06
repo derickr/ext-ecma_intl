@@ -127,7 +127,7 @@ namespace Ecma\Intl
         /**
          * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/weekInfo MDN web docs
          */
-        public readonly ?Locale\WeekInfo $weekInfo = null;
+        public readonly ?Locale\WeekInfo $weekInfo;
 
         public function __construct(string $tag, ?Locale\Options $options = null) {}
 
@@ -194,6 +194,17 @@ namespace Ecma\Intl\Locale
         private function __construct() {}
     }
 
+    enum WeekDay: int
+    {
+        case Monday = 1;
+        case Tuesday = 2;
+        case Wednesday = 3;
+        case Thursday = 4;
+        case Friday = 5;
+        case Saturday = 6;
+        case Sunday = 7;
+    }
+
     /**
      * WeekInfo indicates information about days of the week for the associated
      * locale, for calendar purposes.
@@ -206,21 +217,21 @@ namespace Ecma\Intl\Locale
          * For the associated locale, this number indicates which day of the week
          * is considered the first day, for calendar purposes.
          */
-        public readonly int $firstDay;
-
-        /**
-         * For the associated locale, this is a list of numbers that indicate which
-         * days of the week are considered part of the weekend, for calendar purposes.
-         *
-         * @var int[]
-         */
-        public readonly array $weekend;
+        public readonly WeekDay $firstDay;
 
         /**
          * For the associated locale, this number indicates the minimum number of
          * days required for the first week of a month or year, for calendar purposes.
          */
         public readonly int $minimalDays;
+
+        /**
+         * For the associated locale, this is a list of numbers that indicate which
+         * days of the week are considered part of the weekend, for calendar purposes.
+         *
+         * @var WeekDay[]
+         */
+        public readonly array $weekend;
 
         /**
          * Instances of this object may only be obtained from the `Locale::$weekInfo`

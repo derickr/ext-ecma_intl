@@ -22,13 +22,17 @@
 #include "src/common.h"
 
 #include "php_locale.h"
+#include "php_locale_week_info.h"
 #include "src/php/classes/php_exceptions_ce.h"
 #include "src/php/classes/php_locale_ce.h"
 #include "src/php/classes/php_locale_text_direction_ce.h"
 #include "src/php/classes/php_locale_text_info_ce.h"
+#include "src/php/classes/php_locale_week_day_ce.h"
+#include "src/php/classes/php_locale_week_info_ce.h"
 #include "src/php/handlers/php_locale_handlers.h"
 #include "src/php/objects/php_locale_text_info.h"
 #include "src/unicode/bcp47.h"
+#include "src/unicode/calendar.h"
 
 #include <unicode/ucal.h>
 #include <unicode/ucol.h>
@@ -49,6 +53,8 @@
   if (U_FAILURE(status)) {                                                     \
     zend_throw_error(ecmaIntlClassIcuException, "%s", u_errorName(status));    \
   }
+
+static zend_object *getWeekDayCaseForDayOfWeek(UCalendarDaysOfWeek dayOfWeek);
 
 zend_object *ecmaIntlLocaleObjCreate(zend_class_entry *classType) {
   ecmaIntlLocaleObj *localeObj;
@@ -514,4 +520,100 @@ void localeSetTimeZones(zend_object *object, char *localeId) {
   }
 
   efree(region);
+}
+
+void localeSetWeekInfo(zend_object *object, char *localeId) {
+  UCalendar *calendar;
+  UErrorCode status = U_ZERO_ERROR;
+  zend_object *weekInfoObj, *firstDayOfWeekCase, *weekendDayCase;
+  zval weekInfo, firstDayOfWeek, weekend, weekendDay;
+
+  calendar = ucal_open(NULL, 0, localeId, UCAL_DEFAULT, &status);
+
+  CHECK_ERROR(status) else if (calendar) {
+    weekInfoObj = ecmaIntlLocaleWeekInfoObjCreate(ecmaIntlClassLocaleWeekInfo);
+    ZVAL_OBJ(&weekInfo, weekInfoObj);
+
+    firstDayOfWeekCase = getWeekDayCaseForDayOfWeek(
+        ucal_getAttribute(calendar, UCAL_FIRST_DAY_OF_WEEK));
+    ZVAL_OBJ(&firstDayOfWeek, firstDayOfWeekCase);
+
+    zend_update_property(ecmaIntlClassLocaleWeekInfo, weekInfoObj,
+                         PROPERTY_FIRST_DAY, sizeof(PROPERTY_FIRST_DAY) - 1,
+                         &firstDayOfWeek);
+
+    zend_update_property_long(
+        ecmaIntlClassLocaleWeekInfo, weekInfoObj, PROPERTY_MINIMAL_DAYS,
+        sizeof(PROPERTY_MINIMAL_DAYS) - 1,
+        ucal_getAttribute(calendar, UCAL_MINIMAL_DAYS_IN_FIRST_WEEK));
+
+    array_init(&weekend);
+    for (int day = UCAL_MONDAY; day <= (UCAL_SATURDAY + 1); ++day) {
+      /* This is a bit of a hack to force Sunday to come last, since this array
+       * should be ordered in ascending order, and ECMA-402 defines weekday
+       * values as integers 1 (Monday) - 7 (Sunday), while Unicode starts with
+       * Sunday. See Table 1 in section 1.1.8 of the Intl Locale Info Proposal.
+       */
+      int currentDay = day;
+      if (day > UCAL_SATURDAY) {
+        currentDay = UCAL_SUNDAY;
+      }
+
+      UCalendarWeekdayType type =
+          getCanonicalDayOfWeekType(calendar, currentDay);
+      switch (type) {
+      case UCAL_WEEKDAY:
+        break;
+      case UCAL_WEEKEND:
+        weekendDayCase = getWeekDayCaseForDayOfWeek(currentDay);
+        ZVAL_OBJ_COPY(&weekendDay, weekendDayCase);
+        add_next_index_zval(&weekend, &weekendDay);
+        break;
+      default:
+        break;
+      }
+    }
+
+    zend_update_property(ecmaIntlClassLocaleWeekInfo, weekInfoObj,
+                         PROPERTY_WEEKEND, sizeof(PROPERTY_WEEKEND) - 1,
+                         &weekend);
+
+    zend_update_property(ecmaIntlClassLocale, object, PROPERTY_WEEK_INFO,
+                         sizeof(PROPERTY_WEEK_INFO) - 1, &weekInfo);
+
+    zend_array_release(Z_ARRVAL(weekend));
+    zend_object_release(weekInfoObj);
+  }
+  else {
+    zend_update_property_null(ecmaIntlClassLocale, object, PROPERTY_WEEK_INFO,
+                              sizeof(PROPERTY_WEEK_INFO) - 1);
+  }
+}
+
+static zend_object *getWeekDayCaseForDayOfWeek(UCalendarDaysOfWeek dayOfWeek) {
+  switch (dayOfWeek) {
+  case UCAL_MONDAY:
+    return zend_enum_get_case_cstr(ecmaIntlEnumLocaleWeekDay,
+                                   WEEK_DAY_CASE_MONDAY);
+  case UCAL_TUESDAY:
+    return zend_enum_get_case_cstr(ecmaIntlEnumLocaleWeekDay,
+                                   WEEK_DAY_CASE_TUESDAY);
+  case UCAL_WEDNESDAY:
+    return zend_enum_get_case_cstr(ecmaIntlEnumLocaleWeekDay,
+                                   WEEK_DAY_CASE_WEDNESDAY);
+  case UCAL_THURSDAY:
+    return zend_enum_get_case_cstr(ecmaIntlEnumLocaleWeekDay,
+                                   WEEK_DAY_CASE_THURSDAY);
+  case UCAL_FRIDAY:
+    return zend_enum_get_case_cstr(ecmaIntlEnumLocaleWeekDay,
+                                   WEEK_DAY_CASE_FRIDAY);
+  case UCAL_SATURDAY:
+    return zend_enum_get_case_cstr(ecmaIntlEnumLocaleWeekDay,
+                                   WEEK_DAY_CASE_SATURDAY);
+  case UCAL_SUNDAY:
+    return zend_enum_get_case_cstr(ecmaIntlEnumLocaleWeekDay,
+                                   WEEK_DAY_CASE_SUNDAY);
+  default:
+    return NULL;
+  }
 }

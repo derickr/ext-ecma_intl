@@ -64,9 +64,11 @@
 #define PROPERTY_COLLATION "collation"
 #define PROPERTY_COLLATIONS "collations"
 #define PROPERTY_DIRECTION "direction"
+#define PROPERTY_FIRST_DAY "firstDay"
 #define PROPERTY_HOUR_CYCLE "hourCycle"
 #define PROPERTY_HOUR_CYCLES "hourCycles"
 #define PROPERTY_LANGUAGE "language"
+#define PROPERTY_MINIMAL_DAYS "minimalDays"
 #define PROPERTY_NUMBERING_SYSTEM "numberingSystem"
 #define PROPERTY_NUMBERING_SYSTEMS "numberingSystems"
 #define PROPERTY_NUMERIC "numeric"
@@ -74,11 +76,20 @@
 #define PROPERTY_SCRIPT "script"
 #define PROPERTY_TEXT_INFO "textInfo"
 #define PROPERTY_TIME_ZONES "timeZones"
+#define PROPERTY_WEEKEND "weekend"
 #define PROPERTY_WEEK_INFO "weekInfo"
 
 #define TEXT_DIRECTION_CASE_BTT "BottomToTop"
 #define TEXT_DIRECTION_CASE_LTR "LeftToRight"
 #define TEXT_DIRECTION_CASE_RTL "RightToLeft"
 #define TEXT_DIRECTION_CASE_TTB "TopToBottom"
+
+#define WEEK_DAY_CASE_MONDAY "Monday"
+#define WEEK_DAY_CASE_TUESDAY "Tuesday"
+#define WEEK_DAY_CASE_WEDNESDAY "Wednesday"
+#define WEEK_DAY_CASE_THURSDAY "Thursday"
+#define WEEK_DAY_CASE_FRIDAY "Friday"
+#define WEEK_DAY_CASE_SATURDAY "Saturday"
+#define WEEK_DAY_CASE_SUNDAY "Sunday"
 
 #endif /* ECMA_INTL_COMMON_H */

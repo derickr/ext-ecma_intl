@@ -55,5 +55,6 @@ void localeSetRegion(zend_object *object, char *localeId);
 void localeSetScript(zend_object *object, char *localeId);
 void localeSetTextInfo(zend_object *object, char *localeId);
 void localeSetTimeZones(zend_object *object, char *localeId);
+void localeSetWeekInfo(zend_object *object, char *localeId);
 
 #endif /* ECMA_INTL_PHP_LOCALE_H */
