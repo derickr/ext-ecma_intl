@@ -19,31 +19,51 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  functional-tests:
-    name: "Functional tests"
+  tests:
+    name: "Tests: PHP ${{ matrix.php-version }}, ICU ${{ matrix.icu-version }}"
     runs-on: "ubuntu-latest"
-    container:
-      image: "benramsey/ecma_intl-dev:latest"
-      volumes:
-        - "${{ github.workspace }}:/ecma_intl"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "8.1"
+        icu-version:
+          - "67.1"
+          - "68.2"
+          - "69.1"
+          - "70.1"
+          - "71.1"
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v3.0.1"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@2.18.1"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: "intl-${{ matrix.icu-version }}"
+          coverage: "none"
+
+      - name: "Install Valgrind"
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y valgrind
 
       - name: "Build and install ecma_intl"
         run: |
-          set -e
-          cd /ecma_intl
           phpize
           ./configure --enable-ecma_intl
           make -j$(nproc)
-          make install
-          echo "extension=ecma_intl.so" > "$(php-config --ini-dir)/99-ecma_intl.ini"
+          sudo make install
+          sudo mkdir -p "$(php-config --ini-dir)"
+          sudo su -c "echo 'extension=ecma_intl.so' > '$(php-config --ini-dir)/99-ecma_intl.ini'"
           "$(php-config --php-binary)" --ri ecma_intl
 
-      - name: "Run tests"
+      - name: "Run tests (phpt)"
         run: |
-          set -e
+          export USE_ZEND_ALLOC=0
+          export ZEND_DONT_UNLOAD_MODULES=1
           export PHP_BINARY="$(php-config --php-binary)"
           $PHP_BINARY run-tests.php -j$(nproc) -P -q -m --show-diff --show-mem

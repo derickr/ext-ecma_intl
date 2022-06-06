@@ -44,7 +44,6 @@ $tests = [
     'en-us-u-tz-usnyc',
     'und-a-abc-def',
     'zh-u-ca-chinese-x-u-ca-chinese',
-    'x-elmer',
     'en-US-u-attr1-attr2-ca-gregory',
     'sr-u-kn',
     'de-u-kn-co-phonebk',
@@ -64,9 +63,6 @@ $tests = [
     'und-Latn-u-em-emoji',
     'und-Latn-DE-u-em-emoji',
     'und-Zzzz-DE-u-em-emoji',
-    'und-DE-u-em-emoji',
-    'zh-x_t-ab',
-    'zh-hans-cn-u-ca-x_t-u',
     'zh-u-ca-chinese-ca-gregory',
     'zh-u-ca-gregory-co-pinyin-ca-chinese',
     'de-latn-DE-1901-u-co-phonebk-co-pinyin-ca-gregory',
@@ -126,7 +122,6 @@ ja-u-ca-cu-jpy-jp
 en-US-u-tz-usnyc
 und-a-abc-def
 zh-u-ca-chinese-x-u-ca-chinese
-und-x-elmer
 en-US-u-attr1-attr2-ca-gregory
 sr-u-kn
 de-u-co-phonebk-kn
@@ -146,9 +141,6 @@ und-Arab-u-em-emoji
 und-Latn-u-em-emoji
 und-Latn-DE-u-em-emoji
 und-Zzzz-DE-u-em-emoji
-und-DE-u-em-emoji
-zh-x-t-ab
-zh-Hans-CN-u-ca-x-t-u
 zh-u-ca-chinese
 zh-u-ca-gregory-co-pinyin
 de-Latn-DE-1901-u-ca-gregory-co-phonebk

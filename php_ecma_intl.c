@@ -86,10 +86,10 @@ PHP_RSHUTDOWN_FUNCTION(ecma_intl) { return SUCCESS; }
 
 PHP_MINFO_FUNCTION(ecma_intl) {
   UErrorCode status = U_ZERO_ERROR;
-  const char *timeZoneDataVersion = NULL;
+  const char *timeZoneDataVersion;
 
   timeZoneDataVersion = ucal_getTZDataVersion(&status);
-  if (U_ZERO_ERROR != status) {
+  if (U_FAILURE(status)) {
     timeZoneDataVersion = "n/a";
   }
 
