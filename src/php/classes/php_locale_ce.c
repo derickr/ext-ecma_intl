@@ -29,7 +29,6 @@
 #include "src/php/handlers/php_locale_handlers.h"
 #include "src/php/objects/php_locale.h"
 #include "src/php/objects/php_locale_options.h"
-#include "src/unicode/bcp47.h"
 #include "src/unicode/builder.h"
 
 #include <unicode/uloc.h>
@@ -38,10 +37,9 @@
 zend_class_entry *ecmaIntlClassLocale = NULL;
 
 PHP_METHOD(Ecma_Intl_Locale, __construct) {
-  char *tag = NULL, *bcp47Locale = NULL, *icuLocale = NULL;
-  size_t tagLen = 0, bcp47LocaleLen = 0;
+  char *tag = NULL;
+  size_t tagLen = 0;
   zval *options = NULL;
-  UErrorCode status = U_ZERO_ERROR;
 
   ZEND_PARSE_PARAMETERS_START(1, 2)
   Z_PARAM_STRING(tag, tagLen)
@@ -56,54 +54,82 @@ PHP_METHOD(Ecma_Intl_Locale, __construct) {
   zval *object = getThis();
   ecmaIntlLocaleObj *locale = Z_ECMA_LOCALE_P(object);
 
-  bcp47Locale = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-  icuLocale = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
-
   if (options) {
     char *constructedLocale =
         (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
     if (icuBuildLocale(constructedLocale, tag,
                        Z_ECMA_LOCALE_OPTIONS_P(options))) {
-      bcp47LocaleLen = icuToBcp47LanguageTag(constructedLocale, bcp47Locale);
-      uloc_canonicalize(constructedLocale, icuLocale, ULOC_FULLNAME_CAPACITY,
-                        &status);
+      localeInit(locale, constructedLocale);
     }
     efree(constructedLocale);
   } else {
-    bcp47LocaleLen = icuToBcp47LanguageTag(tag, bcp47Locale);
-    uloc_canonicalize(tag, icuLocale, ULOC_FULLNAME_CAPACITY, &status);
+    localeInit(locale, tag);
   }
-
-  if (bcp47LocaleLen) {
-    locale->bcp47Locale = estrndup(bcp47Locale, bcp47LocaleLen);
-    locale->bcp47LocaleLen = bcp47LocaleLen;
-
-    localeSetBaseName(&locale->std, icuLocale);
-    localeSetCalendar(&locale->std, icuLocale);
-    localeSetCalendars(&locale->std, icuLocale);
-    localeSetCaseFirst(&locale->std, icuLocale);
-    localeSetCollation(&locale->std, icuLocale);
-    localeSetCollations(&locale->std, icuLocale);
-    localeSetHourCycle(&locale->std, icuLocale);
-    localeSetHourCycles(&locale->std, icuLocale);
-    localeSetLanguage(&locale->std, icuLocale);
-    localeSetNumberingSystem(&locale->std, icuLocale);
-    localeSetNumberingSystems(&locale->std, icuLocale);
-    localeSetNumeric(&locale->std, icuLocale);
-    localeSetRegion(&locale->std, icuLocale);
-    localeSetScript(&locale->std, icuLocale);
-    localeSetTextInfo(&locale->std, icuLocale);
-    localeSetTimeZones(&locale->std, icuLocale);
-    localeSetWeekInfo(&locale->std, icuLocale);
-  }
-
-  efree(icuLocale);
-  efree(bcp47Locale);
 }
 
-PHP_METHOD(Ecma_Intl_Locale, maximize) { ZEND_PARSE_PARAMETERS_NONE(); }
+PHP_METHOD(Ecma_Intl_Locale, maximize) {
+  char *canonicalId, *maximizedLocaleId = NULL;
+  UErrorCode status = U_ZERO_ERROR;
+  ecmaIntlLocaleObj *locale, *newLocale;
+  zval *object;
+  zend_object *newObject;
 
-PHP_METHOD(Ecma_Intl_Locale, minimize) { ZEND_PARSE_PARAMETERS_NONE(); }
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  object = getThis();
+  locale = Z_ECMA_LOCALE_P(object);
+
+  canonicalId = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  maximizedLocaleId =
+      (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+
+  uloc_canonicalize(locale->bcp47Locale, canonicalId, ULOC_FULLNAME_CAPACITY,
+                    &status);
+
+  uloc_addLikelySubtags(canonicalId, maximizedLocaleId, ULOC_FULLNAME_CAPACITY,
+                        &status);
+
+  newObject = ecmaIntlLocaleObjCreate(ecmaIntlClassLocale);
+  newLocale = ecmaIntlLocaleObjFromObj(newObject);
+  localeInit(newLocale, maximizedLocaleId);
+
+  efree(maximizedLocaleId);
+  efree(canonicalId);
+
+  RETURN_OBJ(&newLocale->std);
+}
+
+PHP_METHOD(Ecma_Intl_Locale, minimize) {
+  char *canonicalId, *minimizedLocaleId = NULL;
+  UErrorCode status = U_ZERO_ERROR;
+  ecmaIntlLocaleObj *locale, *newLocale;
+  zval *object;
+  zend_object *newObject;
+
+  ZEND_PARSE_PARAMETERS_NONE();
+
+  object = getThis();
+  locale = Z_ECMA_LOCALE_P(object);
+
+  canonicalId = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  minimizedLocaleId =
+      (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+
+  uloc_canonicalize(locale->bcp47Locale, canonicalId, ULOC_FULLNAME_CAPACITY,
+                    &status);
+
+  uloc_minimizeSubtags(canonicalId, minimizedLocaleId, ULOC_FULLNAME_CAPACITY,
+                       &status);
+
+  newObject = ecmaIntlLocaleObjCreate(ecmaIntlClassLocale);
+  newLocale = ecmaIntlLocaleObjFromObj(newObject);
+  localeInit(newLocale, minimizedLocaleId);
+
+  efree(minimizedLocaleId);
+  efree(canonicalId);
+
+  RETURN_OBJ(&newLocale->std);
+}
 
 PHP_METHOD(Ecma_Intl_Locale, __toString) {
   ZEND_PARSE_PARAMETERS_NONE();

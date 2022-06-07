@@ -39,6 +39,7 @@ static inline ecmaIntlLocaleObj *ecmaIntlLocaleObjFromObj(zend_object *obj) {
 
 zend_object *ecmaIntlLocaleObjCreate(zend_class_entry *classType);
 
+void localeInit(ecmaIntlLocaleObj *localeObj, char *languageTag);
 void localeSetBaseName(zend_object *object, char *localeId);
 void localeSetCalendar(zend_object *object, char *localeId);
 void localeSetCalendars(zend_object *object, char *localeId);

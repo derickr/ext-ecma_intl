@@ -70,6 +70,44 @@ zend_object *ecmaIntlLocaleObjCreate(zend_class_entry *classType) {
   return &localeObj->std;
 }
 
+void localeInit(ecmaIntlLocaleObj *locale, char *languageTag) {
+  char *bcp47Locale = NULL, *icuLocale = NULL;
+  size_t bcp47LocaleLen = 0;
+  UErrorCode status = U_ZERO_ERROR;
+
+  bcp47Locale = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+  icuLocale = (char *)ecalloc(1, sizeof(char *) * ULOC_FULLNAME_CAPACITY);
+
+  bcp47LocaleLen = icuToBcp47LanguageTag(languageTag, bcp47Locale);
+  uloc_canonicalize(languageTag, icuLocale, ULOC_FULLNAME_CAPACITY, &status);
+
+  CHECK_ERROR(status) else if (bcp47LocaleLen) {
+    locale->bcp47Locale = estrndup(bcp47Locale, bcp47LocaleLen);
+    locale->bcp47LocaleLen = bcp47LocaleLen;
+
+    localeSetBaseName(&locale->std, icuLocale);
+    localeSetCalendar(&locale->std, icuLocale);
+    localeSetCalendars(&locale->std, icuLocale);
+    localeSetCaseFirst(&locale->std, icuLocale);
+    localeSetCollation(&locale->std, icuLocale);
+    localeSetCollations(&locale->std, icuLocale);
+    localeSetHourCycle(&locale->std, icuLocale);
+    localeSetHourCycles(&locale->std, icuLocale);
+    localeSetLanguage(&locale->std, icuLocale);
+    localeSetNumberingSystem(&locale->std, icuLocale);
+    localeSetNumberingSystems(&locale->std, icuLocale);
+    localeSetNumeric(&locale->std, icuLocale);
+    localeSetRegion(&locale->std, icuLocale);
+    localeSetScript(&locale->std, icuLocale);
+    localeSetTextInfo(&locale->std, icuLocale);
+    localeSetTimeZones(&locale->std, icuLocale);
+    localeSetWeekInfo(&locale->std, icuLocale);
+  }
+
+  efree(icuLocale);
+  efree(bcp47Locale);
+}
+
 void localeSetBaseName(zend_object *object, char *localeId) {
   char *baseName = NULL, *value = NULL;
   int valueLen;
